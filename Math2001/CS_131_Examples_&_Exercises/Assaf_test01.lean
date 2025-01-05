@@ -18,6 +18,6 @@ more with a proof that does not exceed 5 lines. The
 proof of AAA_long has 7 lines.
 -/
 
-@[autograded 3] theorem AAA_short (a b c : Prop) :
+@[autogradedProof 3] theorem AAA_short (a b c : Prop) :
   (a → b) → (c → a) → c → b :=
   sorry
