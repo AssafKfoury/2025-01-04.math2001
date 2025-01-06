@@ -1,0 +1,253 @@
+\documentclass[12pt,leqno,fleqn]{article}
+
+\usepackage{tikz}
+\usepackage{tikz-qtree,tikz-qtree-compat} % for parse trees
+
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+
+% \usepackage{prooftree}
+\usepackage{flagderiv}
+\usepackage{logicproof}
+\usepackage{bussproofs}
+% WARNING:
+% Do NOT use package `bussproofs' and package `prooftree' at the same time,
+% \begin{prooftree} ... \end{prooftree} is an environment defined in the
+% package  `bussproofs', which conflicts with the name of the package
+% `prooftree'.
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newcommand{\defn}{\overset{\text{\scriptsize def}}{=}}
+\newcommand{\Intro}[1]{{#1}{\text{I}}}
+\newcommand{\IntroA}[1]{{#1}{\text{I}_1}}
+\newcommand{\IntroB}[1]{{#1}{\text{I}_2}}
+\newcommand{\Elim}[1]{{#1}{\text{E}}}
+\newcommand{\ElimA}[1]{{#1}{\text{E}_1}}
+\newcommand{\ElimB}[1]{{#1}{\text{E}_2}}
+\newcommand{\Set}[1]{\{ #1 \}}
+\newcommand{\SET}[1]{\Bigl\{ #1 \Bigr\}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+ 
+\begin{document}
+ 
+\title{Homework 1 Solutions}
+\author{CS 511 Formal Methods}
+
+\maketitle
+
+\section*{Exercise 1.2.1}
+
+\subsection*{(h) $p \vdash (p \to q) \to q$}
+
+\medskip 
+\begin{logicproof}{3}
+    p                   & premise \\
+    \begin{subproof}
+        p \to q         & assumption \\
+        q               & $\Elim{\to}$ 1,2 
+    \end{subproof}
+    (p \to q) \to q     & $\Intro{\to}$ 2--3 
+\end{logicproof}
+
+\subsection*{(i) $(p \to r) \land (q \to r) \vdash p \land q \to r$}
+
+\medskip
+\begin{logicproof}{3}
+    (p \to r) \wedge (q \to r)              & premise \\
+    p \to r                                 & $\ElimA{\land}$ 1 \\
+    \begin{subproof}
+        p \wedge q                          & assumption \\
+        p                                   & $\ElimA{\land}$ 3 \\
+        r                                   & $\Elim{\to}$ 2,4
+    \end{subproof}
+    p \wedge q \to r                        & $\Intro{\to}$ 3--5 
+\end{logicproof}
+
+\subsection*{(j) $q \to r \vdash (p \to q) \to (p \to r)$}
+
+\begin{logicproof}{3}
+    q \to r                                 & premise \\
+    \begin{subproof}
+        p \to q                             & assumption \\
+        \begin{subproof}
+            p                               & assumption \\ 
+            q                               & $\Elim{\to}$ 2,3 \\
+            r                               & $\Elim{\to}$ 1,4 
+        \end{subproof}
+        p \to r                             & $\Intro{\to}$ 3--5 
+    \end{subproof}
+    (p \to q) \to (p \to r)                 & $\Intro{\to}$ 2--6 
+\end{logicproof}
+
+\section*{Exercise 1.4.2}
+
+\subsection*{(g)}
+
+\begin{tabular}{ll|l|l|l}
+    $p$ & $q$ & $p \to q$ & $(p \to q) \to p$ & $((p \to q) \to p) \to p$ \\ \hline
+    T   & T   & T         & T                 & T                         \\
+    T   & F   & F         & T                 & T                         \\
+    F   & T   & T         & F                 & T                         \\
+    F   & F   & T         & F                 & T                        
+\end{tabular}
+
+\iffalse 
+\begin{tabular}{@{ }c@{ }@{ }c | c@{ }@{}c@{}@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c}
+    p & q &  & ( & ( & p & $\rightarrow$ & q & ) & $\rightarrow$ & p & ) & $\rightarrow$ & p & \\
+    \hline 
+    T & T &  &  &  & T & T & T &  & T & T &  & \textcolor{red}{T} & T & \\
+    T & F &  &  &  & T & F & F &  & T & T &  & \textcolor{red}{T} & T & \\
+    F & T &  &  &  & F & T & T &  & F & F &  & \textcolor{red}{T} & F & \\
+    F & F &  &  &  & F & T & F &  & F & F &  & \textcolor{red}{T} & F & \\
+    \end{tabular}
+\fi 
+
+\subsection*{(h)}
+
+\scriptsize
+\begin{tabular}{lll|l|l|l|l|l|l}
+    $p$ & $q$ & $r$ & $p \lor q$ & $p \to r$ & $q \to r$ & $(p \lor q) \to r$ & $(p \to r) \lor (q \to r)$ & $((p \lor  q) \to r) \to ((p \to r) \lor (q \to r))$ \\ \hline
+    T   & T   & T   & T          & T         & T         & T                  & T                          & T                                                    \\
+    T   & T   & F   & T          & F         & F         & F                  & F                          & T                                                    \\
+    T   & F   & T   & T          & T         & T         & T                  & T                          & T                                                    \\
+    T   & F   & F   & T          & F         & T         & F                  & T                          & T                                                    \\
+    F   & T   & T   & T          & T         & T         & T                  & T                          & T                                                    \\
+    F   & T   & F   & T          & T         & F         & F                  & T                          & T                                                    \\
+    F   & F   & T   & F          & T         & T         & T                  & T                          & T                                                    \\
+    F   & F   & F   & F          & T         & T         & T                  & T                          & T                                                   
+\end{tabular}
+\normalsize
+
+\iffalse 
+\begin{tabular}{@{ }c@{ }@{ }c@{ }@{ }c | c@{ }@{}c@{}@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c@{ }@{}c@{}@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c@{ }@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{}c@{}@{ }c}
+    p & q & r &  & ( & ( & p & $\lor$ & q & ) & $\rightarrow$ & r & ) & $\rightarrow$ & ( & ( & p & $\rightarrow$ & r & ) & $\lor$ & ( & q & $\rightarrow$ & r & ) & ) & \\
+    \hline 
+    T & T & T &  &  &  & T & T & T &  & T & T &  & \textcolor{red}{T} &  &  & T & T & T &  & T &  & T & T & T &  &  & \\
+    T & T & F &  &  &  & T & T & T &  & F & F &  & \textcolor{red}{T} &  &  & T & F & F &  & F &  & T & F & F &  &  & \\
+    T & F & T &  &  &  & T & T & F &  & T & T &  & \textcolor{red}{T} &  &  & T & T & T &  & T &  & F & T & T &  &  & \\
+    T & F & F &  &  &  & T & T & F &  & F & F &  & \textcolor{red}{T} &  &  & T & F & F &  & T &  & F & T & F &  &  & \\
+    F & T & T &  &  &  & F & T & T &  & T & T &  & \textcolor{red}{T} &  &  & F & T & T &  & T &  & T & T & T &  &  & \\
+    F & T & F &  &  &  & F & T & T &  & F & F &  & \textcolor{red}{T} &  &  & F & T & F &  & T &  & T & F & F &  &  & \\
+    F & F & T &  &  &  & F & F & F &  & T & T &  & \textcolor{red}{T} &  &  & F & T & T &  & T &  & F & T & T &  &  & \\
+    F & F & F &  &  &  & F & F & F &  & T & F &  & \textcolor{red}{T} &  &  & F & T & F &  & T &  & F & T & F &  &  & \\
+    \end{tabular}
+\fi 
+
+\subsection*{(i)}
+
+\begin{tabular}{ll|l|l|l|l|l}
+    $p$ & $q$ & $\neg p$ & $\neg q$ & $p \to q$ & $\neg p \to \neg q$ & $(p \to q) \to (\neg p \to \neg q)$ \\ \hline
+    T   & T   & F        & F        & T         & T                   & T                                   \\
+    T   & F   & F        & T        & F         & T                   & T                                   \\
+    F   & T   & T        & F        & T         & F                   & F                                   \\
+    F   & F   & T        & T        & T         & T                   & T                                  
+\end{tabular}
+
+\iffalse 
+\begin{tabular}{@{ }c@{ }@{ }c | c@{ }@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c@{ }@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c}
+    p & q &  & ( & p & $\rightarrow$ & q & ) & $\rightarrow$ & ( & $\neg$ & p & $\rightarrow$ & $\neg$ & q & ) & \\
+    \hline 
+    T & T &  &  & T & T & T &  & \textcolor{red}{T} &  & F & T & T & F & T &  & \\
+    T & F &  &  & T & F & F &  & \textcolor{red}{T} &  & F & T & T & T & F &  & \\
+    F & T &  &  & F & T & T &  & \textcolor{red}{F} &  & T & F & F & F & T &  & \\
+    F & F &  &  & F & T & F &  & \textcolor{red}{T} &  & T & F & T & T & F &  & \\
+    \end{tabular}
+\fi 
+
+\section*{Exercise 1.5.3}
+
+\subsection*{(b)}
+
+Show that, if $C \subseteq \{\neg, \land, \lor, \to, \bot\}$ is adequate for propositional logic, then $\neg \in C$ or $\bot \in C$.  (Hint:  suppose $C$ contains neither $\neg$ nor $\bot$ and consider the truth value of a formula $\phi$, formed by using only the connectives in $C$, for a valuation in which every atom is assigned $\top$.)
+
+\begin{proof}
+    We prove the contrapositive of the original statement.  Assume that neither $\neg$ nor $\bot$ are in $C$.  I claim that $C \subseteq \{\land, \lor, \to\}$ is not adequate for propositional logic because it can make neither $\neg$ nor $\bot$ from $\land$, $\lor$, and $\to$.  To see this, observe the following truth table:  
+
+    \begin{tabular}{ll|l|l|l|l|l|l}
+        $p$ & $q$ & $p \to q$ & $q \to p$ & $p \lor q$ & $p \land q$ & $\neg p$ & $\bot$ \\ \hline 
+        T   & T   & T         & T         & T          & T           & F        & F \\
+        T   & F   & F         & T         & T          & F           & F        & F \\
+        F   & T   & T         & F         & T          & F           & T        & F \\
+        F   & F   & T         & T         & F          & F           & T        & F 
+    \end{tabular}
+
+    \iffalse 
+    \begin{tabular}{@{ }c@{ }@{ }c | c@{ }@{}c@{}@{}c@{}@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c@{ }@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{}c@{}@{ }c@{ }@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{}c@{}@{ }c@{ }@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c}
+        p & q &  & ( & ( & ( & p & $\rightarrow$ & q & ) & $\lor$ & ( & q & $\rightarrow$ & p & ) & ) & $\lor$ & ( & p & $\lor$ & q & ) & ) & $\lor$ & ( & p & $\land$ & q & ) & \\
+        \hline 
+        T & T &  &  &  &  & T & \textcolor{red}{T} & T &  &  &  & T & \textcolor{red}{T} & T &  &  &  &  & T & \textcolor{red}{T} & T &  &  &  &  & T & \textcolor{red}{T} & T &  & \\
+        T & F &  &  &  &  & T & \textcolor{red}{F} & F &  &  &  & F & \textcolor{red}{T} & T &  &  &  &  & T & \textcolor{red}{T} & F &  &  &  &  & T & \textcolor{red}{F} & F &  & \\
+        F & T &  &  &  &  & F & \textcolor{red}{T} & T &  &  &  & T & \textcolor{red}{F} & F &  &  &  &  & F & \textcolor{red}{T} & T &  &  &  &  & F & \textcolor{red}{F} & T &  & \\
+        F & F &  &  &  &  & F & \textcolor{red}{T} & F &  &  &  & F & \textcolor{red}{T} & F &  &  &  &  & F & \textcolor{red}{F} & F &  &  &  &  & F & \textcolor{red}{F} & F &  & \\
+    \end{tabular}
+    \fi 
+
+    \noindent Note that, in the case where $p$ is true, none of the connectives in $C \subseteq \{\land, \lor, \to\}$ with an arbitrary Boolean variable $q$ can turn the truth value of the statement to false.  For both $\neg$ and $\bot$ in the case where $p$ is true, they change the truth value to false.  We can look at the partial truth table to emphasize this:  
+
+    \begin{tabular}{ll|l|l|l|l|l|l}
+        $p$ & $q$ & $p \to q$ & $q \to p$ & $p \lor q$ & $p \land q$ & $\neg p$ & $\bot$ \\ \hline 
+        T   & T   & T         & T         & T          & T           & F        & F \\
+    \end{tabular}
+    
+    \noindent This means that no combination of $\to$, $\lor$, and $\land$ can create $\neg$ or $\bot$, which implies that $C \subseteq \{\land, \lor, \to\}$ is not adequate for propositional logic. (This is an informal description of structural induction, but I wanted to go easy on its use here since we have not formally covered the technique in class, yet.) 
+    
+\end{proof}
+
+\subsection*{(c)}
+
+Is $\{\leftrightarrow, \neg\}$ adequate?  Prove your answer.  
+
+\begin{proof}
+    $\{\leftrightarrow, \neg\}$ is not adequate for propositional logic.  This can be seen easiest from looking at a truth table:  
+
+    \begin{tabular}{ll|l|l}
+        $p$ & $q$ & $\neg p$ & $p \to q$ \\ \hline 
+        T   & T   & F        & T         \\
+        T   & F   & F        & F         \\
+        F   & T   & T        & T         \\
+        F   & F   & T        & T        
+    \end{tabular}
+
+    \begin{tabular}{ll|l|l}
+        $p$ & $q$ & $p \leftrightarrow q$ & $p \to q$ \\ \hline 
+        T   & T   & T                     & T         \\
+        T   & F   & F                     & F         \\
+        F   & T   & F                     & T         \\
+        F   & F   & T                     & T        
+    \end{tabular}
+
+    \iffalse 
+    \begin{tabular}{@{ }c@{ }@{ }c | c@{ }@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{}c@{}@{ }c@{ }@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c}
+        p & q &  & ( & $\lnot$ & p & $\lor$ & ( & p & $\leftrightarrow$ & q & ) & ) & $\lor$ & ( & p & $\rightarrow$ & q & ) & \\
+        \hline 
+        T & T &  &  & \textcolor{red}{F} & T & T &  & T & \textcolor{red}{T} & T &  &  & T &  & T & \textcolor{red}{T} & T &  & \\
+        T & F &  &  & \textcolor{red}{F} & T & F &  & T & \textcolor{red}{F} & F &  &  & F &  & T & \textcolor{red}{F} & F &  & \\
+        F & T &  &  & \textcolor{red}{T} & F & T &  & F & \textcolor{red}{F} & T &  &  & T &  & F & \textcolor{red}{T} & T &  & \\
+        F & F &  &  & \textcolor{red}{T} & F & T &  & F & \textcolor{red}{T} & F &  &  & T &  & F & \textcolor{red}{T} & F &  & \\
+    \end{tabular}
+    \fi 
+
+    \noindent The connectives $\neg$ and $\leftrightarrow$ have an even number of true values and $\to$ has an odd number of true values.  This means that any combination of $\neg$ and $\leftrightarrow$ cannot form $\to$ as functions of variables $p$ and $q$ (do you see why?).  
+    
+\end{proof}
+
+\end{document}
