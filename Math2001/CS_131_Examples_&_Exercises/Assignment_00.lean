@@ -1,3 +1,10 @@
+/- # Assignment 00: 
+   # You can experiment with this script in the Lean_4 Playground 
+   # at https://live.lean-lang.org/ which will spare you the need 
+   # to install Lean_4 on your laptop. And if you do this, then make
+   # sure to comment out the two 'imports' on lines 8 and 9, and 
+   # the two autograder instructions on lines 12 and 44. -/
+
 import Library.Basic
 import AutograderLib
 
