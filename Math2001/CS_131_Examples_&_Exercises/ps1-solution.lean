@@ -35,12 +35,12 @@ def A_says : Prop := ¬ M ∨ ¬ W -- sorry
 
 /- # Mike says: “I wrote it if and only if Will wrote it.” -/
 @[autogradedDef 1]
-def M_says : Prop := M ↔ W -- sorry
+def M_says (M W : Prop): Prop := M ↔ W -- sorry
 
 /- # Will says: “We didn’t all write the book.” -/
 @[autogradedDef 1]
 def W_says : Prop :=   ¬ (A ∧ M ∧ W)  --  sorry
-#check W_says True True True
+#check M_says 
 /- # The following axioms express the equivalences in Table 1.5.1 in the zyBook -/
 
 axiom associative1 {p q r : Prop} : (p ∨ q) ∨ r ↔ p ∨ (q ∨ r)
@@ -102,7 +102,7 @@ theorem A_says_and_W_says_equiv_neither_M_nor_W : (¬ M ∨ ¬ W) ∧ (M ↔ W) 
     constructor           -- an alternative is 'rw [conditional2] ; constructor'
     rw [conditional1] ; left ; obtain ⟨ h6 , h7 ⟩ := h3 ; exact h6
     rw [conditional1] ; left ; obtain ⟨ h8 , h9 ⟩ := h3 ; exact h9   
-
+#check A_says_and_W_says_equiv_neither_M_nor_W 
 /- # Part (d): The statement “if any of the three wrote the book, then only
    # M wrote it” is equivalent to "neither A nor W wrote it". To get credit
    # for (d), you first need to substitute for variable anyWroteIt your 
