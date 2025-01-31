@@ -40,7 +40,7 @@ def M_says : Prop := M ↔ W -- sorry
 /- # Will says: “We didn’t all write the book.” -/
 @[autogradedDef 1]
 def W_says : Prop :=   ¬ (A ∧ M ∧ W)  --  sorry
-
+#check W_says True True True
 /- # The following axioms express the equivalences in Table 1.5.1 in the zyBook -/
 
 axiom associative1 {p q r : Prop} : (p ∨ q) ∨ r ↔ p ∨ (q ∨ r)
