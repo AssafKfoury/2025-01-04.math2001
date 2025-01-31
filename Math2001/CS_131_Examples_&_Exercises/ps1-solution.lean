@@ -8,10 +8,11 @@
    # with an appropriate expression or an appropriate sequence of
    # commands (which are called "tactics"). After you do this, and 
    # before submitting your Lean_4 file to Gradescope, make sure
-   # to de-comment the two 'imports' on lines 17 and 18, and all the
-   # autograder instructions on lines 33, 37, 41, 49, 60, 62, 73, 75
+   # to de-comment the two 'imports' on lines 18 and 19, and all 
+   # autograder instructions on lines 33, 37, 41, 74, 86, 88, 99, 101
    # -- all these lines are commented out in this file, which would 
    # otherwise disrupt the operation of the Lean_4 Playground. 
+   # 
 -/
 
 import Library.Basic -- DE-COMMENT BEFORE SUBMISSION TO GRADESCOPE
@@ -19,9 +20,8 @@ import AutograderLib -- DE-COMMENT BEFORE SUBMISSION TO GRADESCOPE
 import Mathlib.Tactic.PushNeg -- needed in order to use tactic push_neg
 import Mathlib.Logic.Basic -- basic facts in logic
 
-/- # useful globally declared variables in lines 24 and 25 -/
-variable (A M W : Prop)
-variable (Asays Msays Wsays neitherMnorW anyWroteIt : Prop)
+
+
 
 /- # Part (a): for each of the three definitions to follow (A_says
    # on line 34, M_says on line 38, and W_says on line 42) only one
@@ -31,17 +31,18 @@ variable (Asays Msays Wsays neitherMnorW anyWroteIt : Prop)
 
 /- # “At least one of Mike or Will didn’t write the book.”-/
 @[autogradedDef 1]
-def A_says : Prop := ¬ M ∨ ¬ W -- sorry
+def A_says (A M W : Prop) : Prop := ¬ M ∨ ¬ W --  sorry
 
 /- # Mike says: “I wrote it if and only if Will wrote it.” -/
 @[autogradedDef 1]
-def M_says (M W : Prop): Prop := M ↔ W -- sorry
+def M_says (A M W : Prop) : Prop := M ↔ W -- sorry
 
 /- # Will says: “We didn’t all write the book.” -/
 @[autogradedDef 1]
-def W_says : Prop :=   ¬ (A ∧ M ∧ W)  --  sorry
-#check M_says 
-/- # The following axioms express the equivalences in Table 1.5.1 in the zyBook -/
+def W_says (A M W : Prop) : Prop := ¬ (A ∧ M ∧ W)  --    sorry
+
+/- # The following axioms express the equivalences in Table 1.5.1 in the zyBook.
+   # Use them in any way that seems appropriate. You will probably not use them all. -/
 
 axiom associative1 {p q r : Prop} : (p ∨ q) ∨ r ↔ p ∨ (q ∨ r)
 axiom associative2 {p q r : Prop} : (p ∧ q) ∧ r ↔ p ∧ (q ∧ r)
@@ -65,32 +66,34 @@ axiom absorption2 {p q : Prop} : p ∧ (p ∨ q) ↔ p
 axiom conditional1 {p q : Prop} : p → q ↔ ¬p ∨ q
 axiom conditional2 {p q : Prop} : (p ↔ q) ↔ (p → q) ∧ (q → p)
 
-/- # Part (b): Aaron's and Will's statements are together equivalent
-   # to just Aaron's statement. To get credit for (b), you first need to
-   # replace variables Asays and Wsays by your definitions of A_says and 
-   # W_says, in addition to replacing 'sorry' by a sequence of tactics. -/
+/- # Part (b): Aaron's and Will's statements are together equivalent to just
+   # Aaron's statement. To get credit for (b), you first need to replace
+   # (A_says A M W) by your definition in line 34 and (W_says A M W) by your
+   # definition in line 42, and also replace 'sorry' by a sequence of tactics. -/
 
 @[autogradedProof 5]
-theorem A_says_and_W_says_equiv_A_says : (¬ M ∨ ¬ W) ∧  ¬ (A ∧ M ∧ W) ↔ (¬ M ∨ ¬ W) := by
+theorem A_says_and_W_says_equiv_A_says (A M W : Prop) : 
+          (¬ M ∨ ¬ W) ∧  ¬ (A ∧ M ∧ W) ↔ (¬ M ∨ ¬ W) := by
   constructor
   intro h
   obtain ⟨ h1 , h2 ⟩ := h 
   rw [← demorgan2] ; rw [← demorgan2] at h1 ; exact h1 
   intro h1 
   constructor ; exact h1
-  rw [← demorgan2] at h1 ; rw [demorgan2] ; right ; exact h1 
+  rw [← demorgan2] at h1 ; rw [demorgan2] ; right ; exact h1  
 
 /- # Part (c): Aaron’s and Mike’s statements are together equivalent to 
    # “neither Mike nor Will wrote the book”. To get credit for (c), you first 
-   # need to substitute for variables Asays, Msays, and neitherMnorW, your
-   # definitions of A_says, M_says, and neither_M_nor_W (which you have to
-   # write below), in addition to replacing 'sorry' by a tactic sequence. -/
+   # replace (A_says A M W), (M_says A M W), and (neither_M_nor_W A M W) by the
+   # definitions you write for them, with the third definition being that of
+   # (neither_M_nor_W A M W) below, and you replace 'sorry' by a sequence of tactics. -/
 
 /- # "neither Mike nor Will wrote the book” -/
 @[autogradedDef 1]
-def neither_M_nor_W : Prop := (¬ M ∧ ¬ W) -- sorry
+def neither_M_nor_W (A M W : Prop) : Prop := (¬ M ∧ ¬ W) --  sorry
 @[autogradedProof 5]
-theorem A_says_and_W_says_equiv_neither_M_nor_W : (¬ M ∨ ¬ W) ∧ (M ↔ W) ↔ (¬ M ∧ ¬ W) := by
+theorem A_says_and_W_says_equiv_neither_M_nor_W (A M W : Prop) : 
+     (¬ M ∨ ¬ W) ∧ (M ↔ W) ↔ (¬ M ∧ ¬ W) := by
   constructor 
   · intro h 
     obtain ⟨ h1 , h2 ⟩ := h ; rw [h2] ; rw [h2] at h1 ; rw [idempotent2] ; rw [idempotent1] at h1 
@@ -102,18 +105,18 @@ theorem A_says_and_W_says_equiv_neither_M_nor_W : (¬ M ∨ ¬ W) ∧ (M ↔ W) 
     constructor           -- an alternative is 'rw [conditional2] ; constructor'
     rw [conditional1] ; left ; obtain ⟨ h6 , h7 ⟩ := h3 ; exact h6
     rw [conditional1] ; left ; obtain ⟨ h8 , h9 ⟩ := h3 ; exact h9   
-#check A_says_and_W_says_equiv_neither_M_nor_W 
+
 /- # Part (d): The statement “if any of the three wrote the book, then only
    # M wrote it” is equivalent to "neither A nor W wrote it". To get credit
-   # for (d), you first need to substitute for variable anyWroteIt your 
-   # definition of any_Wrote_It (see below), in addition to replacing 
-   # 'sorry' by a sequence of tactics. -/
+   # for (d), you replace (any_Wrote_It A M W) by the definition you write
+   # for it (below) and you also replace 'sorry' by a sequence of tactics. -/
 
 /- # “if any of the three wrote the book, then only M wrote it” -/
 @[autogradedDef 1]
-def any_Wrote_It : Prop := (M ∨ W ∨ A) → (M ∧ ¬ W ∧ ¬ A) --  sorry
+def any_Wrote_It (A M W : Prop) : Prop := (M ∨ W ∨ A) → (M ∧ ¬ W ∧ ¬ A) --  sorry
 @[autogradedProof 5]
-theorem any_Wrote_it_equiv_nor_A_nor_W : ((M ∨ W ∨ A) → (M ∧ ¬ W ∧ ¬ A)) ↔ (¬ A ∧ ¬ W) := by
+theorem any_Wrote_it_equiv_nor_A_nor_W (A M W : Prop) : 
+     ((M ∨ W ∨ A) → (M ∧ ¬ W ∧ ¬ A)) ↔ (¬ A ∧ ¬ W)  := by
   constructor
   · intro h ; 
     rw [conditional1] at h ; 
@@ -121,6 +124,4 @@ theorem any_Wrote_it_equiv_nor_A_nor_W : ((M ∨ W ∨ A) → (M ∧ ¬ W ∧ ¬
     obtain ⟨ h3 , h4 ⟩ := h1 ; rw [demorgan1] at h4 ; rw [commutative2] ; exact h4 
     obtain ⟨ h5 , h6 ⟩ := h2 ; rw [commutative2] ; exact h6 
   · intro h1 ; intro h2 ; rw [commutative2] ; constructor ; rw [commutative2] ; exact h1  
-    obtain h7 | h8 := h2 ; exact h7 ; rw [commutative1] at h8 ; rw [← demorgan1] at h1 ; contradiction 
-
- 
+    obtain h7 | h8 := h2 ; exact h7 ; rw [commutative1] at h8 ; rw [← demorgan1] at h1 ; contradiction  

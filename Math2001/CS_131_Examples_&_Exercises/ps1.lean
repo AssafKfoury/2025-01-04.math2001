@@ -1,4 +1,4 @@
-/- # ps1-adjusted.lean: 
+/- # ps1.lean: 
    # 
    # You can solve Problem 6 of Assignment #1 in the Lean_4 Playground 
    # at https://live.lean-lang.org/ which will spare you the need 
@@ -8,10 +8,11 @@
    # with an appropriate expression or an appropriate sequence of
    # commands (which are called "tactics"). After you do this, and 
    # before submitting your Lean_4 file to Gradescope, make sure
-   # to de-comment the two 'imports' on lines 17 and 18, and all 
-   # autograder instructions on lines 33, 37, 41, 74, 85, 87, 98, 100
+   # to de-comment the two 'imports' on lines 18 and 19, and all 
+   # autograder instructions on lines 33, 37, 41, 74, 86, 88, 99, 101
    # -- all these lines are commented out in this file, which would 
    # otherwise disrupt the operation of the Lean_4 Playground. 
+   # 
 -/
 
 import Library.Basic -- DE-COMMENT BEFORE SUBMISSION TO GRADESCOPE
@@ -21,7 +22,6 @@ import Mathlib.Logic.Basic -- basic facts in logic
 
 /- # useful globally declared variables in lines 24 and 25 -/
 variable (A M W : Prop)
-variable (Asays Msays Wsays neitherMnorW anyWroteIt : Prop)
 
 /- # Part (a): for each of the three definitions to follow (A_says
    # on line 34, M_says on line 38, and W_says on line 42) only one
@@ -31,15 +31,15 @@ variable (Asays Msays Wsays neitherMnorW anyWroteIt : Prop)
 
 /- # “At least one of Mike or Will didn’t write the book.”-/
 @[autogradedDef 1]
-def A_says : Prop := sorry
+def A_says (A M W : Prop) : Prop :=  sorry
 
 /- # Mike says: “I wrote it if and only if Will wrote it.” -/
 @[autogradedDef 1]
-def M_says : Prop := sorry
+def M_says (A M W : Prop) : Prop := sorry
 
 /- # Will says: “We didn’t all write the book.” -/
 @[autogradedDef 1]
-def W_says : Prop := sorry
+def W_says (A M W : Prop) : Prop :=   sorry
 
 /- # The following axioms express the equivalences in Table 1.5.1 in the zyBook.
    # Use them in any way that seems appropriate. You will probably not use them all. -/
@@ -66,37 +66,38 @@ axiom absorption2 {p q : Prop} : p ∧ (p ∨ q) ↔ p
 axiom conditional1 {p q : Prop} : p → q ↔ ¬p ∨ q
 axiom conditional2 {p q : Prop} : (p ↔ q) ↔ (p → q) ∧ (q → p)
 
-/- # Part (b): Aaron's and Will's statements are together equivalent
-   # to just Aaron's statement. To get credit for (b), you first need to
-   # replace variables Asays and Wsays by your definitions of A_says and 
-   # W_says, in addition to replacing 'sorry' by a sequence of tactics. -/
+/- # Part (b): Aaron's and Will's statements are together equivalent to just
+   # Aaron's statement. To get credit for (b), you first need to replace
+   # (A_says A M W) by your definition in line 34 and (W_says A M W) by your
+   # definition in line 42, and also replace 'sorry' by a sequence of tactics. -/
 
 @[autogradedProof 5]
-theorem A_says_and_W_says_equiv_A_says : Asays ∧ Wsays ↔ Asays := by
+theorem A_says_and_W_says_equiv_A_says (A M W : Prop) : 
+          (A_says A M W) ∧ (W_says A M W) ↔ (A_says A M W) := by
   sorry 
-   
+
 /- # Part (c): Aaron’s and Mike’s statements are together equivalent to 
    # “neither Mike nor Will wrote the book”. To get credit for (c), you first 
-   # need to substitute for variables Asays, Msays, and neitherMnorW, your
-   # definitions of A_says, M_says, and neither_M_nor_W (which you have to
-   # write below), in addition to replacing 'sorry' by a tactic sequence. -/
+   # replace (A_says A M W), (M_says A M W), and (neither_M_nor_W A M W) by the
+   # definitions you write for them, with the third definition being that of
+   # (neither_M_nor_W A M W) below, and you replace 'sorry' by a sequence of tactics. -/
 
 /- # "neither Mike nor Will wrote the book” -/
 @[autogradedDef 1]
-def neither_M_nor_W : Prop :=  sorry
+def neither_M_nor_W (A M W : Prop) : Prop :=  sorry
 @[autogradedProof 5]
-theorem A_says_and_W_says_equiv_neither_M_nor_W : Asays ∧ Msays ↔ neitherMnorW := by
-   sorry 
+theorem A_says_and_W_says_equiv_neither_M_nor_W (A M W : Prop) : 
+     (A_says A M W) ∧ (M_says A M W) ↔ (neither_M_nor_W A M W) := by
+   sorry  
 
 /- # Part (d): The statement “if any of the three wrote the book, then only
    # M wrote it” is equivalent to "neither A nor W wrote it". To get credit
-   # for (d), you first need to substitute for variable anyWroteIt your 
-   # definition of any_Wrote_It (see below), in addition to replacing 
-   # 'sorry' by a sequence of tactics. -/
+   # for (d), you replace (any_Wrote_It A M W) by the definition you write
+   # for it (below) and you also replace 'sorry' by a sequence of tactics. -/
 
 /- # “if any of the three wrote the book, then only M wrote it” -/
 @[autogradedDef 1]
-def any_Wrote_It : Prop := sorry
+def any_Wrote_It (A M W : Prop) : Prop := sorry
 @[autogradedProof 5]
-theorem any_Wrote_it_equiv_nor_A_nor_W : anyWroteIt ↔ (¬ A ∧ ¬ W) := by
+theorem any_Wrote_it_equiv_nor_A_nor_W (A M W : Prop) : (any_Wrote_It A M W) ↔ (¬ A ∧ ¬ W) := by
    sorry 
