@@ -31,7 +31,6 @@ theorem prob_6_ps1_b (A M W : Prop) :
   constructor
   intro h
   obtain ⟨ h1 , h2 ⟩ := h 
-  -- rw [← demorgan2] ; rw [← demorgan2] at h1 ;
   exact h1 
   intro h1 
   constructor ; exact h1
