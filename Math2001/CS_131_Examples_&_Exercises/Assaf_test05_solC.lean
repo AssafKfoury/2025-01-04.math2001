@@ -8,4 +8,16 @@ axiom demorgan2 {p q : Prop} : ¬(p ∧ q) ↔ ¬p ∨ ¬q
 @[autogradedProof 5]
 theorem prob_6_ps1 (A M W : Prop) : 
           (¬ M ∨ ¬ W) ∧  ¬ (A ∧ M ∧ W) ↔ (¬ M ∨ ¬ W) := by
-  sorry
+  constructor
+  · intro h
+    obtain ⟨ h1 , h2 ⟩ := h 
+    exact h1 
+  · intro h1 
+    constructor ; exact h1 
+    push_neg  
+    intro h3 ; intro h4 
+    obtain h5 | h6 := h1 
+    contradiction
+    exact h6
+
+    
