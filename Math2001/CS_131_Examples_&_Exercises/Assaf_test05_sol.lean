@@ -35,4 +35,4 @@ theorem prob_6_ps1_b (A M W : Prop) :
   exact h1 
   intro h1 
   constructor ; exact h1
-  rw [← demorgan2] at h1 ; rw [demorgan2] ; right ; exact h1  
+  rw [demorgan2] ; right ; rw [demorgan2] ; exact h1  
