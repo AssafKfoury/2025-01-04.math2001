@@ -1,4 +1,6 @@
-import Library.basic
+--import Mathlib.Logic.Basic
+--import Mathlib.Tactic.Ring
+import Library.Basic
 
 open Int
 
