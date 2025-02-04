@@ -1,4 +1,4 @@
-/- # ps1.lean:
+/- # ps1-solution.lean:
    #
    # You can solve Problem 6 of Assignment #1 in the Lean_4 Playground
    # at https://live.lean-lang.org/ which will spare you the need
