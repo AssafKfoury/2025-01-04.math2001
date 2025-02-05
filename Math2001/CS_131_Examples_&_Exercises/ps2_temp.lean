@@ -35,7 +35,7 @@ theorem odd_to_odd_1 {x y : ℤ} : Odd (x + y) → Odd (x ^ 2 + y ^ 2) := by
   ring
   done
 
-/- # Another way of setting up the proof of odd_to_odd -/
+/- # Another way of setting up the preceding proof of odd_to_odd -/
 theorem odd_to_odd_2 {x y : ℤ} : Odd (x + y) → Odd (x ^ 2 + y ^ 2) := by
   have h_xy : x ^ 2 + y ^ 2 = (x + y) ^ 2 - 2*x*y := by ring
   rw [h_xy]
