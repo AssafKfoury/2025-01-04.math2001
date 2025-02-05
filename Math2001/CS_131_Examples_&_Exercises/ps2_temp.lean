@@ -8,8 +8,8 @@
    # occurrence of 'sorry' with an appropriate expression or an
    # appropriate sequence of commands (which are called "tactics").
    # After you do this, and before submitting your Lean_4 file to
-   # Gradescope, make sure to de-comment the 'imports' on line 20,
-   # and the autograder instructions on lines
+   # Gradescope, make sure to de-comment the 'imports' on line 22
+   # and 23, and the autograder instructions on lines ??
    # -- all these lines are commented out in this file, so you can
    # load the file to the Lean_4 Playground without triggering errors.
    #
@@ -17,6 +17,8 @@
 
 import Mathlib.Logic.Basic
 import Mathlib.Tactic.Ring
+-- The next two imports are not understood by the Lean_4 Playground
+-- and should be commented out when you run the script in the playground.
 import Library.Basic -- DE-COMMENT BEFORE SUBMISSION TO GRADESCOPE
 import AutograderLib -- DE-COMMENT BEFORE SUBMISSION TO GRADESCOPE
 
