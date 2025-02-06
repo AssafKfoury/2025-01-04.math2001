@@ -78,8 +78,8 @@ theorem problem5 {a : ℤ} : Even ((a + 1) ^ 2) → Odd (a) := by
   intro h
   rw [← Int.odd_iff_not_even]
   rw [← Int.even_iff_not_odd] at h
-  --    in the Lean_4 Playground you may wish to use the next two
-  --    lines 65 and 66, instead of the preceding two lines 61 and 62
+  --    in the Lean_4 Playground you may wish to use the 
+  --    next two lines instead of the preceding two lines.
   -- rw [Int.not_even_iff_odd]
   -- rw [Int.not_odd_iff_even] at h
   sorry
