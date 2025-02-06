@@ -15,8 +15,8 @@
    #
 -/
 
-import Mathlib.Logic.Basic
-import Mathlib.Tactic.Ring
+-- import Mathlib.Logic.Basic
+-- import Mathlib.Tactic.Ring
 -- The next two imports are not understood by the Lean_4 Playground
 -- and should be commented out when you run the script in the playground.
 import Library.Basic -- **DE-COMMENT BEFORE SUBMISSION TO GRADESCOPE**
@@ -56,7 +56,7 @@ theorem ref3 {n : ℤ} (hn : Even n) : Odd (n ^ 2 + 2 * n - 5) := by
   ring
   done
 
-@[autogradedProof 5]  -- **DE-COMMENT BEFORE SUBMISSION TO GRADESCOPE**
+@[autogradedProof 5] 
 theorem problem4 {x y : ℤ} : Odd (x + y) → Odd (x ^ 2 + y ^ 2) := by
   have h_xy : x ^ 2 + y ^ 2 = (x + y) ^ 2 - 2*x*y := by ring
   rw [h_xy]
@@ -75,7 +75,7 @@ theorem problem4 {x y : ℤ} : Odd (x + y) → Odd (x ^ 2 + y ^ 2) := by
    # from left to right when using an if-and-only-if statement like
    # Int.odd_iff_not_even.
 -/
-@[autogradedProof 5]  -- **DE-COMMENT BEFORE SUBMISSION TO GRADESCOPE**
+@[autogradedProof 5]  
 theorem problem5 {a : ℤ} : Even ((a + 1) ^ 2) → Odd (a) := by
   contrapose
   intro h
