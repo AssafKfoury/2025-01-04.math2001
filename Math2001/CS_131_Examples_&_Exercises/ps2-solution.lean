@@ -1,32 +1,9 @@
-/- # ps2-solution.lean:
-   #
-   # You can solve the Lean_4 problems in this file for up to 10 extra
-   # points in the Lean_4 Playground at https://live.lean-lang.org/
-   # which will spare you the need to install Lean_4 on your laptop.
-   #
-   # To solve the Lean_4 problems below you need to replace every
-   # occurrence of 'sorry' with an appropriate expression or an
-   # appropriate sequence of commands (which are called "tactics").
-   # After you do this, and before submitting your Lean_4 file to
-   # Gradescope, make sure to de-comment the 'imports' on line 22
-   # and 23, and the autograder instructions on lines 59 and 78
-   # -- all these lines are commented out in this file, so you can
-   # load the file to the Lean_4 Playground without triggering errors.
-   #
--/
-
--- import Mathlib.Logic.Basic
--- import Mathlib.Tactic.Ring
--- The next two imports are not understood by the Lean_4 Playground
--- and should be commented out when you run the script in the playground.
+/- # ps2-solution.lean -/
 import Library.Basic -- **DE-COMMENT BEFORE SUBMISSION TO GRADESCOPE**
 import AutograderLib -- **DE-COMMENT BEFORE SUBMISSION TO GRADESCOPE**
 
 open Int
-
-/- # Use the next three theorems -- ref1, ref2, and ref3 -- as references
-   # for what you may want to do in the proofs of 'problem4' and 'problem5'.
--/
+ 
 theorem ref1 {n : ℤ} (hn : Odd n) : Odd (7 * n - 4) := by
   dsimp [Odd] at hn
   obtain ⟨m,hm⟩ := hn
@@ -68,21 +45,14 @@ theorem problem4 {x y : ℤ} : Odd (x + y) → Odd (x ^ 2 + y ^ 2) := by
   ring
   done
 
-/- # You can use the tactic contrapose to prove the contrapositive instead.
-   # Also, you can use rw [← Int.odd_iff_not_even] to convert proving
-   # something is not even into proving that it is odd. The arrow '←' in the
-   # rewrite tells Lean which direction to go. By default, it will convert
-   # from left to right when using an if-and-only-if statement like
-   # Int.odd_iff_not_even.
--/
 @[autogradedProof 5]  
 theorem problem5 {a : ℤ} : Even ((a + 1) ^ 2) → Odd (a) := by
   contrapose
   intro h
   rw [← Int.odd_iff_not_even]
   rw [← Int.even_iff_not_odd] at h
-  --    in the Lean_4 Playground you may wish to use the next two
-  --    lines 65 and 66, instead of the preceding two lines 61 and 62
+  --    in the Lean_4 Playground you may wish to use the 
+  --    next two lines instead of the preceding two lines.
   -- rw [Int.not_even_iff_odd]
   -- rw [Int.not_odd_iff_even] at h
   dsimp [Even] at h
