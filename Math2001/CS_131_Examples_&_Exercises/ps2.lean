@@ -57,13 +57,12 @@ theorem ref3 {n : ℤ} (hn : Even n) : Odd (n ^ 2 + 2 * n - 5) := by
   ring
   done
 
+/- HINT for problem4: De-comment lines 63-64 -/
 @[autogradedProof 5]
 theorem problem4 {x y : ℤ} : Odd (x + y) → Odd (x ^ 2 + y ^ 2) := by
   -- have h_xy : x ^ 2 + y ^ 2 = (x + y) ^ 2 - 2*x*y := by ring
   -- rw [h_xy]
   sorry 
-
-    
 
 /- # You can use the tactic contrapose to prove the contrapositive instead.
    # Also, you can use rw [← Int.odd_iff_not_even] to convert proving
@@ -72,6 +71,7 @@ theorem problem4 {x y : ℤ} : Odd (x + y) → Odd (x ^ 2 + y ^ 2) := by
    # from left to right when using an if-and-only-if statement like
    # Int.odd_iff_not_even.
 -/
+/- HINT for problem5: De-comment lines 77-78, as well as 79-80 or 83-84 -/
 @[autogradedProof 5] 
 theorem problem5 {a : ℤ} : Even ((a + 1) ^ 2) → Odd (a) := by
   -- contrapose
