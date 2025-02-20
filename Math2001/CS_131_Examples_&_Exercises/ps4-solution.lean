@@ -8,8 +8,6 @@
 import Library.Basic -- **DE-COMMENT BEFORE SUBMISSION TO GRADESCOPE**
 import AutograderLib -- **DE-COMMENT BEFORE SUBMISSION TO GRADESCOPE**
 
-math2001_init
-
 open Set
 
 -- use dsimp [Set.subset_def] to unwrap the set notation into
