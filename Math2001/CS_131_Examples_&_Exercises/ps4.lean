@@ -16,6 +16,6 @@ open Set
 -- logic notation and then solve as normal
 -- make sure to read previous solutions to Lean problems if you need help as well
 
-@[autogradedProof 10]
+@[autogradedProof 15]
 theorem problem1 : {n | 1331 ∣ n} ⊆ {n | 121 ∣ n} := by
     sorry
