@@ -1,12 +1,12 @@
 -- The next two imports are needed by the Lean_4 Playground, but not by the
--- autograder. They should be commented out before submission to Gradescope.
+-- autograder. They should be made *comments* before submission to Gradescope.
 -- import Mathlib.Logic.Basic -- **COMMENT OUT BEFORE SUBMISSION TO GRADESCOPE**
 -- import Mathlib.Tactic.Ring -- **COMMENT OUT BEFORE SUBMISSION TO GRADESCOPE**
 
--- The next two imports are not understood by the Lean_4 Playground
--- and should be commented out when you run the script in the playground.
-import Library.Basic -- **DE-COMMENT BEFORE SUBMISSION TO GRADESCOPE**
-import AutograderLib -- **DE-COMMENT BEFORE SUBMISSION TO GRADESCOPE**
+-- The next two imports are not understood by the Lean_4 Playground and
+-- should be made *comments* when you run the script in the playground.
+import Library.Basic -- **COMMENT OUT BEFORE SUBMISSION TO PLAYGROUND**
+import AutograderLib -- **COMMENT OUT BEFORE SUBMISSION TO PLAYGROUND**
 
 math2001_init
 
