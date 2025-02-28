@@ -3,10 +3,10 @@
 -- import Mathlib.Logic.Basic -- **COMMENT OUT BEFORE SUBMISSION TO GRADESCOPE**
 -- import Mathlib.Tactic.Ring -- **COMMENT OUT BEFORE SUBMISSION TO GRADESCOPE**
 
--- The next two imports are not understood by the Lean_4 Playground
--- and should be commented out when you run the script in the playground.
-import Library.Basic -- **DE-COMMENT BEFORE SUBMISSION TO GRADESCOPE**
-import AutograderLib -- **DE-COMMENT BEFORE SUBMISSION TO GRADESCOPE**
+-- The next two imports are not understood by the Lean_4 Playground.
+-- They should be commented out when you run the script in the playground.
+import Library.Basic -- **COMMENT OUT IN THE Lean_4 PLAYGROUND**
+import AutograderLib -- **COMMENT OUT IN THE Lean_4 PLAYGROUND**
 
 open Function
 open Set
@@ -21,10 +21,9 @@ def EvensOdds := pairs evens odds
 #check (25,42)
 #eval (25,42).1
 #eval (25,42).2
-#check [ 2 , 3 ]
 
 /-
-Suggested setup to problem2
+Suggested partial proof for problem2
     dsimp [subset_def]
     intro h ; intro ha
     dsimp [pairs] at *
@@ -57,7 +56,7 @@ theorem problem2 {A B C D : Set ℕ} :
     sorry
 
 /-
-Suggested setup to problem4
+Suggested partial proof for problem4
   dsimp [Injective]
   intros a1 a2 ha
   rw [pow_left_inj] at ha
