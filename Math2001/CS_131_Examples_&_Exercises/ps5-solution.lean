@@ -34,22 +34,13 @@ theorem problem2 {A B C D : Set ℕ} :
     obtain ⟨ h3 , h4 ⟩  := hm1 ; obtain ⟨ h5 , h6 ⟩  := hm2
     obtain ⟨ n1 , hn1 ⟩ := h4  ; obtain ⟨ n2 , hn2 ⟩ := h6
     obtain ⟨ h7 , h8 ⟩  := hn1 ; obtain ⟨ h9 , h10 ⟩ := hn2
-    have h11 : (m1 , n1) = (m2 , n2) := by rw [h8 , ← h10]
-    rw [Prod.mk.injEq] at h8
-    rw [Prod.mk.injEq] at h10
-    have ⟨h8a,h8b⟩ := h8
-    have ⟨h10a,h10b⟩ := h10
-    rw [← Prod.mk.injEq] at h8
-    rw [← Prod.mk.injEq] at h10
-    have h12 : m1 = m2 := by rw [← h10a] at h8a; exact h8a
-    have h13 : n1 = n2 := by rw [← h10b] at h8b; exact h8b
-    use m1
-    constructor ; constructor ; exact h3
-    rw [h12] ; exact h5
-    use n1
-    constructor ; constructor ; exact h7
-    rw [h13] ; exact h9
-    exact h8
+    use h.1
+    constructor ; constructor ; rw [← h8] ; exact h3
+    rw [← h10] ; exact h5
+    use h.2
+    constructor ; constructor ; rw [← h8] ; exact h7
+    rw [← h10] ; exact h9
+    ring
 
 @[autogradedProof 10]
 theorem problem4 : Injective (fun (x : ℕ) ↦ (x + 2)^2) := by
