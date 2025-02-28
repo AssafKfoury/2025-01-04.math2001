@@ -40,7 +40,8 @@ theorem problem2 {A B C D : Set ℕ} :
     constructor ; constructor ; rw [← h8] ; exact h7
     rw [← h10] ; exact h9
     ring
-/- ANYONE OF THE FOLLOWING TACTICS WILL COMPLETE THE PROOF -/
+/- INSTEAD OF 'ring' ON PRECEDING LINE,
+   ANYONE OF THE FOLLOWING TACTICS WILL COMPLETE THE PROOF -/
     -- rfl
     -- exact rfl                -- suggested by 'exact?'
     -- ring
