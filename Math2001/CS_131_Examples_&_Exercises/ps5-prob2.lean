@@ -49,3 +49,24 @@ theorem problem2 {A B C D : Set ℕ} :
     -- simp only [Prod.mk.eta]  -- suggested by 'simp?'
     -- rw [← h8]                -- suggested by 'rw?'
     -- rw [← h10]
+
+theorem problem2' {A B C D : Set ℕ} : -- reverse of the inclusion in 'problem2'
+        (pairs (A ∩ B) (C ∩ D)) ⊆ (pairs A C) ∩ (pairs B D) := by
+    dsimp [subset_def]
+    intro h ; intro ha
+    dsimp [pairs] at *
+    obtain ⟨ h1 , h2 ⟩ := ha ; obtain ⟨ m2 , hm2 ⟩ := h2
+    obtain ⟨ h3 , h4 ⟩  := hm2 ; obtain ⟨ h5 , h6 ⟩ := h4
+    constructor ;
+    refine mem_setOf.mpr ?_  -- suggested by 'apply?'
+    use h.1 ; constructor ; rw [← h6]
+    obtain ⟨ h7 , h8 ⟩ := m2 ; exact h7
+    use h.2 ; constructor ; rw [← h6]
+    obtain ⟨ h9, h10 ⟩ := h5 ; exact h9
+    exact rfl
+    refine mem_setOf.mpr ?_   -- suggested by 'apply?'
+    use h.1 ; constructor ; rw [← h6]
+    obtain ⟨ h7 , h8 ⟩ := m2 ; exact h8
+    use h.2 ; constructor ; rw [← h6]
+    obtain ⟨ h9, h10 ⟩ := h5 ; exact h10
+    exact rfl
