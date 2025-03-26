@@ -9,7 +9,7 @@ Suggested starting steps:
 -/
 
 @[autogradedProof 10]
-example (n : ℕ) : 3 ^ n ≥ n ^ 2 + n + 1 := by
+theorem problem1 (n : ℕ) : 3 ^ n ≥ n ^ 2 + n + 1 := by
   sorry
 
 /-
@@ -21,5 +21,5 @@ Suggested starting steps:
 -/
 
 @[autogradedProof 15]
-example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 + 4 := by
+theorem problem2 : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 + 4 := by
   sorry
