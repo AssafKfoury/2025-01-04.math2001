@@ -24,8 +24,10 @@ def reverse (as : List α) : List α :=
   | nil       => nil
   | cons a as => append (reverse as) (cons a nil)
 
+@[autogradedProof 8]
 theorem problem1 (as bs : List α) : length (append as bs) = length as + length bs := by
   sorry
 
+@[autogradedProof 8]
 theorem problem2 (as : List α) : length (reverse as) = length as := by
   sorry
