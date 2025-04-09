@@ -26,7 +26,9 @@ Suggested steps:
 
 @[autogradedProof 15]
 theorem problem1 : forall_sufficiently_large n : ℕ, r n ≥ 2 ^ n := by
-  sorry
+  use 7
+
+  -- sorry
 
 /-
 Read MacBeth's book section 6.4 to see how strong induction is performed in Lean 4.
