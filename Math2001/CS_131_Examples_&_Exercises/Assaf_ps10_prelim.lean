@@ -23,6 +23,16 @@ def F : ℕ → ℚ -- recursive def of (n+3)! / (3! * n!)
   | 0 => 1
   | n + 1 => (F n) * (n + 4) / (n + 1)
 
+def G : ℕ → ℚ -- G is a simpler (non-recursive) def of F
+  | n => (n + 3) * (n + 2) * (n + 1) / 6
+
+#eval G 4 -- G 1 = 4, G 2 = 10, G 3 = 20, G 4 = 35
+#eval (A 1) + (B 1) -- 2
+#eval (A 2) + (B 2) -- 8
+#eval (A 3) + (B 3) -- 20
+#eval (A 4) + (B 4) -- 40
+#eval (A 5) + (B 5) -- 70
+
 lemma sum_A (n : ℕ) : A n = n * (n + 1) / 2 := by
   simple_induction n with k IH
   · -- base case
@@ -43,10 +53,24 @@ lemma sum_B (n : ℕ) : B n = n * (n + 1) * (2 * n + 1) / 6 := by
             _   = k * (k+1) * (2*k + 1) / 6 + (k+1) * (k+1) := by rw [IH]
             _   = (k+1) * (k+1+1) * (2 * (k+1) + 1) / 6 := by ring
 
+theorem problem3 (n : ℕ) : G n = 1 / 2 * (A (n + 1) + B (n + 1)) := by
+  calc G n = (n + 3) * (n + 2) * (n + 1) / 6 := by rw [G]
+     _ = (n * n * n + 6 * n * n + 11 * n + 6) / 6 := by ring
+     _ = ((3 * n * n + 9 * n + 6) + (n * n * n + 3 * n * n + 2 * n)) / 6 := by ring
+     _ = (3 * n * n + 9 * n + 6) / 6 + (n * n * n + 3 * n * n + 2 * n) / 6 := by ring
+     _ = (n + 1) * (n + 2) / 2 + (n + 1) * (n + 2) * (2 * n + 3) / 6 := by ring
+ --    _ = A (n + 1) / 2 + (n * n * n + 3 * n * n + 2 * n) / 6 := by apply sum_A
+
+
+
+
+/-
 theorem problem3 (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
   simple_induction n with k IH
   · calc F 0 = 1 := by rw [F]
            _ = 1 / 2 * (0 + (0+1) + (0 + (0+1)*(0+1))) := by numbers
            _ = 1 / 2 * (A 0 + (0+1) + (B 0 + (0+1)*(0+1))) := by rw [A,B]
            _ = 1 / 2 * (A (0 + 1) + (B (0+1))) := by exact rfl
-  · sorry
+  · calc F (k + 1) = (F k) * (k + 4) / (k + 1) := by rw [F]
+             _ = 1 / 2 * (A (k+1) + B (k+1)) * (k+4) / (k+1) := by rw [IH]
+-/
