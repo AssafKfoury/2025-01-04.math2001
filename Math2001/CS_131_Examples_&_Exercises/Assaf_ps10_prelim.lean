@@ -50,13 +50,17 @@ lemma sum_B (n : ℕ) : B n = n * (n + 1) * (2 * n + 1) / 6 := by
             _   = k * (k+1) * (2*k + 1) / 6 + (k+1) * (k+1) := by rw [IH]
             _   = (k+1) * (k+1+1) * (2 * (k+1) + 1) / 6 := by ring
 
-/-
+--/-
 theorem problem3 (n : ℕ) : G n = 1 / 2 * (A (n  + 1) + B (n + 1)) := by
   simple_induction n with k IH
   · -- base case
     calc G 0 = (0 + 3) * (0 + 2) * (0 + 1) / 6 := by exact rfl
            _ = 1 := by ring
            _ = (1/2) * (1 + 1) := by ring
-           _ = (1/2) * (1 * (1 + 1) / 2 + 1) := by ring
-           _ = (1/2) * ((A 1) )
--/
+           _ = (1/2) * ((0 + (0+1)) + (0 + (0+1)*(0+1))) := by ring
+           _ = (1/2) * (((A 0) + (0+1)) + ((B 0) + (0+1)*(0+1))) := by rw [A,B]
+           _ = (1/2) * ( A (0+1) + B (0+1) ) := by exact rfl
+  · -- inductive step
+    sorry
+
+---/
