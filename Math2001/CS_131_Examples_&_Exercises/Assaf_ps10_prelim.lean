@@ -54,7 +54,11 @@ lemma sum_AB (n : ℕ) : A (n) + B (n) = n * (n+1) / 2 + n * (n+1) * (2*n + 1) /
      calc
       A 0 + B 0 = 0 * (0 + 1) / 2 + B 0 := by rw [h1]
               _ = 0 * (0 + 1) / 2 + 0 * (0+1) * (2*0 + 1) / 6 := by rw [h2]
-   · sorry
+   · calc
+      A (k+1) + B (k+1) = A (k) + (k + 1) + (B (k) + (k+1)*(k+1)) := by rw [A,B]
+      _ = A (k) + B (k) + (k+1) + (k+1)*(k+1) := by ring
+      _ = k * (k+1) / 2 + k * (k+1) * (2*k + 1) / 6 + (k+1) + (k+1)*(k+1) := by rw [IH]
+      _ = (k+1) * (k+1+1) / 2 + (k+1)*(k+1+1)*(2*(k+1)+1) / 6 := by ring
 
 
 theorem problem3 (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
@@ -70,8 +74,8 @@ theorem problem3 (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
    --   _  = (1/2) * A (k+1) * ((k+4)/(k+1)) + (1/2) * B (k+1) * ((k+4)/(k+1)) := by ring
    --      _  = (1/2) * A (k+2) + (1/2) * B (k+1) * ((k+4)/(k+1)) := by rw [← A]
 
---/-
-theorem problem3 (n : ℕ) : G n = 1 / 2 * (A (n  + 1) + B (n + 1)) := by
+
+theorem problem3_bis (n : ℕ) : G n = 1 / 2 * (A (n  + 1) + B (n + 1)) := by
   simple_induction n with k IH
   · -- base case
     calc G 0 = (0 + 3) * (0 + 2) * (0 + 1) / 6 := by exact rfl
@@ -82,5 +86,3 @@ theorem problem3 (n : ℕ) : G n = 1 / 2 * (A (n  + 1) + B (n + 1)) := by
            _ = (1/2) * ( A (0+1) + B (0+1) ) := by exact rfl
   · -- inductive step
     sorry
-
----/
