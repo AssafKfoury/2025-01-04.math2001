@@ -7,11 +7,11 @@ math2001_init
 namespace Int
 
 /-
-  The calculation in this problem counts the number of distinct
-  trajectories in Manhattan that require to walk 3 blocks EAST and
-  n blocks SOUTH. We assume that Manhattan streets are organized as
-  a rectangular grid, with streets running from EAST to WEST and
-  avenues from NORTH to SOUTH.
+  The calculation in this problem counts the number of distinct walking
+  trajectories in Manhattan that require to walk 3 blocks EAST and n
+  blocks SOUTH. We assume that Manhattan streets are organized as a
+  rectangular grid, with streets running from EAST to WEST and avenues
+  running from NORTH to SOUTH.
 
   In this exercise, you are asked to prove in Lean4 that this number
   of distinct trajectories is:
@@ -21,7 +21,7 @@ namespace Int
      = (1/2) * [(1 * 2) + (2 * 3) + (3 * 4) + ... + ((n + 1) * (n + 2))
      = (1/6) * (n + 1) * (n + 2) * (n + 3)
 
-  A proof of the third equalities can be found on the Web -- search for:
+  A proof of the third equality can be found on the Web -- search for:
   "what is the partial sum of the series k * (k+1) as k ranges from 1 to n+1?"
 -/
 
