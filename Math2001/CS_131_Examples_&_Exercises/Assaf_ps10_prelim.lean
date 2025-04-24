@@ -26,10 +26,6 @@ def F : ℕ → ℚ -- recursive def of (n+3)! / (3! * n!)
 def G : ℕ → ℚ -- G is a simpler (non-recursive) def of F
   | n => (n + 3) * (n + 2) * (n + 1) / 6
 
-#eval G 1 = 1/2 * ((A 2) + (B 2))
-#eval G 2 = 1/2 * ((A 3) + (B 3))
-#eval G 3 = 1/2 * ((A 4) + (B 4))
-
 lemma sum_A (n : ℕ) : A n = n * (n + 1) / 2 := by
   simple_induction n with k IH
   · -- base case
@@ -43,12 +39,33 @@ lemma sum_A (n : ℕ) : A n = n * (n + 1) / 2 := by
 
 lemma sum_B (n : ℕ) : B n = n * (n + 1) * (2 * n + 1) / 6 := by
   simple_induction n with k IH
-  · calc B 0 = 0 := by rw [B]
-           _ = 0 * (0 + 1) * (2 * 0 + 1) / 6 := by numbers
+  · calc
+      B 0 = 0 := by rw [B]
+        _ = 0 * (0 + 1) * (2 * 0 + 1) / 6 := by numbers
   · calc
       B (k + 1) = B k + (k + 1) * (k + 1) := by rw [B]
             _   = k * (k+1) * (2*k + 1) / 6 + (k+1) * (k+1) := by rw [IH]
             _   = (k+1) * (k+1+1) * (2 * (k+1) + 1) / 6 := by ring
+
+lemma prelim (n : ℕ) : A (n) + B (n) = n * (n+1) / 2 + n * (n+1) * (2 * n + 1) / 6 := by
+  simple_induction n with k IH
+  · calc
+      A 0 + B 0 = 0 * (0 + 1) / 2 + B 0 := by rw[sum_A]
+              _ = 0 * (0 + 1) / 2 + 0 * (0+1) * (2*0 + 1) / 6 := by rw?
+
+
+theorem problem3 (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
+  simple_induction n with k IH
+  · calc F 0 = 1 := by rw [F]
+           _ = 1 / 2 * (0 + (0+1) + (0 + (0+1)*(0+1))) := by ring -- 'by numbers' will work too
+           _ = 1 / 2 * (A 0 + (0+1) + (B 0 + (0+1)*(0+1))) := by rw [A,B]
+           _ = 1 / 2 * (A (0 + 1) + (B (0+1))) := by exact rfl
+  · calc F (k+1) = (F k) * (k+4) / (k+1) := by rw [F]
+         _  = (1/2) * (A (k+1) + B (k+1)) * (k+4) / (k+1) := by rw [IH]
+         _  = (1/2) * ((A (k+1) + (k+2)) + B (k+1) + (k+2)*(k+2) - (k+2)*(k+3)) * (k+4)/(k+1) := by ring
+         _  = (1/2) * (A (k+2) + B (k+1) + (k+2)*(k+2) - (k+2)*(k+3)) * (k+4)/(k+1) := by exact?
+   --   _  = (1/2) * A (k+1) * ((k+4)/(k+1)) + (1/2) * B (k+1) * ((k+4)/(k+1)) := by ring
+   --      _  = (1/2) * A (k+2) + (1/2) * B (k+1) * ((k+4)/(k+1)) := by rw [← A]
 
 --/-
 theorem problem3 (n : ℕ) : G n = 1 / 2 * (A (n  + 1) + B (n + 1)) := by
