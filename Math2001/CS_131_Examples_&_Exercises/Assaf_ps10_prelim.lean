@@ -4,8 +4,26 @@ import Library.Tactic.ModEq
 import AutograderLib
 
 math2001_init
-
 namespace Int
+
+/-
+  The calculation in this problem counts the number of distinct
+  trajectories in Manhattan that require to walk 3 blocks EAST and
+  n blocks SOUTH. We assume that Manhattan streets are organized as
+  a rectangular grid, with streets running from EAST to WEST and
+  avenues from NORTH to SOUTH.
+
+  In this exercise, you are asked to prove in Lean4 that this number
+  of distinct trajectories is:
+
+  (n + 3)! / (3! * n!)
+     = (1/2) * Σ { k + k*k | 1 ≤ k ≤ n+1 }
+     = (1/2) * [(1 * 2) + (2 * 3) + (3 * 4) + ... + ((n + 1) * (n + 2))
+     = (1/6) * (n + 1) * (n + 2) * (n + 3)
+
+  A proof of the third equalities can be found on the Web -- search for:
+  "what is the partial sum of the series k * (k+1) as k ranges from 1 to n+1?"
+-/
 
 def A : ℕ → ℚ  -- recursive def of ∑ {1, 2, ... ,n}
   | 0 => 0
@@ -60,8 +78,10 @@ lemma sum_AB (n : ℕ) : A (n) + B (n) = n * (n+1) / 2 + n * (n+1) * (2*n + 1) /
       _ = k * (k+1) / 2 + k * (k+1) * (2*k + 1) / 6 + (k+1) + (k+1)*(k+1) := by rw [IH]
       _ = (k+1) * (k+1+1) / 2 + (k+1)*(k+1+1)*(2*(k+1)+1) / 6 := by ring
 
-
 theorem problem3 (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
+  simple_induction n with k IH
+
+theorem problem3_A (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
   simple_induction n with k IH
   · calc F 0 = 1 := by rw [F]
            _ = 1 / 2 * (0 + (0+1) + (0 + (0+1)*(0+1))) := by ring -- 'by numbers' will work too
@@ -70,12 +90,9 @@ theorem problem3 (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
   · calc F (k+1) = (F k) * (k+4) / (k+1) := by rw [F]
          _  = (1/2) * (A (k+1) + B (k+1)) * (k+4) / (k+1) := by rw [IH]
          _  = (1/2) * ((A (k+1) + (k+2)) + B (k+1) + (k+2)*(k+2) - (k+2)*(k+3)) * (k+4)/(k+1) := by ring
-         _  = (1/2) * (A (k+2) + B (k+1) + (k+2)*(k+2) - (k+2)*(k+3)) * (k+4)/(k+1) := by exact?
-   --   _  = (1/2) * A (k+1) * ((k+4)/(k+1)) + (1/2) * B (k+1) * ((k+4)/(k+1)) := by ring
-   --      _  = (1/2) * A (k+2) + (1/2) * B (k+1) * ((k+4)/(k+1)) := by rw [← A]
+         _  = (1/2) * (A (k+2) + B (k+1) + (k+2)*(k+2) - (k+2)*(k+3)) * (k+4)/(k+1) := sorry
 
-
-theorem problem3_bis (n : ℕ) : G n = 1 / 2 * (A (n  + 1) + B (n + 1)) := by
+theorem problem3_B (n : ℕ) : G n = 1 / 2 * (A (n  + 1) + B (n + 1)) := by
   simple_induction n with k IH
   · -- base case
     calc G 0 = (0 + 3) * (0 + 2) * (0 + 1) / 6 := by exact rfl
