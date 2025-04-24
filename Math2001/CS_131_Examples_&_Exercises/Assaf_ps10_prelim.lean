@@ -1,7 +1,8 @@
-import Mathlib.Tactic.GCongr
+import Mathlib.Data.Real.Basic
 import Library.Basic
-import Library.Tactic.ModEq
-import AutograderLib
+-- import Library.Tactic.ModEq
+-- import Mathlib.Tactic.GCongr
+-- import AutograderLib
 
 math2001_init
 namespace Int
@@ -37,7 +38,8 @@ def fact : ℕ → ℚ -- recursive def of factorial function
   | 0 => 1
   | n + 1 => (fact n) * (n+1)
 
-def F : ℕ → ℚ -- recursive def of (n+3)! / (3! * n!)
+def F : ℕ → ℚ -- recursive def of (n+3)! / (3! * n!) which is the number
+              -- of ways of walking 3 blocks EAST and n blocks SOUTH
   | 0 => 1
   | n + 1 => (F n) * (n + 4) / (n + 1)
 
@@ -80,6 +82,15 @@ lemma sum_AB (n : ℕ) : A (n) + B (n) = n * (n+1) / 2 + n * (n+1) * (2*n + 1) /
 
 theorem problem3 (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
   simple_induction n with k IH
+  · calc F 0 = 1 := by rw [F]
+           _ = 1 / 2 * (0 + (0+1) + (0 + (0+1)*(0+1))) := by ring -- 'by numbers' will work too
+           _ = 1 / 2 * (A 0 + (0+1) + (B 0 + (0+1)*(0+1))) := by rw [A,B]
+           _ = 1 / 2 * (A (0 + 1) + (B (0+1))) := by exact rfl
+  · have h1 : A (k+1) + B (k+1) = (k+1) * (k+1+1) / 2 + (k+1) * (k+1+1) * (2*(k+1) + 1) / 6 := by apply sum_AB
+    calc F (k+1) = (F k) * (k+4) / (k+1) := by rw [F]
+         _  = (1/2) * (A (k+1) + B (k+1)) * (k+4) / (k+1) := by rw [IH]
+         _  = (1/2) * ((k+1) * (k+1+1) / 2 + (k+1) * (k+1+1) * (2*(k+1) + 1) / 6) * (k+4) / (k+1) := by rw [h1]
+
 
 theorem problem3_A (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
   simple_induction n with k IH
