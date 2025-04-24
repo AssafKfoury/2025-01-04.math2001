@@ -47,11 +47,14 @@ lemma sum_B (n : ℕ) : B n = n * (n + 1) * (2 * n + 1) / 6 := by
             _   = k * (k+1) * (2*k + 1) / 6 + (k+1) * (k+1) := by rw [IH]
             _   = (k+1) * (k+1+1) * (2 * (k+1) + 1) / 6 := by ring
 
-lemma prelim (n : ℕ) : A (n) + B (n) = n * (n+1) / 2 + n * (n+1) * (2 * n + 1) / 6 := by
-  simple_induction n with k IH
-  · calc
-      A 0 + B 0 = 0 * (0 + 1) / 2 + B 0 := by rw[sum_A]
-              _ = 0 * (0 + 1) / 2 + 0 * (0+1) * (2*0 + 1) / 6 := by rw?
+lemma sum_AB (n : ℕ) : A (n) + B (n) = n * (n+1) / 2 + n * (n+1) * (2*n + 1) / 6 := by
+   simple_induction n with k IH
+   · have h1 : A 0 = 0 * (0 + 1) / 2 := by apply sum_A
+     have h2 : B 0 = 0 * (0 + 1) * (2 * 0 + 1) / 6 := by apply sum_B
+     calc
+      A 0 + B 0 = 0 * (0 + 1) / 2 + B 0 := by rw [h1]
+              _ = 0 * (0 + 1) / 2 + 0 * (0+1) * (2*0 + 1) / 6 := by rw [h2]
+   · sorry
 
 
 theorem problem3 (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
