@@ -22,7 +22,8 @@ namespace Int
      = (1/2) * [(1 * 2) + (2 * 3) + (3 * 4) + ... + ((n + 1) * (n + 2))
      = (1/6) * (n + 1) * (n + 2) * (n + 3)
 
-  A proof of the third equality can be found on the Web -- search for:
+  Proofs of these three equalities can be found on the Web. In particular,
+  the third and last equality can be found on the Web by searching for:
   "what is the partial sum of the series k * (k+1) as k ranges from 1 to n+1?"
 -/
 
@@ -86,11 +87,14 @@ theorem problem3 (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
            _ = 1 / 2 * (0 + (0+1) + (0 + (0+1)*(0+1))) := by ring -- 'by numbers' will work too
            _ = 1 / 2 * (A 0 + (0+1) + (B 0 + (0+1)*(0+1))) := by rw [A,B]
            _ = 1 / 2 * (A (0 + 1) + (B (0+1))) := by exact rfl
-  · have h1 : A (k+1) + B (k+1) = (k+1) * (k+1+1) / 2 + (k+1) * (k+1+1) * (2*(k+1) + 1) / 6 := by apply sum_AB
-    calc F (k+1) = (F k) * (k+4) / (k+1) := by rw [F]
+  · -- norm_cast
+    have h1 : A (k+1) + B (k+1) = (k+1) * (k+1+1) / 2 + (k+1) * (k+1+1) * (2*(k+1) + 1) / 6 :=
+         by apply sum_AB
+/-    calc F (k+1) = (F k) * (k+4) / (k+1) := by rw [F]
          _  = (1/2) * (A (k+1) + B (k+1)) * (k+4) / (k+1) := by rw [IH]
-         _  = (1/2) * ((k+1) * (k+1+1) / 2 + (k+1) * (k+1+1) * (2*(k+1) + 1) / 6) * (k+4) / (k+1) := by rw [h1]
-
+         _  = (1/2) * ((k+1) * (k+1+1) / 2 + (k+1) * (k+1+1) * (2*(k+1) + 1) / 6) * (k+4) / (k+1) :=
+                by rw [h1] -- [sum_AB]
+-/
 
 theorem problem3_A (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
   simple_induction n with k IH
