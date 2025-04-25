@@ -87,14 +87,31 @@ theorem problem3 (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
            _ = 1 / 2 * (0 + (0+1) + (0 + (0+1)*(0+1))) := by ring -- 'by numbers' will work too
            _ = 1 / 2 * (A 0 + (0+1) + (B 0 + (0+1)*(0+1))) := by rw [A,B]
            _ = 1 / 2 * (A (0 + 1) + (B (0+1))) := by exact rfl
-  · -- norm_cast
-    have h1 : A (k+1) + B (k+1) = (k+1) * (k+1+1) / 2 + (k+1) * (k+1+1) * (2*(k+1) + 1) / 6 :=
-         by apply sum_AB
+  · sorry
+    -- have h1 : A (k+1) + B (k+1) = (k+1) * (k+1+1) / 2 + (k+1) * (k+1+1) * (2*(k+1) + 1) / 6 :=
+    --     by apply sum_AB ; dsimp ;
+
 /-    calc F (k+1) = (F k) * (k+4) / (k+1) := by rw [F]
          _  = (1/2) * (A (k+1) + B (k+1)) * (k+4) / (k+1) := by rw [IH]
          _  = (1/2) * ((k+1) * (k+1+1) / 2 + (k+1) * (k+1+1) * (2*(k+1) + 1) / 6) * (k+4) / (k+1) :=
                 by rw [h1] -- [sum_AB]
 -/
+
+theorem problem3_C (n : ℕ) : G n = 1 / 2 * (A (n  + 1) + B (n + 1)) := by
+  simple_induction n with k IH
+  · calc
+      G 0 = (0 + 3) * (0 + 2) * (0 + 1) / 6 := by exact rfl
+        _ = 1 := by ring
+        _ = (1/2) * (1 + 1) := by ring
+        _ = (1/2) * (1 * (1 + 1) / 2 + 1) := by ring
+        _ = (1/2) * ((A 1) + 1) := by rw [A]; rw [A]; ring
+        _ = (1/2) * ((A 1) + (B 1)) := by rw [B]; rw[B]; ring
+  · calc
+      G (k + 1) = (k + 1 + 3) * (k + 1 + 2) * (k + 1 + 1) / 6 :=
+          by rw [G]; dsimp; rw [Nat.cast_add] ; rw [Nat.cast_one]
+    --       by rw [G]; dsimp; rw[Nat.cast_add, Nat.cast_one]
+    --  _ = (1/2) * ((k + 2) * (k + 3) / 2 + (k + 2) * (k + 3) * (2 * k + 5) / 6) := by ring
+    --  _ = (1/2) * (A (k + 2) + B (k + 2)) := by rw [sum_A, sum_B, Nat.cast_add, Nat.cast_two]; ring
 
 theorem problem3_A (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
   simple_induction n with k IH
