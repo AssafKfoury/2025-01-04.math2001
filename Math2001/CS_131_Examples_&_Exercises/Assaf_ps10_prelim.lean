@@ -83,19 +83,14 @@ lemma sum_AB (n : ℕ) : A (n) + B (n) = n * (n+1) / 2 + n * (n+1) * (2*n + 1) /
 
 theorem problem3 (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
   simple_induction n with k IH
-  · calc F 0 = 1 := by rw [F]
-           _ = 1 / 2 * (0 + (0+1) + (0 + (0+1)*(0+1))) := by ring -- 'by numbers' will work too
-           _ = 1 / 2 * (A 0 + (0+1) + (B 0 + (0+1)*(0+1))) := by rw [A,B]
-           _ = 1 / 2 * (A (0 + 1) + (B (0+1))) := by exact rfl
-  · sorry
-    -- have h1 : A (k+1) + B (k+1) = (k+1) * (k+1+1) / 2 + (k+1) * (k+1+1) * (2*(k+1) + 1) / 6 :=
-    --     by apply sum_AB ; dsimp ;
-
-/-    calc F (k+1) = (F k) * (k+4) / (k+1) := by rw [F]
+  calc F 0 = 1 := by rw [F]
+         _ = 1 / 2 * (0 + (0+1) + (0 + (0+1)*(0+1))) := by ring -- 'by numbers' will work too
+         _ = 1 / 2 * (A 0 + (0+1) + (B 0 + (0+1)*(0+1))) := by rw [A,B]
+         _ = 1 / 2 * (A (0 + 1) + (B (0+1))) := by exact rfl
+  calc F (k+1) = (F k) * (k+4) / (k+1) := by rw [F]
          _  = (1/2) * (A (k+1) + B (k+1)) * (k+4) / (k+1) := by rw [IH]
          _  = (1/2) * ((k+1) * (k+1+1) / 2 + (k+1) * (k+1+1) * (2*(k+1) + 1) / 6) * (k+4) / (k+1) :=
-                by rw [h1] -- [sum_AB]
--/
+              by rw [sum_AB] ; rw [Nat.cast_add] ; rw [Nat.cast_one]
 
 theorem problem3_C (n : ℕ) : G n = 1 / 2 * (A (n  + 1) + B (n + 1)) := by
   simple_induction n with k IH
@@ -135,3 +130,13 @@ theorem problem3_B (n : ℕ) : G n = 1 / 2 * (A (n  + 1) + B (n + 1)) := by
            _ = (1/2) * ( A (0+1) + B (0+1) ) := by exact rfl
   · -- inductive step
     sorry
+
+example (a b c : ℕ) (H1 : a = b + 1) (H2 : b = c) : a = c + 1 :=
+  calc a = b + 1 := H1 -- also 'by apply H1' and 'by exact H1' work
+       _ = c + 1 := by rw [H2]
+
+example (a b c : ℕ) (H1 : a = b + 1) (H2 : b = c) : a = c + 1 := by
+  calc a = b + 1 := ?_ -- ?_ creates a first subgoal that to be resolved later
+       _ = c + 1 := ?_ -- ?_ creates a second subgoal
+  exact H1
+  rw [H2]
