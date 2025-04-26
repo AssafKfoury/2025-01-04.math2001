@@ -81,6 +81,7 @@ lemma sum_AB (n : ℕ) : A (n) + B (n) = n * (n+1) / 2 + n * (n+1) * (2*n + 1) /
       _ = k * (k+1) / 2 + k * (k+1) * (2*k + 1) / 6 + (k+1) + (k+1)*(k+1) := by rw [IH]
       _ = (k+1) * (k+1+1) / 2 + (k+1)*(k+1+1)*(2*(k+1)+1) / 6 := by ring
 
+/-
 theorem problem3 (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
   simple_induction n with k IH
   calc F 0 = 1 := by rw [F]
@@ -91,6 +92,9 @@ theorem problem3 (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
          _  = (1/2) * (A (k+1) + B (k+1)) * (k+4) / (k+1) := by rw [IH]
          _  = (1/2) * ((k+1) * (k+1+1) / 2 + (k+1) * (k+1+1) * (2*(k+1) + 1) / 6) * (k+4) / (k+1) :=
               by rw [sum_AB] ; rw [Nat.cast_add] ; rw [Nat.cast_one]
+         _  = (1/2) * (A (k + 1 + 1) + B (k + 1 + 1)) := by rw?
+              -- by exact? -- rw [← sum_AB] ; rw [Nat.cast_add] ; rw [Nat.cast_one]
+-/
 
 theorem problem3_C (n : ℕ) : G n = 1 / 2 * (A (n  + 1) + B (n + 1)) := by
   simple_induction n with k IH
@@ -103,10 +107,11 @@ theorem problem3_C (n : ℕ) : G n = 1 / 2 * (A (n  + 1) + B (n + 1)) := by
         _ = (1/2) * ((A 1) + (B 1)) := by rw [B]; rw[B]; ring
   · calc
       G (k + 1) = (k + 1 + 3) * (k + 1 + 2) * (k + 1 + 1) / 6 :=
-          by rw [G]; dsimp; rw [Nat.cast_add] ; rw [Nat.cast_one]
-    --       by rw [G]; dsimp; rw[Nat.cast_add, Nat.cast_one]
-    --  _ = (1/2) * ((k + 2) * (k + 3) / 2 + (k + 2) * (k + 3) * (2 * k + 5) / 6) := by ring
-    --  _ = (1/2) * (A (k + 2) + B (k + 2)) := by rw [sum_A, sum_B, Nat.cast_add, Nat.cast_two]; ring
+            by rw [G]; dsimp; rw [Nat.cast_add, Nat.cast_one]
+        _ = (1/2) * ((k + 2) * (k + 3) / 2 + (k + 2) * (k + 3) * (2 * k + 5) / 6) :=
+            by ring
+        _ = (1/2) * (A (k + 2) + B (k + 2)) :=
+            by rw [sum_A, sum_B, Nat.cast_add, Nat.cast_two]; ring
 
 theorem problem3_A (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
   simple_induction n with k IH
@@ -134,9 +139,3 @@ theorem problem3_B (n : ℕ) : G n = 1 / 2 * (A (n  + 1) + B (n + 1)) := by
 example (a b c : ℕ) (H1 : a = b + 1) (H2 : b = c) : a = c + 1 :=
   calc a = b + 1 := H1 -- also 'by apply H1' and 'by exact H1' work
        _ = c + 1 := by rw [H2]
-
-example (a b c : ℕ) (H1 : a = b + 1) (H2 : b = c) : a = c + 1 := by
-  calc a = b + 1 := ?_ -- ?_ creates a first subgoal that to be resolved later
-       _ = c + 1 := ?_ -- ?_ creates a second subgoal
-  exact H1
-  rw [H2]
