@@ -1,11 +1,16 @@
 import Mathlib.Data.Real.Basic
 import Library.Basic
+import Mathlib.Tactic.Qify
+import Mathlib.Tactic.Zify
 -- import Library.Tactic.ModEq
--- import Mathlib.Tactic.GCongr
+-- import Mathlib.Tactic
 -- import AutograderLib
 
 math2001_init
 namespace Int
+
+set_option trace.Meta.Tactic.simp true -- it seems to hilight tactic
+                                       -- 'simp' wherever it is used?
 
 /-
   The calculation in this problem counts the number of distinct walking
@@ -139,3 +144,5 @@ theorem problem3_B (n : ℕ) : G n = 1 / 2 * (A (n  + 1) + B (n + 1)) := by
 example (a b c : ℕ) (H1 : a = b + 1) (H2 : b = c) : a = c + 1 :=
   calc a = b + 1 := H1 -- also 'by apply H1' and 'by exact H1' work
        _ = c + 1 := by rw [H2]
+
+-- #help
