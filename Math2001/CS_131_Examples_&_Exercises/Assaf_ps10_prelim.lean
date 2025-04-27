@@ -169,3 +169,15 @@ example (a b c x y z : ℕ) (h : ¬ x*y*z < 0) (h1 : c < b) : c < a + 3*b := by
        _ = 3 * b := by rw [← Nat.succ_mul]
        _ ≤ 3 * b + a := by extra
        _ = a + 3*b := by exact Nat.add_comm (3 * b) a
+
+def pairs (X Y : Set ℕ) : Set (ℕ × ℕ) := { (x,y) | (x ∈ X) (y ∈ Y) }
+
+def evens : Set ℕ := { x | ∃ (k : ℕ), x = 2 * k }
+def odds  : Set ℕ := { x | ∃ (k : ℕ), x = 2 * k + 1 }
+def EvensOdds := pairs evens odds
+#check EvensOdds
+
+#check (25,42)
+#eval (25,42).1
+#eval (25,42).2
+#check [ 2 , 3 ]
