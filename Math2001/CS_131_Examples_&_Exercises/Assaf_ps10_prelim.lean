@@ -119,15 +119,19 @@ theorem problem3_C (n : ℕ) : G n = 1 / 2 * (A (n  + 1) + B (n + 1)) := by
             by rw [sum_A, sum_B, Nat.cast_add, Nat.cast_two]; ring
 
 theorem problem3_A (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
+  -- qify
   simple_induction n with k IH
   · calc F 0 = 1 := by rw [F]
            _ = 1 / 2 * (0 + (0+1) + (0 + (0+1)*(0+1))) := by ring -- 'by numbers' will work too
            _ = 1 / 2 * (A 0 + (0+1) + (B 0 + (0+1)*(0+1))) := by rw [A,B]
            _ = 1 / 2 * (A (0 + 1) + (B (0+1))) := by exact rfl
-  · calc F (k+1) = (F k) * (k+4) / (k+1) := by rw [F]
+  · -- Mathlib.Tactic.Qify.qify
+    calc F (k+1) = (F k) * (k+4) / (k+1) := by rw [F]
          _  = (1/2) * (A (k+1) + B (k+1)) * (k+4) / (k+1) := by rw [IH]
          _  = (1/2) * ((A (k+1) + (k+2)) + B (k+1) + (k+2)*(k+2) - (k+2)*(k+3)) * (k+4)/(k+1) := by ring
-         _  = (1/2) * (A (k+2) + B (k+1) + (k+2)*(k+2) - (k+2)*(k+3)) * (k+4)/(k+1) := sorry
+         _  = (1/2) * (A (k+2) + B (k+1) + (k+2)*(k+2) - (k+2)*(k+3)) * (k+4)/(k+1) :=
+            -- by rw? -- apply_mod_cast?
+            sorry
 
 theorem problem3_B (n : ℕ) : G n = 1 / 2 * (A (n  + 1) + B (n + 1)) := by
   simple_induction n with k IH
@@ -145,4 +149,23 @@ example (a b c : ℕ) (H1 : a = b + 1) (H2 : b = c) : a = c + 1 :=
   calc a = b + 1 := H1 -- also 'by apply H1' and 'by exact H1' work
        _ = c + 1 := by rw [H2]
 
--- #help
+example (a b c x y z : ℕ) (h : ¬ x*y*z < 0) (h1 : c < a) (h2 : 0 < b) : c < a + (b + b + b) := by
+  -- qify
+  -- qify at h h1 h2
+  calc
+    c < a := by apply h1
+    _ = 0 + (a + 0 + 0)  := by exact self_eq_add_left.mpr rfl
+    _ = a + 0 + 0 + 0 := by exact Nat.add_comm 0 (a + 0 + 0)
+    _ = a + (0 + 0 + 0) := by exact rfl
+    _ < a + (b + b + b) := by rel [h2]
+
+example (a b c x y z : ℕ) (h : ¬ x*y*z < 0) (h1 : c < b) : c < a + 3*b := by
+  -- zify
+  -- zify at h h1
+  calc c < b := by apply h1 --
+       _ ≤ b + (b + b) := by exact Nat.le_add_right b (b + b)
+       _ = b + b + b := by exact Nat.add_comm b (b + b)
+       _ = 2 * b + b := by rw [Nat.two_mul]
+       _ = 3 * b := by rw [← Nat.succ_mul]
+       _ ≤ 3 * b + a := by extra
+       _ = a + 3*b := by exact Nat.add_comm (3 * b) a
