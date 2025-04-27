@@ -125,7 +125,7 @@ theorem problem3_A (n : ℕ) : F n = (1/2) * (A (n+1) + B (n+1)) := by
            _ = 1 / 2 * (0 + (0+1) + (0 + (0+1)*(0+1))) := by ring -- 'by numbers' will work too
            _ = 1 / 2 * (A 0 + (0+1) + (B 0 + (0+1)*(0+1))) := by rw [A,B]
            _ = 1 / 2 * (A (0 + 1) + (B (0+1))) := by exact rfl
-  · -- Mathlib.Tactic.Qify.qify
+  · -- qify
     calc F (k+1) = (F k) * (k+4) / (k+1) := by rw [F]
          _  = (1/2) * (A (k+1) + B (k+1)) * (k+4) / (k+1) := by rw [IH]
          _  = (1/2) * ((A (k+1) + (k+2)) + B (k+1) + (k+2)*(k+2) - (k+2)*(k+3)) * (k+4)/(k+1) := by ring
