@@ -29,24 +29,33 @@ set_option trace.Meta.Tactic.simp true -- hilights tactic
                                        -- 'simp' wherever it is used?
 
 /- ## evenN and oddN test whether a natural number is even or odd -/
-def evenN (n : ℕ) : Bool := (2 ∣ n)
-def oddN (n : ℕ) : Bool := ¬ (2 ∣ n)
-/- ## cond is the conditional if-then-else -/
-def cond : Bool → ℕ → ℕ → ℕ
-  | true, x, y => x
-  | false, x, y => y
-/- ## first_2_in_3 chooses first 2 in 3 numbers whose sum is even -/
-def first_2_in_3 (x y z : ℕ) : ℕ :=
-  cond (((evenN x) ∧ (evenN y)) ∨ ((oddN x) ∧ (oddN y))) (x + y)
-    (cond (((evenN x) ∧ (evenN z)) ∨ ((oddN x) ∧ (oddN z))) (x + z)
-      (cond (((evenN y) ∧ (evenN z)) ∨ ((oddN y) ∧ (oddN z))) (y + z) (y + z)
-      ))
-
+    def evenN (n : ℕ) : Bool := (2 ∣ n)
+    def oddN (n : ℕ) : Bool := ¬ (2 ∣ n)
 #eval (oddN 3)
 #eval (evenN 3) ∧ (evenN 4)
+/- ## cond is the conditional if-then-else -/
+    def cond : Bool → ℕ → ℕ → ℕ
+      | true, x, y => x
+      | false, x, y => y
+/- ## first_2_in_3 chooses first 2 in 3 numbers whose sum is even -/
+    def first_2_in_3 (x y z : ℕ) : ℕ :=
+      cond (((evenN x) ∧ (evenN y)) ∨ ((oddN x) ∧ (oddN y))) (x + y)
+        (cond (((evenN x) ∧ (evenN z)) ∨ ((oddN x) ∧ (oddN z))) (x + z)
+          (cond (((evenN y) ∧ (evenN z)) ∨ ((oddN y) ∧ (oddN z))) (y + z) (y + z)
+          ))
 #eval first_2_in_3 5 6 9
-#check evenN
--- #eval Finset.ofList [1,2,3]
+/- ## divisible_by_2_pow_n tests whether number m is divisible by 2^n -/
+    def divisible_by_2_pow_n (m n :ℕ) : Bool := (m ∣ 2^n)
+#eval divisible_by_2_pow_n 16 (2^3)
+#eval divisible_by_2_pow_n 18 (2^3)
+/- ## find_Qnt_Rdr_by_2_pow_n computes quotient and remainder of div by 2^n -/
+  --  def find_Qnt_Rdr_by_2_pow_n (m n : ℕ) : ℕ × ℕ := (m / (2^n), m % 2^n)
+--#eval rmdr_by_2_pow_n 14 2
+/- ## qtnt_by_2_pow_2 returns quotient of m after division by 2^n -/
+    def qtnt_by_2_pow_n (m n : ℕ) : ℕ := m % (2^n)
+--#eval rmdr_by_2_pow_n 14 2
+#check 2+3
+
 
 def PositiveIntSet1 : Type  := { n : ℕ | 0 < n }
 def PositiveIntSet2 : Set ℕ := { n : ℕ | 0 < n }
@@ -54,13 +63,14 @@ def PositiveIntSet2 : Set ℕ := { n : ℕ | 0 < n }
 -- #eval (13 ∈ PositiveIntSet2)
 #reduce (13 ∈ PositiveIntSet2)
 
-
+/- ## bounded_finset creates finite set of numbers
+   ## from a (inclusive) to b (inclusive) -/
 def bounded_finset (a b : ℕ) : Finset ℕ :=
    (Finset.range (b + 1)).filter (λ (x : ℕ) => x ≥ a)
 
 #check 3 ∈ (Finset.range 5)
-#eval 3 ∈ (Finset.range 5)
-#eval 13 ∈ (bounded_finset (2^3) (20*15))
+#eval 5 ∈ (Finset.range 5)
+#eval 7 ∈ (bounded_finset (2^3) (2*15))
 #eval Finset.card (bounded_finset (2^3) (20*15))
 #eval Finset.card (bounded_finset (2^3) (2*15))
 #eval 7 ∈ (bounded_finset (2^3) (2*15))
