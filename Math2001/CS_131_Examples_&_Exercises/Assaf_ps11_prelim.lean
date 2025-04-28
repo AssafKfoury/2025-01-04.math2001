@@ -48,14 +48,10 @@ set_option trace.Meta.Tactic.simp true -- hilights tactic
     def divisible_by_2_pow_n (m n :ℕ) : Bool := (m ∣ 2^n)
 #eval divisible_by_2_pow_n 16 (2^3)
 #eval divisible_by_2_pow_n 18 (2^3)
-/- ## find_Qnt_Rdr_by_2_pow_n computes quotient and remainder of div by 2^n -/
-  --  def find_Qnt_Rdr_by_2_pow_n (m n : ℕ) : ℕ × ℕ := (m / (2^n), m % 2^n)
---#eval rmdr_by_2_pow_n 14 2
-/- ## qtnt_by_2_pow_2 returns quotient of m after division by 2^n -/
-    def qtnt_by_2_pow_n (m n : ℕ) : ℕ := m % (2^n)
---#eval rmdr_by_2_pow_n 14 2
-#check 2+3
-
+/- ## QntRdr_by_2_pow_n computes quotient and remainder of div by 2^n -/
+   def QntRdr_by_2_pow_n (m n : ℕ) : ℕ × ℕ := ( Int.toNat (Int.div m (2^n)) , m % (2^n) )
+#eval (QntRdr_by_2_pow_n 14 3)
+#eval (2^3)*(QntRdr_by_2_pow_n 14 3).1 + (QntRdr_by_2_pow_n 14 3).2
 
 def PositiveIntSet1 : Type  := { n : ℕ | 0 < n }
 def PositiveIntSet2 : Set ℕ := { n : ℕ | 0 < n }
