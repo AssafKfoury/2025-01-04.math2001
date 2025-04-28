@@ -5,14 +5,14 @@ import Library.Basic
 import Init.Data.Fin
 import Std.Data.List.Basic
 import Std.Data.List.Lemmas
-import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Finset.Basic -- needed for Finset.range
 -- import Mathlib.Data.Nat.Order
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.List.Basic
 -- import Mathlib.Data.List.Lemmas
 import Std.Data.List.Lemmas
 
-import Mathlib.Data.Set.Finite
+import Mathlib.Data.Set.Finite -- needed for Finset.card
 
 open Function
 open Set
@@ -51,8 +51,8 @@ def first_2_in_3 (x y z : ℕ) : ℕ :=
 def PositiveIntSet1 : Type  := { n : ℕ | 0 < n }
 def PositiveIntSet2 : Set ℕ := { n : ℕ | 0 < n }
 #check (3 ∈ PositiveIntSet2)
--- #eval (3 ∈ PositiveIntSet2)
-#reduce (3 ∈ PositiveIntSet2)
+-- #eval (13 ∈ PositiveIntSet2)
+#reduce (13 ∈ PositiveIntSet2)
 
 
 def bounded_finset (a b : ℕ) : Finset ℕ :=
