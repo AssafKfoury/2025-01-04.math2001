@@ -181,3 +181,24 @@ def EvensOdds := pairs evens odds
 #eval (25,42).1
 #eval (25,42).2
 #check [ 2 , 3 ]
+#eval (2 ∣ 4)
+
+/- ## evenN and oddN test whether a natural number is even or odd -/
+def evenN (n : ℕ) : Bool := (2 ∣ n)
+def oddN (n : ℕ) : Bool := ¬ (2 ∣ n)
+/- ## cond is the conditional if-then-else -/
+def cond : Bool → ℕ → ℕ → ℕ
+  | true, x, y => x
+  | false, x, y => y
+/- ## two_from_three chooses 2 from 3 nat numbers whose sum is even -/
+def two_from_three (x y z : ℕ) : ℕ :=
+  cond (((evenN x) ∧ (evenN y)) ∨ ((oddN x) ∧ (oddN y))) (x + y)
+    (cond (((evenN x) ∧ (evenN z)) ∨ ((oddN x) ∧ (oddN z))) (x + z)
+      (cond (((evenN y) ∧ (evenN z)) ∨ ((oddN y) ∧ (oddN z))) (y + z) (y + z)
+      ))
+
+
+
+
+#eval (oddN 3)
+#eval (evenN 3) ∧ (evenN 4)
