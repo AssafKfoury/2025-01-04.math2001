@@ -12,6 +12,8 @@ import Mathlib.Data.List.Basic
 -- import Mathlib.Data.List.Lemmas
 import Std.Data.List.Lemmas
 
+import Mathlib.Data.Set.Finite
+
 open Function
 open Set
 
@@ -33,7 +35,7 @@ def oddN (n : ℕ) : Bool := ¬ (2 ∣ n)
 def cond : Bool → ℕ → ℕ → ℕ
   | true, x, y => x
   | false, x, y => y
-/- ## first_2_in_3 chooses first 2 in 3 nat numbers whose sum is even -/
+/- ## first_2_in_3 chooses first 2 in 3 numbers whose sum is even -/
 def first_2_in_3 (x y z : ℕ) : ℕ :=
   cond (((evenN x) ∧ (evenN y)) ∨ ((oddN x) ∧ (oddN y))) (x + y)
     (cond (((evenN x) ∧ (evenN z)) ∨ ((oddN x) ∧ (oddN z))) (x + z)
@@ -56,13 +58,12 @@ def PositiveIntSet2 : Set ℕ := { n : ℕ | 0 < n }
 def bounded_finset (a b : ℕ) : Finset ℕ :=
    (Finset.range (b + 1)).filter (λ (x : ℕ) => x ≥ a)
 
---#eval bounded_finset 2 5 -- Output: {2, 3, 4, 5}
---#eval bounded_finset 0 3 -- Output: {0, 1, 2, 3}
---#eval bounded_finset 5 5 -- Output: {5}
---#eval bounded_finset 6 5 -- Output: {}
 #check 3 ∈ (Finset.range 5)
 #eval 3 ∈ (Finset.range 5)
 #eval 13 ∈ (bounded_finset (2^3) (20*15))
+#eval Finset.card (bounded_finset (2^3) (20*15))
+#eval Finset.card (bounded_finset (2^3) (2*15))
+#eval 7 ∈ (bounded_finset (2^3) (2*15))
 #eval 2^3
 #check fun (x : Int) => x + 1
 
