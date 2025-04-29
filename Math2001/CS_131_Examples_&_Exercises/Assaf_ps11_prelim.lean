@@ -14,8 +14,42 @@ import Std.Data.List.Lemmas
 
 import Mathlib.Data.Set.Finite -- needed for Finset.card
 
+
+import Mathlib.Data.Finset.Basic
+import Mathlib.Algebra.BigOperators.Basic
+
+open Finset
+open BigOperators
+
+-- Define a finite set
+def mySet : Finset Nat := {1, 2, 3, 4}
+
+-- Define a function that we want to sum
+def myFunction (n : Nat) : Nat := n * n
+
+-- Calculate the sum using Finset.sum
+def sumOfSquares : Nat := Finset.sum mySet myFunction
+
+-- Print the result
+#eval sumOfSquares -- Output: 30
+
+
+
+
 open Function
 open Set
+
+#check Finset.range
+#check Finset.card
+
+-- open Finset BigOperators
+--- open Finset BigOperators
+
+--- #eval Finset.sum (Finset.singleton 2) (fun x => x * 2)
+
+
+-- #eval Finset.sum  ({1, 2, 3, 4}) (fun x => x)
+
 
 -- import Mathlib.Tactic.Qify
 -- import Mathlib.Tactic.Zify
@@ -72,6 +106,8 @@ def bounded_finset (a b : ℕ) : Finset ℕ :=
 #eval 7 ∈ (bounded_finset (2^3) (2*15))
 #eval 2^3
 #check fun (x : Int) => x + 1
+-- #eval Finset.sum {1, 2, 3, 4} (fun x => x)
+
 
 
 def pairs (X Y : Set ℕ) : Set (ℕ × ℕ) := { (x,y) | (x ∈ X) (y ∈ Y) }
