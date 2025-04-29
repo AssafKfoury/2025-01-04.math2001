@@ -33,22 +33,14 @@ def sumOfSquares : Nat := Finset.sum mySet myFunction
 -- Print the result
 #eval sumOfSquares -- Output: 30
 
-
-
-
 open Function
 open Set
 
 #check Finset.range
 #check Finset.card
 
--- open Finset BigOperators
---- open Finset BigOperators
-
---- #eval Finset.sum (Finset.singleton 2) (fun x => x * 2)
-
-
--- #eval Finset.sum  ({1, 2, 3, 4}) (fun x => x)
+#eval Finset.sum  ({1, 2, 3, 4}) (fun x => x)
+#eval Finset.sum  ({1, 2, 3, 4}) (fun x => x * x)
 
 
 -- import Mathlib.Tactic.Qify
