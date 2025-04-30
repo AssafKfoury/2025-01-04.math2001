@@ -10,16 +10,16 @@ import Library.Tactic.ModEq
 import Init.Data.Fin
 import Std.Data.List.Basic
 import Std.Data.List.Lemmas
-import Mathlib.Data.Finset.Basic -- needed for Finset.range
+import Mathlib.Data.Finset.Basic         -- NEEDED for Finset.range
 -- import Mathlib.Data.Nat.Order
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.List.Basic
 -- import Mathlib.Data.List.Lemmas
 import Std.Data.List.Lemmas
 
-import Mathlib.Data.Set.Finite -- needed for Finset.card
---import Mathlib.Data.Finset.Basic -- /- ## DOES NOT CAUSE ERROR -/
+import Mathlib.Data.Set.Finite            -- NEEDED for Finset.card
 import Mathlib.Algebra.BigOperators.Basic -- NEEDED FOR Finset.sum
+-- import Mathlib.Data.Fintype.Basic      -- NOT CAUSING error
 
 math2001_init
 namespace Int
@@ -68,6 +68,7 @@ open Set
 #eval 2^3
 #check fun (x : ℤ) => x + 1
 #eval Finset.sum {1, 2, 3, 4} (fun (x : ℤ) => x)
+-- #check Finset.sub_def {1,2,3} {1,2}
 
 /- ## Other useful sets of natural numbers -/
    def pairs (X Y : Set ℕ) : Set (ℕ × ℕ) := { (x,y) | (x ∈ X) (y ∈ Y) }
@@ -100,7 +101,47 @@ open Set
 #eval (QntRdr_by_2_pow_n 14 3)
 #eval (2^3)*(QntRdr_by_2_pow_n 14 3).1 + (QntRdr_by_2_pow_n 14 3).2
 
+theorem fooA (S T : Finset ℕ) (x : ℕ) :
+    (T ⊆ S) → (sumOfAll T) ≤ (sumOfAll S) := by
+    intro h1
+    -- dsimp [subset_def] at h1
+    -- apply?
+   -- right ;
+   --  rw?
+    -- sorry
 
+
+
+/-
+theorem fooB (S T : Finset ℕ) (x : ℕ) :
+    (T ⊆ S) → (sumOfAll T) ≤ (sumOfAll S) := by
+    intro h1
+    -- rw [finset_subset_def] at h1
+   -- right ;
+   --  rw?
+    -- sorry
+-/
+/-
+variable ( s t u : Set ℕ)
+
+example (h : s ⊆ t) : s ∩ u ⊆ t ∩ u := by
+   rw [subset_def] ; rw [inter_def, inter_def] ;
+   rw [subset_def] at h ;
+   rw [@sep_mem_eq] ;
+   intro hh hhh ; rw [@mem_sep_iff] ; constructor ;
+   rw [@mem_def] ; apply?
+ --  simp only [mem_setOf]
+
+
+example : {a : ℕ | 4 ∣ a} ⊆ {b : ℕ | 2 ∣ b} := by
+  dsimp [Set.subset_def] -- optional
+  intro a ha
+  obtain ⟨k, hk⟩ := ha
+  use 2 * k
+  calc a = 4 * k := hk
+    _ = 2 * (2 * k) := by ring
+
+-/
 /-
 theorem foo1 (S : Finset ℕ) :
     ∀ (T : Finset ℕ), (T ⊆ S) → (sumOfAll T) ≤ (sumOfAll S) := by
@@ -118,7 +159,11 @@ theorem fooA (S : Finset ℕ) (a : ℕ) :
     refine forall_lt_iff_le'.mp ?_
     intro h4
     apply?
--/
+
+
+    -/
+
+
 
 /-
 def random_set_of_k_distinct_nats (k n : ℕ) : IO (Finset ℕ) := do
