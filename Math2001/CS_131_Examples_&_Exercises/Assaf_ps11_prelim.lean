@@ -100,11 +100,24 @@ open Set
 #eval (QntRdr_by_2_pow_n 14 3)
 #eval (2^3)*(QntRdr_by_2_pow_n 14 3).1 + (QntRdr_by_2_pow_n 14 3).2
 
+
 /-
 theorem foo1 (S : Finset ℕ) :
     ∀ (T : Finset ℕ), (T ⊆ S) → (sumOfAll T) ≤ (sumOfAll S) := by
-    intro h ; intro hS ;
-    -- dsimp [Set.subset_def] at
+    intro h ;
+    intro hS ;
+    rw [← Nat.not_gt_eq]
+    intro hh ; aesop?
+    -- dsimp [Set.subset_def] at hS
+
+theorem fooA (S : Finset ℕ) (a : ℕ) :
+    ∀ (T : Finset ℕ), (∀ x : ℕ , (x ∈ T) → (x ∈ S)) →
+    (sumOfAll T) ≤ (sumOfAll S) := by
+    intro h1 ; intro h2 ;
+    have h3 : a ∈ h1 → a ∈ S := h2 a
+    refine forall_lt_iff_le'.mp ?_
+    intro h4
+    apply?
 -/
 
 /-
