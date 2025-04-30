@@ -15,44 +15,39 @@ import Std.Data.List.Lemmas
 import Mathlib.Data.Set.Finite -- needed for Finset.card
 
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Basic
+--import Mathlib.Data.Finset.Basic -- /- ## DOES NOT CAUSE ERROR -/
+import Mathlib.Algebra.BigOperators.Basic -- NEEDED FOR Finset.sum
 
-open Finset
-open BigOperators
+math2001_init
+namespace Int
+set_option trace.Meta.Tactic.simp true -- hilights tactic
+                                       -- 'simp' wherever it is used?
 
--- Define a finite set
-def mySet : Finset Nat := {1, 2, 3, 4}
+/- ## NONE OF THE FOLLOWING SEEM NEEDED, THOUGH THEY DON'T CAUSE ERRORS -/
+--open Finset
+--open BigOperators
+--open Function
+--open Set
 
--- Define a function that we want to sum
-def myFunction (n : Nat) : Nat := n * n
-
--- Calculate the sum using Finset.sum
-def sumOfSquares : Nat := Finset.sum mySet myFunction
-
--- Print the result
+/- ## Define a finite set -/
+   def mySet : Finset ℕ := {1, 2, 3, 4}
+/- ## Define a function the square function -/
+   def myFunction (n : ℕ) : ℕ := n * n
+/- ## Calculate the sum using Finset.sum -/
+   def sumOfSquares : ℕ := Finset.sum mySet myFunction
+/- ## Print the result -/
 #eval sumOfSquares -- Output: 30
 
-open Function
-open Set
-
 #check Finset.range
-#check Finset.card
-
+#eval Finset.card mySet
 #eval Finset.sum  ({1, 2, 3, 4}) (fun x => x)
 #eval Finset.sum  ({1, 2, 3, 4}) (fun x => x * x)
-
 
 -- import Mathlib.Tactic.Qify
 -- import Mathlib.Tactic.Zify
 -- import Library.Tactic.ModEq
 -- import Mathlib.Tactic
 -- import AutograderLib
-
-math2001_init
-namespace Int
-set_option trace.Meta.Tactic.simp true -- hilights tactic
-                                       -- 'simp' wherever it is used?
 
 /- ## evenN and oddN test whether a natural number is even or odd -/
     def evenN (n : ℕ) : Bool := (2 ∣ n)
@@ -82,7 +77,7 @@ set_option trace.Meta.Tactic.simp true -- hilights tactic
 def PositiveIntSet1 : Type  := { n : ℕ | 0 < n }
 def PositiveIntSet2 : Set ℕ := { n : ℕ | 0 < n }
 #check (3 ∈ PositiveIntSet2)
--- #eval (13 ∈ PositiveIntSet2)
+-- #eval (13 ∈ PositiveIntSet2) -- doesn't work!!!
 #reduce (13 ∈ PositiveIntSet2)
 
 /- ## bounded_finset creates finite set of numbers
@@ -99,8 +94,6 @@ def bounded_finset (a b : ℕ) : Finset ℕ :=
 #eval 2^3
 #check fun (x : Int) => x + 1
 -- #eval Finset.sum {1, 2, 3, 4} (fun x => x)
-
-
 
 def pairs (X Y : Set ℕ) : Set (ℕ × ℕ) := { (x,y) | (x ∈ X) (y ∈ Y) }
 def evens : Set ℕ := { x | ∃ (k : ℕ), x = 2 * k }
