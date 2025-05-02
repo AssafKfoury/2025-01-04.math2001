@@ -34,18 +34,30 @@ open Set
 
 /- ## Define an infinite set -/
    def myInfSet : Set ℕ := { n : ℕ | 0 < n }
+/- ## Define a finite set of type 'Set ℕ'-/
+   def myFinSet : Set ℕ := { n : ℕ | (3 < n) ∧ (n < 10)}
 /- ## Define a finite set -/
    def mySet : Finset ℕ := {1, 2, 3, 4}
 /- ## Define a function the square function -/
    def myFunction (n : ℕ) : ℕ := n * n
 /- ## Calculate sum of the squares using Finset.sum -/
    def sumOfSquares : ℕ := Finset.sum mySet myFunction
+/- ## Convert a finset to a set in the natural way. -/
+@[coe] def toSet (s : Finset α) : Set α := { a | a ∈ s }
+
+#check mySet
+#check toSet (mySet : Finset ℕ)
+
 /- ## Print the result -/
 #eval sumOfSquares -- Output: 30
 
+#eval ((24:ℕ):ℤ)
+
+#reduce 7 ∈ myFinSet -- #eval 7 ∈ myFinSet -- CAUSES ERROR!!!
+
 #check Finset.range
 #eval Finset.card mySet
-#eval 3 ∈ mySet
+#eval 4 ∈ mySet
 #reduce 3 ∈ myInfSet -- #eval 3 ∈ myInfSet -- CAUSES ERROR!!!
 #eval Finset.sum  ({1, 2, 3, 4}) (fun x => x)
 #eval Finset.sum  ({1, 2, 3, 4}) (fun x => x * x)
