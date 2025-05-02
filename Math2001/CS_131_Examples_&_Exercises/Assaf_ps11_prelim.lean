@@ -121,7 +121,7 @@ theorem fooA (S T : Finset ℕ) (x : ℕ) :
    -- right ;
    --  rw?
     -- sorry
-
+    dsimp[· ⊆· ] at h1
 
 
 /-
