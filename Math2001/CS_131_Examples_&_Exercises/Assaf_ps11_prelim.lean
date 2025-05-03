@@ -123,6 +123,14 @@ theorem fooA (S T : Finset ℕ) (x : ℕ) :
     -- sorry
     dsimp[· ⊆· ] at h1
 
+theorem AAA_short (a b c : Prop) :
+  (a → b) → (c → a) → c → b :=
+  by intros h_ab h_ac h_c
+     -- specialize h_ac h_c
+     -- specialize h_ab h_ac
+     obtain h_a := by apply h_ac h_c
+     obtain h_b := h_ab h_a
+     apply h_b
 
 /-
 theorem fooB (S T : Finset ℕ) (x : ℕ) :
