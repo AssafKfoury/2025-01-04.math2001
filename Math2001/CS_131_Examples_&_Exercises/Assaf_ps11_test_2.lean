@@ -5,13 +5,30 @@ import Mathlib.Data.Finset.Basic -- needed for "lemma instA"
 def A : Set ℤ := {x : Int | x^2 = 9}
 #check A
 
-lemma instA : A = ({3, -3} : Finset ℤ) := by sorry
-
 /- ## 'instance' is used to declare a specific implementation of a
    ## type class for a given type, making it available for implicit
    ## type class resolution -/
 instance (n : ℤ) : Decidable (n ∈ A) := by
   suffices Decidable (n^2 = 9) by
-    rewrite [A, Set.mem_setOf_eq]
+    rw [A, Set.mem_setOf_eq] -- rewrite [A, Set.mem_setOf_eq]
     assumption
   apply inferInstance
+
+#check Lean.Expr.rewrite
+#check Decidable      -- Decidable (p : Prop) : Type
+#check Lean.Meta.assumption
+#check inferInstance
+
+#eval List.Forall (· ∈ A) [-3, 3]   -- true
+
+instance (S : Finset ℤ) : Decidable (↑S ⊆ A) := by
+  rw [A]                 -- rewrite [A]
+  dsimp [Set.subset_def] -- rewrite [Set.subset_def]
+  show Decidable (∀ x ∈ S, x ∈ {x | x ^ 2 = 9})
+  apply inferInstance
+
+#check Set.subset_def -- ({1,2} ⊆ {1,2,3})
+
+lemma instA : A = ({3, -3} : Finset ℤ) := by
+  let S : Finset ℤ := {3, -3}
+  change (A = ↑S)
