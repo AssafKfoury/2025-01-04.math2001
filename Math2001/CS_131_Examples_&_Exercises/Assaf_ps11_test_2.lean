@@ -14,8 +14,8 @@ def A : Set ℤ := {x : Int | x^2 = 9}
    ## type class resolution -/
 instance (n : ℤ) : Decidable (n ∈ A) := by
   suffices Decidable (n^2 = 9) by
-    rw [A, Set.mem_setOf_eq] -- rewrite [A, Set.mem_setOf_eq]
-    assumption
+    rw [A, Set.mem_setOf_eq] -- 'rewrite [A, Set.mem_setOf_eq]' works also
+    exact this -- 'assumption' works also
   apply inferInstance
 
 #check Lean.Expr.rewrite
@@ -26,12 +26,10 @@ instance (n : ℤ) : Decidable (n ∈ A) := by
 #eval List.Forall (· ∈ A) [-3, 3]   -- true
 
 instance (S : Finset ℤ) : Decidable (↑S ⊆ A) := by
-  rw [A]                 -- rewrite [A]
-  dsimp [Set.subset_def] -- rewrite [Set.subset_def]
+  rw [A]                 -- 'rewrite [A]' works also
+  dsimp [Set.subset_def] -- 'rewrite [Set.subset_def]' works also
   show Decidable (∀ x ∈ S, x ∈ {x | x ^ 2 = 9})
   apply inferInstance
-
-#check Set.subset_def -- ({1,2} ⊆ {1,2,3})
 
 lemma instA : A = ({3, -3} : Finset ℤ) := by
   let S : Finset ℤ := {3, -3}
