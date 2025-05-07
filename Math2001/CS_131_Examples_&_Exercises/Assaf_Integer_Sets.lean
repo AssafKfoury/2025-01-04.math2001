@@ -2,6 +2,14 @@ import Mathlib.Data.Set.Basic -- needed for "def A"
 import Mathlib.Data.Finset.Basic -- needed for "lemma instA"
 --import Mathlib.Data.Set.Finite
 
+-- import Mathlib.Data.Real.Basic
+import Library.Basic
+-- import Library.Tactic.ModEq
+
+math2001_init
+
+open Set
+
 /- ## WORKING WITH INTEGER SETS in Lean 4 -/
 
 /- ## EXAMPLE 1 in "Working with integer sets in Lean 4":
@@ -71,7 +79,10 @@ lemma instA_Assaf : A = ({3, -3} : Finset ℤ) := by
     -- Goal is now (n ∈ A → n ∈ {3, -3})
     intro H1_1             -- instead of 'intro (H1_1: n ∈ A)'
     rw [A] at H1_1
+    -- dsimp [(· ∈ ·)]
+
     dsimp [Set.mem_setOf_eq] at H1_1
+
     --have H1_1 : n^2 = 9 := by
     --  rw [A, Set.mem_setOf_eq] at H1_1
     --  exact H1_1
@@ -86,3 +97,7 @@ lemma instA_Assaf : A = ({3, -3} : Finset ℤ) := by
 
   have H2 : ↑S ⊆ A := by decide
   exact H2
+
+example : 1 ∈ {n : ℤ | n ≤ 3} := by
+  dsimp
+  numbers
