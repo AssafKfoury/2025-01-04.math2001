@@ -2,6 +2,8 @@ import Mathlib.Data.Set.Basic -- needed for "def A"
 import Mathlib.Data.Finset.Basic -- needed for "lemma instA"
 --import Mathlib.Data.Set.Finite
 
+/- ## WORKING WITH INTEGER SETS in Lean 4 -/
+
 /- ## EXAMPLE 1 in "Working with integer sets in Lean 4":
       https://brandonrozek.com/blog/integer-sets-lean4/  -/
 
@@ -31,8 +33,6 @@ instance (S : Finset ℤ) : Decidable (↑S ⊆ A) := by
   show Decidable (∀ x ∈ S, x ∈ {x | x ^ 2 = 9})
   apply inferInstance
 
-#check Set.subset_def -- ({1,2} ⊆ {1,2,3})
-
 lemma instA : A = ({3, -3} : Finset ℤ) := by
   let S : Finset ℤ := {3, -3}
   change (A = ↑S)
@@ -59,6 +59,7 @@ lemma instA : A = ({3, -3} : Finset ℤ) := by
 
   exact And.intro H1 H2
 
+/- ## Below is a different implementation of 'instA' by Assaf -/
 lemma instA_Assaf : A = ({3, -3} : Finset ℤ) := by
   let S : Finset ℤ := {3, -3}    -- declaration placed in the context
   change (A = ↑S)
