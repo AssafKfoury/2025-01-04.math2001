@@ -62,7 +62,6 @@ lemma instA : A = ({3, -3} : Finset ℤ) := by
 /- ## Below is a different implementation of 'instA' by Assaf -/
 lemma instA_Assaf : A = ({3, -3} : Finset ℤ) := by
   let S : Finset ℤ := {3, -3}    -- declaration placed in the context
-  change (A = ↑S)
   rw [Set.Subset.antisymm_iff]
   constructor
 
@@ -71,9 +70,11 @@ lemma instA_Assaf : A = ({3, -3} : Finset ℤ) := by
     intro (n : ℤ)
     -- Goal is now (n ∈ A → n ∈ {3, -3})
     intro H1_1             -- instead of 'intro (H1_1: n ∈ A)'
-    have H1_1 : n^2 = 9 := by
-      rw [A, Set.mem_setOf_eq] at H1_1
-      exact H1_1
+    rw [A] at H1_1
+    dsimp [Set.mem_setOf_eq] at H1_1
+    --have H1_1 : n^2 = 9 := by
+    --  rw [A, Set.mem_setOf_eq] at H1_1
+    --  exact H1_1
 
     suffices n = 3 ∨ n = -3 by
       show n ∈ S
