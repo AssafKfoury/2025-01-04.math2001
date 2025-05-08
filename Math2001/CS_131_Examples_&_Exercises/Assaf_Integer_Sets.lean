@@ -1,4 +1,4 @@
-import Mathlib.Tactic.HelpCmd    --
+import Mathlib.Tactic.HelpCmd    -- needed for "#check tactic <tactic name>""
 import Mathlib.Data.Set.Basic    -- needed for "def A"
 import Mathlib.Data.Finset.Basic -- needed for "lemma instA"
 -- import Lean.Elab.Tactic.Basic -- was supposed to import 'decide', it did NOT !!!
