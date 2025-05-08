@@ -1,5 +1,9 @@
+import Mathlib.Tactic.HelpCmd    --
 import Mathlib.Data.Set.Basic    -- needed for "def A"
 import Mathlib.Data.Finset.Basic -- needed for "lemma instA"
+-- import Lean.Elab.Tactic.Basic -- was supposed to import 'decide', it did NOT !!!
+--import Lean.Meta.Tactic.Util
+--import Lean.Elab.Term
 -- import Mathlib.Data.Set.Finite
 -- import Mathlib.Data.Nat.Sqrt
 -- import Mathlib.Data.Real.Basic
@@ -8,6 +12,8 @@ import Library.Basic
 
 math2001_init
 
+--namespace Lean.Elab
+--open Meta
 open Set
 
 /- ## WORKING WITH INTEGER SETS in Lean 4 -/
@@ -34,6 +40,9 @@ instance (S : Finset ℤ) : Decidable (↑S ⊆ A) := by
   show Decidable (∀ x ∈ S, x ∈ {x | x ^ 2 = 9})
   apply inferInstance
 
+#help tactic decide
+#help tactic exact
+
 lemma instA : A = ({3, -3} : Finset ℤ) := by
   let S : Finset ℤ := {3, -3}
   change (A = ↑S)
@@ -59,6 +68,7 @@ lemma instA : A = ({3, -3} : Finset ℤ) := by
   have H2 : ↑S ⊆ A := by decide
 
   exact And.intro H1 H2
+
 
 /- how to use tactic 'suffices':
 
