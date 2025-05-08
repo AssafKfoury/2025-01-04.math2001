@@ -111,6 +111,4 @@ example : 1 ∈ {n : ℤ | n ≤ 3} := by
   dsimp
   numbers
 
-
-
---example (n : ℕ) (hn : n^2 = 9) : n = 3 := by
+#eval Nat.sqrt (3^2)
