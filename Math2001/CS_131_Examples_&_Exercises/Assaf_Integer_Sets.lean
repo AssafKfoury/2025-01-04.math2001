@@ -1,7 +1,7 @@
 import Mathlib.Data.Set.Basic -- needed for "def A"
 import Mathlib.Data.Finset.Basic -- needed for "lemma instA"
 --import Mathlib.Data.Set.Finite
-
+-- import Mathlib.Data.Nat.Sqrt
 -- import Mathlib.Data.Real.Basic
 import Library.Basic
 -- import Library.Tactic.ModEq
@@ -110,3 +110,7 @@ lemma instA_Assaf : A = ({3, -3} : Finset ℤ) := by
 example : 1 ∈ {n : ℤ | n ≤ 3} := by
   dsimp
   numbers
+
+
+
+--example (n : ℕ) (hn : n^2 = 9) : n = 3 := by
