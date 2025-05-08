@@ -79,26 +79,21 @@ lemma instA_Assaf : A = ({3, -3} : Finset ℤ) := by
     dsimp [A]
     dsimp [Set.subset_def]
     intro (p : ℤ) ; intro h1_1
-    left
-
+    suffices p = 3 ∨ p = -3 by
+      exact this
 
   have H1 : A ⊆ ↑S := by
-    dsimp [Set.subset_def] -- added by Assaf
-    intro (n : ℤ)
-    -- Goal is now (n ∈ A → n ∈ {3, -3})
-    intro H1_1             -- instead of 'intro (H1_1: n ∈ A)'
+    dsimp [Set.subset_def]
+    intro (n : ℤ) ; intro H1_1
     rw [A] at H1_1
-    -- dsimp [(· ∈ ·)]
-
-    dsimp [Set.mem_setOf_eq] at H1_1
-
-    --have H1_1 : n^2 = 9 := by
-    --  rw [A, Set.mem_setOf_eq] at H1_1
-    --  exact H1_1
+    have H1_2 : n^2 = 9 := by
+       dsimp [(· ∈ ·)] at H1_1
+       exact H1_1
 
     suffices n = 3 ∨ n = -3 by
       show n ∈ S
-      rw [Finset.mem_insert, Finset.mem_singleton]
+      rw [Finset.mem_insert]
+      rw [Finset.mem_singleton]
       exact this
 
     exact eq_or_eq_neg_of_sq_eq_sq n 3 H1_1
@@ -112,3 +107,5 @@ example : 1 ∈ {n : ℤ | n ≤ 3} := by
   numbers
 
 #eval Nat.sqrt (3^2)
+
+-- example (hn : n^2 = 9) : n = 3 := by
