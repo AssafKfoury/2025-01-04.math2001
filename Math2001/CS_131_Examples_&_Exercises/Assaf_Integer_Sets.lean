@@ -1,6 +1,6 @@
-import Mathlib.Data.Set.Basic -- needed for "def A"
+import Mathlib.Data.Set.Basic    -- needed for "def A"
 import Mathlib.Data.Finset.Basic -- needed for "lemma instA"
---import Mathlib.Data.Set.Finite
+-- import Mathlib.Data.Set.Finite
 -- import Mathlib.Data.Nat.Sqrt
 -- import Mathlib.Data.Real.Basic
 import Library.Basic
@@ -17,21 +17,14 @@ open Set
 
 def A : Set ℤ := {x : Int | x^2 = 9}
 
-#check A
-
 /- ## 'instance' is used to declare a specific implementation of a
    ## type class for a given type, making it available for implicit
    ## type class resolution -/
 instance (n : ℤ) : Decidable (n ∈ A) := by
   suffices Decidable (n^2 = 9) by
     rw [A, Set.mem_setOf_eq] -- 'rewrite [A, Set.mem_setOf_eq]' works also
-    exact this -- 'assumption' works also
+    exact this               -- 'assumption' works also
   apply inferInstance
-
-#check Lean.Expr.rewrite
-#check Decidable      -- Decidable (p : Prop) : Type
-#check Lean.Meta.assumption
-#check inferInstance
 
 #eval List.Forall (· ∈ A) [-3, 3]   -- true
 
@@ -67,6 +60,15 @@ lemma instA : A = ({3, -3} : Finset ℤ) := by
 
   exact And.intro H1 H2
 
+/- how to use tactic 'suffices':
+
+Given a main goal ctx ⊢ t,
+"suffices h : t1 from e" replaces the main goal with
+"ctx ⊢ t1",
+provided e has type t in the context "ctx, h : t1".
+
+-/
+
 /- ## Below is a different implementation of 'instA' by Assaf -/
 lemma instA_Assaf : A = ({3, -3} : Finset ℤ) := by
   let S : Finset ℤ := {3, -3}    -- declaration placed in the context
@@ -79,8 +81,7 @@ lemma instA_Assaf : A = ({3, -3} : Finset ℤ) := by
     dsimp [A]
     dsimp [Set.subset_def]
     intro (p : ℤ) ; intro h1_1
-    suffices p = 3 ∨ p = -3 by
-      exact this
+    exact eq_or_eq_neg_of_sq_eq_sq p 3 h1_1
 
   have H1 : A ⊆ ↑S := by
     dsimp [Set.subset_def]
