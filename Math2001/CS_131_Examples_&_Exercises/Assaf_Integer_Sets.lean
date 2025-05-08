@@ -70,8 +70,17 @@ lemma instA : A = ({3, -3} : Finset ℤ) := by
 /- ## Below is a different implementation of 'instA' by Assaf -/
 lemma instA_Assaf : A = ({3, -3} : Finset ℤ) := by
   let S : Finset ℤ := {3, -3}    -- declaration placed in the context
+  let T : Set ℤ := {3, -3}
   rw [Set.Subset.antisymm_iff]
   constructor
+
+  have h1 : A ⊆ T := by
+    dsimp [T]
+    dsimp [A]
+    dsimp [Set.subset_def]
+    intro (p : ℤ) ; intro h1_1
+    left
+
 
   have H1 : A ⊆ ↑S := by
     dsimp [Set.subset_def] -- added by Assaf
