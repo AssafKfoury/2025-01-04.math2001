@@ -10,6 +10,8 @@ math2001_init
 open Set
 
 #check decide
+#eval decide (1 = 2)
+#eval decide (2 = 2)
 
 /- In Macbeth's environment, but not in the Lean4 Playground,
    tactic "decide" is disabled -/
@@ -65,7 +67,13 @@ lemma instA : A = ({3, -3} : Finset ℤ) := by
 
     exact eq_or_eq_neg_of_sq_eq_sq n 3 H1_1
 
-  have H2 : ↑S ⊆ A := by decide
+  have H2 : ↑S ⊆ A := by -- decide
+     rw [@Finset.coe_pair]
+     rw [@insert_subset_iff]
+     constructor
+     exact rfl
+     exact singleton_subset_iff.mpr rfl
+
 
   exact And.intro H1 H2
 
