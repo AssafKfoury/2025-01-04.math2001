@@ -1,5 +1,7 @@
+-- import Mathlib -- it takes a very long time to import!!!
 import Mathlib.Data.Set.Basic    -- needed for "def A"
 import Mathlib.Data.Finset.Basic -- needed for "lemma instA"
+import Mathlib.Tactic.Common -- For basic tactics, including decide
 -- import Mathlib.Logic.Basic
 import Library.Basic  -- needed for math2001_init
 
@@ -66,7 +68,6 @@ lemma instA : A = ({3, -3} : Finset ℤ) := by
   have H2 : ↑S ⊆ A := by decide
 
   exact And.intro H1 H2
-
 
 /- how to use tactic 'suffices':
 
