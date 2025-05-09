@@ -85,7 +85,7 @@ If "h" is omitted, then the latter context is taken "ctx, this: t1".
 -/
 
 /- ## Below is a different implementation of 'instA' by Assaf -/
-lemma instA_Assaf : A = ({3, -3} : Finset ℤ) := by
+lemma instA_Assaf1 : A = ({3, -3} : Finset ℤ) := by
   let S : Finset ℤ := {3, -3}    -- declaration placed in the context
   let T : Set ℤ := {3, -3}
   rw [Set.Subset.antisymm_iff]
@@ -105,17 +105,57 @@ lemma instA_Assaf : A = ({3, -3} : Finset ℤ) := by
     have H1_2 : n^2 = 9 := by
        dsimp [(· ∈ ·)] at H1_1
        exact H1_1
-    rw [@Finset.coe_pair]
+    rw [Finset.coe_pair]
     exact h1 H1_1
   exact H1
 
-  have H2 : ↑S ⊆ A := by decide
+  have H2 : ↑S ⊆ A := by
+     rw [Finset.coe_pair]
+     rw [insert_subset_iff]
+     constructor
+     exact rfl
+     exact singleton_subset_iff.mpr rfl
   exact H2
 
-example : 1 ∈ {n : ℤ | n ≤ 3} := by
-  dsimp
-  numbers
+/- ## Another different implementation of 'instA' by Assaf -/
+lemma instA_Assaf2 : A = ({3, -3} : Finset ℤ) := by
+  let T : Set ℤ := {3, -3}          -- declaration placed in the context
+  rw [Set.Subset.antisymm_iff]
+  constructor
 
-#eval Nat.sqrt (3^2)
+  have h1 : A ⊆ T := by
+    dsimp [T , A]
+    dsimp [Set.subset_def]
+    intro p ; intro h11
+    exact eq_or_eq_neg_of_sq_eq_sq p 3 h11
 
--- example (hn : n^2 = 9) : n = 3 := by
+  dsimp [Set.subset_def] at *
+  intro x hx ; rw [Finset.mem_coe] ;
+  rw [Finset.mem_insert] ; rw [Finset.mem_singleton]
+  apply h1 x ; exact hx
+
+  rw [Finset.coe_pair]
+  rw [insert_subset_iff]
+  constructor
+  exact rfl
+  rw [singleton_subset_iff]
+  exact rfl
+
+/- ## Yet another different implementation of 'instA' by Assaf,
+   ## THE BEST SO FAR! -/
+lemma instA_Assaf3 : A = ({3, -3} : Finset ℤ) := by
+
+  have H : ∀ (x : ℤ), x ∈ A → x = 3 ∨ x = -3 := by
+    intro x hx ; exact eq_or_eq_neg_of_sq_eq_sq x 3 hx
+
+  rw [Set.Subset.antisymm_iff] ;  constructor
+
+  dsimp [Set.subset_def]
+  intro p hp ; rw [Finset.mem_coe] ;
+  rw [Finset.mem_insert] ; rw [Finset.mem_singleton]
+  apply H p ; exact hp
+
+  rw [Finset.coe_pair]
+  rw [insert_subset_iff] ;  rw [singleton_subset_iff]
+  constructor
+  exact rfl ; exact rfl
