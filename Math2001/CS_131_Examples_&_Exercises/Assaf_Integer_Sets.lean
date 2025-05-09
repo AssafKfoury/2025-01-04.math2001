@@ -1,25 +1,18 @@
--- import Mathlib.Tactic -- .HelpCmd    -- needed for "#check <tactic name>" ??
 import Mathlib.Data.Set.Basic    -- needed for "def A"
 import Mathlib.Data.Finset.Basic -- needed for "lemma instA"
--- import Lean.Parser.Tactic.decide
-
--- import Lean.Elab.Tactic.Basic -- was supposed to import 'decide', it did NOT !!!
---import Lean.Meta.Tactic.Util
---import Lean.Elab.Term
--- import Mathlib.Data.Set.Finite
--- import Mathlib.Data.Nat.Sqrt
--- import Mathlib.Data.Real.Basic
-import Library.Basic
--- import Library.Tactic.ModEq
+-- import Mathlib.Logic.Basic
+import Library.Basic  -- needed for math2001_init
 
 math2001_init
 
---namespace Lean.Elab
---open Meta
 open Set
 
 #check decide
 
+/- In Macbeth's environment, but not in the Lean4 Playground,
+   tactic "decide" is disabled -/
+-- example : 1 + 1 = 2 := by decide -- in Macbeth's environment
+-- theorem exxx : True := by decide
 
 /- ## WORKING WITH INTEGER SETS in Lean 4 -/
 
