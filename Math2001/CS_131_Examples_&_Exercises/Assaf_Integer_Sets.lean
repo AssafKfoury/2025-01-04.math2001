@@ -1,7 +1,7 @@
 -- import Mathlib -- it takes a very long time to import!!!
 import Mathlib.Data.Set.Basic    -- needed for "def A"
 import Mathlib.Data.Finset.Basic -- needed for "lemma instA"
--- import Mathlib.Tactic.Common -- For basic tactics, including decide
+-- import Mathlib.Tactic.Common -- For basic tactics,
 -- import Mathlib.Logic.Basic
 import Library.Basic  -- needed for math2001_init
 
@@ -13,9 +13,9 @@ open Set
 #eval decide (1 = 2)
 #eval decide (2 = 2)
 
-/- In Macbeth's environment, but not in the Lean4 Playground,
+/- In Macbeth's environment, but not in the Lean4 Playground (???),
    tactic "decide" is disabled -/
--- example : 1 + 1 = 2 := by decide -- in Macbeth's environment
+-- example : 1 + 1 = 2 := by decide
 -- theorem exxx : True := by decide
 
 /- ## WORKING WITH INTEGER SETS in Lean 4 -/
@@ -74,15 +74,13 @@ lemma instA : A = ({3, -3} : Finset ℤ) := by
      exact rfl
      exact singleton_subset_iff.mpr rfl
 
-
   exact And.intro H1 H2
 
 /- how to use tactic 'suffices':
 
-Given a main goal ctx ⊢ t,
-"suffices h : t1 from e" replaces the main goal with
-"ctx ⊢ t1",
-provided e has type t in the context "ctx, h : t1".
+Given a main goal ctx ⊢ t, "suffices h : t1 from e" replaces the main
+goal with "ctx ⊢ t1", provided e has type t in the context "ctx, h : t1".
+If "h" is omitted, then the latter context is taken "ctx, this: t1".
 
 -/
 
@@ -107,14 +105,8 @@ lemma instA_Assaf : A = ({3, -3} : Finset ℤ) := by
     have H1_2 : n^2 = 9 := by
        dsimp [(· ∈ ·)] at H1_1
        exact H1_1
-
-    suffices n = 3 ∨ n = -3 by
-      show n ∈ S
-      rw [Finset.mem_insert]
-      rw [Finset.mem_singleton]
-      exact this
-
-    exact eq_or_eq_neg_of_sq_eq_sq n 3 H1_1
+    rw [@Finset.coe_pair]
+    exact h1 H1_1
   exact H1
 
   have H2 : ↑S ⊆ A := by decide
