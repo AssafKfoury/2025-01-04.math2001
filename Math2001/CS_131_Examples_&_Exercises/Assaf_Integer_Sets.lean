@@ -1,7 +1,7 @@
 -- import Mathlib -- it takes a very long time to import!!!
 import Mathlib.Data.Set.Basic    -- needed for "def A"
 import Mathlib.Data.Finset.Basic -- needed for "lemma instA"
-import Mathlib.Tactic.Common -- For basic tactics, including decide
+-- import Mathlib.Tactic.Common -- For basic tactics, including decide
 -- import Mathlib.Logic.Basic
 import Library.Basic  -- needed for math2001_init
 
