@@ -1,8 +1,8 @@
--- import Mathlib -- it takes a very long time to import!!!
+-- import Mathlib -- HARMFUL to import, as it takes enormous time to import!!!
 import Mathlib.Data.Set.Basic    -- needed for "def A"
 import Mathlib.Data.Finset.Basic -- needed for "lemma instA"
--- import Mathlib.Tactic.Common -- For basic tactics,
--- import Mathlib.Logic.Basic
+-- import Mathlib.Tactic.Common -- HARMLESS to import
+-- import Mathlib.Logic.Basic  -- HARMLESS to import
 import Library.Basic  -- needed for math2001_init
 
 math2001_init
@@ -14,7 +14,7 @@ open Set
 #eval decide (2 = 2)
 
 /- In Macbeth's environment, but not in the Lean4 Playground (???),
-   tactic "decide" is disabled -/
+   tactic "decide" is somehow disabled -/
 -- example : 1 + 1 = 2 := by decide
 -- theorem exxx : True := by decide
 
@@ -45,6 +45,7 @@ instance (S : Finset ℤ) : Decidable (↑S ⊆ A) := by
 #help tactic decide
 #help tactic exact
 
+/- ## Next implementation is by Brandon Rozek -/
 lemma instA : A = ({3, -3} : Finset ℤ) := by
   let S : Finset ℤ := {3, -3}
   change (A = ↑S)
@@ -86,7 +87,7 @@ If "h" is omitted, then the latter context is taken "ctx, this: t1".
 
 /- ## Below is a different implementation of 'instA' by Assaf -/
 lemma instA_Assaf1 : A = ({3, -3} : Finset ℤ) := by
-  let S : Finset ℤ := {3, -3}    -- declaration placed in the context
+  let S : Finset ℤ := {3, -3}
   let T : Set ℤ := {3, -3}
   rw [Set.Subset.antisymm_iff]
   constructor
@@ -119,7 +120,7 @@ lemma instA_Assaf1 : A = ({3, -3} : Finset ℤ) := by
 
 /- ## Another different implementation of 'instA' by Assaf -/
 lemma instA_Assaf2 : A = ({3, -3} : Finset ℤ) := by
-  let T : Set ℤ := {3, -3}          -- declaration placed in the context
+  let T : Set ℤ := {3, -3}
   rw [Set.Subset.antisymm_iff]
   constructor
 
