@@ -19,6 +19,7 @@ def natOrStringThree (b : Bool) : if b then Nat else String :=
 #check (3 , 5 , 8).fst
 #eval (3 , 5 , 8).snd.snd
 
+
 #check natOrStringThree
 #check natOrStringThree true
 #eval natOrStringThree true
