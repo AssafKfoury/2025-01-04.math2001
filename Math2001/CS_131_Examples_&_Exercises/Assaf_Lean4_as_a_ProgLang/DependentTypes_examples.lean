@@ -78,3 +78,4 @@ open Vec
 
 #check cons false nil
 #check cons true (cons false nil)
+#check cons false (cons true (cons false nil))
