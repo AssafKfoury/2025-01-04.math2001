@@ -75,6 +75,7 @@ open Vec
 
 #check nil
 #check cons 3 nil
+#check cons 5 (cons 3 nil)
 
 #check cons false nil
 #check cons true (cons false nil)
