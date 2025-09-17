@@ -1,9 +1,35 @@
 /- 17 September 2025 -/
+/- from Macbeth Sect 6.01: two examples -/
+/- from ps7.lean in CS 131 Spring 2025: two theorems -/
 /- SEVERAL EXERCISES WITH INDUCTION -/
 
 import Mathlib.Data.Real.Basic
 import Library.Tactic.ModEq
 import Library.Basic
+
+math2001_init
+
+namespace Nat
+
+example (n : ℕ) : 2 ^ n ≥ n + 1 := by
+  simple_induction n with k IH
+  · -- base case
+    numbers
+  · -- inductive step
+    calc 2 ^ (k + 1) = 2 * 2 ^ k := by ring
+      _ ≥ 2 * (k + 1) := by rel [IH]
+      _ = (k + 1 + 1) + k := by ring
+      _ ≥ k + 1 + 1 := by extra
+
+example {n : ℕ} (hn : 2 ≤ n) : (3:ℤ) ^ n ≥ 2 ^ n + 5 := by
+  induction_from_starting_point n, hn with k hk IH
+  · -- base case
+    numbers
+  · -- inductive step
+    calc (3:ℤ) ^ (k + 1) = 2 * 3 ^ k + 3 ^ k := by ring
+      _ ≥ 2 * (2 ^ k + 5) + 3 ^ k := by rel [IH]
+      _ = 2 ^ (k + 1) + 5 + (5 + 3 ^ k) := by ring
+      _ ≥ 2 ^ (k + 1) + 5 := by extra
 
 theorem problem1 (n : ℕ) : 3 ^ n ≥ n ^ 2 + n + 1 := by
   simple_induction n with k IH
