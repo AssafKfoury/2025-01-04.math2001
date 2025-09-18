@@ -1,4 +1,6 @@
 /- 17 September 2025 -/
+/- from Macbeth Sect 6.01: two examples -/
+/- from ps7.lean in CS 131 Spring 2025: two theorems -/
 /- SEVERAL EXERCISES WITH INDUCTION -/
 
 import Mathlib.Data.Real.Basic

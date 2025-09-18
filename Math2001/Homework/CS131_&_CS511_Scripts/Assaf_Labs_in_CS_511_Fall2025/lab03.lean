@@ -1,6 +1,4 @@
 /- 17 September 2025 -/
-/- from Macbeth Sect 6.01: two examples -/
-/- from ps7.lean in CS 131 Spring 2025: two theorems -/
 /- SEVERAL EXERCISES WITH INDUCTION -/
 
 import Mathlib.Data.Real.Basic
@@ -8,7 +6,6 @@ import Library.Tactic.ModEq
 import Library.Basic
 
 math2001_init
-
 namespace Nat
 
 example (n : ℕ) : 2 ^ n ≥ n + 1 := by
