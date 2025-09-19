@@ -5,18 +5,17 @@ import Library.Basic
 math2001_init
 namespace Nat
 
-example {n : ℕ} (hn : n ^ 2 + 4 = 4 * n) : n = 2 := by
-  have h1 :=
-  calc (n - 2) ^ 2 = n ^ 2 + 4 - 4 * n := by ring
+example {n : ℤ} (hn : n ^ 2 + 4 = 4 * n) : n = 2 := by
+  have h : (n-2)^2 = 0^2 := by
+    calc (n - 2) ^ 2 = n ^ 2 + 4 - 4 * n := by ring
                 _  = 4 * n - 4 * n := by rw [hn]
                 _  = 0 := by ring
                 _  = 0 ^ 2 := by ring
-  have h2 :=
-  calc (n - 2) = 0 := by cancel 2 at h1
+  cancel 2 at h
+  calc n = 2 + (n - 2) := by ring
+       _ = 2 + 0 := by rw [h]
+       _ = 2 := by ring
+--  addarith [h]
 
-  /-
-  calc
-    n = (n - 2) + 2 := by ring
-    _ = 0 + 2     := by rw[h2] --rw [←h2]
-    _ = 2         := by ring
-  -/
+#eval (3 : ℕ) ^ 2
+#eval (3 : ℤ) ^ 2
