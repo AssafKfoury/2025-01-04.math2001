@@ -86,13 +86,13 @@ two forms of reasoning.
 -/
 
 /- example of BACKWARD PROOF -/
-example (p q : Prop) : p → q → p := by
+example (p q : Prop) : p → (q → p) := by
   -- Initial goal: p → q → p
   intro hp  -- Introduce the assumption `hp : p`.
   -- New simpler goal: q → p
   intro hq  -- Introduce the assumption `hq : q`.
   -- New simpler goal: p
-  assumption
+  apply hp -- exact hp -- assumption
 
 /- example of FORWARD PROOF, using 'term mode', by building a 'proof term'
    directly, starting from premises and combining them to form final conclusion -/
@@ -105,13 +105,14 @@ example {P Q : Prop} : ((P → Q) → P) → P := by
   intro h
   -- We now need to prove P, given the hypothesis h : (P → Q) → P.
   -- We proceed by contradiction.
-  by_contra not_P
-  -- The goal is now `False`, given `h` and `not_P`.
+  by_contra h2
+  -- The goal is now `False`, given `h` and `h2`.
   -- We prove `P` by applying our hypothesis `h`.
-  have p_from_h : P := h (fun p_hyp => absurd p_hyp not_P)
-  -- We have now `p_from_h : P`.
-  -- We can use this to contradict our assumption `not_P`.
-  contradiction
+  have h3 : P := h (fun p_hyp => absurd p_hyp h2)
+  -- We have now `h3 : P`.
+  -- We can use this to contradict our assumption `h2`.
+  -- contradiction
+  have h4 : False := by apply h2 h3
 
 /- example of FORWARD PROOF of Peirce's Law, using 'term mode' -/
 example {P Q : Prop} : ((P → Q) → P) → P :=
