@@ -69,9 +69,19 @@ example (n : ℕ) : (n + 1)! ≥ 2 ^ n := by
       _ ≥ 2 * 2 ^ k := by extra
       _ = 2 ^ (k + 1) := by ring
 
-/- FORWARD vs BACKWARD Reasoning -/
+/- FORWARD reasoning vs BACKWARD Reasoning
 
-/- BACKWARD PROOF is goal-oriented or goal-directed -/
+FORWARD reasoning is PREMISE-ORIENTED, e.g. using the command 'have'
+to derive new facts from existing ones until desired conclusion is
+reached.
+
+BACKWARD reasoning is GOAL-ORIENTED, starting from the conclusion and
+applying tactics like 'intro' and 'by_contra' to reduce the goal to
+simpler subgoals.
+
+-/
+
+/- example of BACKWARD PROOF -/
 example (p q : Prop) : p → q → p := by
   -- Initial goal: p → q → p
   intro hp  -- Introduce the assumption `hp : p`.
@@ -80,7 +90,19 @@ example (p q : Prop) : p → q → p := by
   -- New simpler goal: p
   assumption
 
-/- FORWARD PROOF builds the 'proof term' directly, starting from
-   the assumptions and combining them to form the final conclusion -/
+/- example of FORWARD PROOF by building a 'proof term' directly, starting
+   from the premises and combining them to form the final conclusion -/
 example (p q : Prop) : p → q → p :=
   fun (hp : p) => fun (hq : q) => hp
+
+/- EXAMPLES FOR HOW to use 'contradiction', 'absurd', 'exfalso' -/
+
+/- If the context contains a contradiction, the tactic 'contradiction'
+   can be used to immediately complete the proof and close the goal -/
+example {p q : Prop} (h1 : p) (h2 : ¬ p) : q := by
+  contradiction
+/- Roundabout, less efficient way of proving the same target -/
+example {p q : Prop} (h1 : p) (h2 : ¬ p) : q := by
+  exfalso -- replaces current goal 'q' by 'False'
+  have h3 : False := h2 h1
+  apply h3
