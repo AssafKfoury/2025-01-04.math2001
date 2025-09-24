@@ -1,6 +1,5 @@
 /- 24 September 2025 -/
 /- from Macbeth Sect 6.02 in Chapt 6: three examples -/
-/-  -/
 /- SEVERAL EXERCISES WITH INDUCTION -/
 
 import Mathlib.Tactic.GCongr
@@ -55,7 +54,7 @@ def factorial : ℕ → ℕ
   | n + 1 => (n + 1) * factorial n
 
 notation:10000 n "!" => factorial n
-/- next proof is from Macbeth's solutions in 2023-04.math2001-/
+
 example (n : ℕ) : (n + 1)! ≥ 2 ^ n := by
   simple_induction n with k IH
   · -- base case
@@ -92,9 +91,9 @@ example (p q : Prop) : p → (q → p) := by
   -- New simpler goal: q → p
   intro hq  -- Introduce the assumption `hq : q`.
   -- New simpler goal: p
-  apply hp -- exact hp -- assumption
+  apply hp -- alternative step: `exact hp` or `assumption`
 
-/- example of FORWARD PROOF, using 'term mode', by building a 'proof term'
+/- example of FORWARD PROOF, using `term mode`, by building a 'proof term'
    directly, starting from premises and combining them to form final conclusion -/
 example (p q : Prop) : p → q → p :=
   fun (hp : p) => fun (hq : q) => hp
@@ -108,24 +107,39 @@ example {P Q : Prop} : ((P → Q) → P) → P := by
   by_contra h2
   -- The goal is now `False`, given `h` and `h2`.
   -- We prove `P` by applying our hypothesis `h`.
-  have h3 : P := h (fun p_hyp => absurd p_hyp h2)
+  have h3 : P := h (fun x => absurd x h2)
   -- We have now `h3 : P`.
   -- We can use this to contradict our assumption `h2`.
   -- contradiction
-  have h4 : False := by apply h2 h3
+  have h4 : False := h2 h3
+  exact h4 -- you can replace this line and the preceding one by `contradiction`
 
-/- example of FORWARD PROOF of Peirce's Law, using 'term mode' -/
+/- example of FORWARD PROOF, using `term mode`, of Peirce's Law -/
 example {P Q : Prop} : ((P → Q) → P) → P :=
-  fun h : (P → Q) → P ↦ by_contradiction fun not_P : ¬P ↦
-    have not_not_P : ¬¬ P := fun h_P : P ↦
-      have P_implies_Q : P → Q := fun _ : P ↦
-        absurd h_P not_P
-      have h_P_derived : P := h P_implies_Q
-      absurd h_P_derived not_P
-    absurd not_not_P (not_not_P not_P)
+  -- Introduce the hypothesis: h : (P → Q) → P
+  fun h : (P → Q) → P =>
+    -- The strategy is to prove P by contradiction, using the law of excluded middle (LEM)
+    by_contradiction $ -- `$` tells Lean4 the full expression that follows (fun not_P : ¬ P => ...)
+                       -- should be treated as a single argument to the function `by_contradiction`
+    fun not_P : ¬ P =>
+      -- have h_PQ : P → Q
+      -- The first step is to establish that P → Q is true from the assumption ¬P.
+      have h_PQ : P → Q :=
+        -- Assume p : P, and then use the contradiction with not_P to get a proof of Q.
+        fun p : P =>
+          -- The term for a proof of an arbitrary proposition Q from a contradiction (p and ¬P)
+          False.elim (not_P p)
+      -- We now have two things:
+      -- 1. h : (P → Q) → P
+      -- 2. h_PQ : P → Q
+      -- We can apply h to h_PQ to get a proof of P.
+      have P_from_h : P := h h_PQ
+      -- Now we have a proof of P (P_from_h) and our assumption ¬P (not_P).
+      -- This is a contradiction, which proves the outer by_contradiction goal.
+      -- The term for a contradiction is not_P P_from_h : False
+      not_P P_from_h
 
-/- mixing BACKWARD and FORWARD, with emphasis on BACKWARD, in a proof
-   of Peirce's Law -/
+/- mixing BACKWARD and FORWARD, with emphasis on BACKWARD, in a proof of Peirce's Law -/
 example {P Q : Prop} : ((P → Q) → P) → P := by
   -- Goal: ((P → Q) → P) → P
   -- To prove an implication, introduce the antecedent as a hypothesis.
@@ -150,32 +164,6 @@ example {P Q : Prop} : ((P → Q) → P) → P := by
   -- This gives us `h4 : P`.
   -- But we also have our assumption `h2 : ¬ P`. This is a contradiction.
   contradiction
-
-/- again, mixing BACKWARD and FORWARD, with emphasis on FORWARD, in
-   a proof Peirce's Law -/
-/- example of FORWARD PROOF, of so-called Peirce's Law -/
-example {P Q : Prop} : ((P → Q) → P) → P := by
-  -- Goal: ((P → Q) → P) → P
-  -- Start by assuming the hypothesis.
-  intro h1
-  -- Assume the negation of the conclusion to set up a proof by contradiction.
-  by_contra not_P
-  -- Goal: False
-  -- We have h1 : (P → Q) → P and not_P : ¬P.
-  -- From not_P, we can prove P → Q. This is a common pattern in classical logic.
-  have p_implies_q : P → Q := by
-    -- Goal: P → Q
-    intro p
-    -- We have p : P and not_P : ¬P, which is a contradiction.
-    -- From a contradiction, anything follows, including Q.
-    contradiction
-  -- We now have `p_implies_q : P → Q`.
-  -- Use h1 on p_implies_q to get a proof of P.
-  have p_proof : P := h1 p_implies_q
-  -- We now have `p_proof : P`.
-  -- We also have `not_P : ¬P`, which is `P → False`.
-  -- We can apply not_P to p_proof to get `False`.
-  exact not_P p_proof
 
 /- EXAMPLES FOR HOW to use 'contradiction', 'absurd', 'exfalso' -/
 
