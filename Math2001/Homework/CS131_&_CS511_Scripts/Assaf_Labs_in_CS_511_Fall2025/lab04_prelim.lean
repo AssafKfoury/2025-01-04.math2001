@@ -68,3 +68,19 @@ example (n : ℕ) : (n + 1)! ≥ 2 ^ n := by
       _ = k * 2 ^ k + 2 * 2 ^ k := by ring
       _ ≥ 2 * 2 ^ k := by extra
       _ = 2 ^ (k + 1) := by ring
+
+/- FORWARD vs BACKWARD Reasoning -/
+
+/- BACKWARD PROOF is goal-oriented or goal-directed -/
+example (p q : Prop) : p → q → p := by
+  -- Initial goal: p → q → p
+  intro hp  -- Introduce the assumption `hp : p`.
+  -- New simpler goal: q → p
+  intro hq  -- Introduce the assumption `hq : q`.
+  -- New simpler goal: p
+  assumption
+
+/- FORWARD PROOF builds the 'proof term' directly, starting from
+   the assumptions and combining them to form the final conclusion -/
+example (p q : Prop) : p → q → p :=
+  fun (hp : p) => fun (hq : q) => hp
