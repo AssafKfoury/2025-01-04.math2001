@@ -1,6 +1,6 @@
 /- 24 September 2025 -/
-/- from Macbeth Sect 6.02: two examples -/
-/- from ps7.lean in CS 131 Spring 2025: two theorems -/
+/- from Macbeth Sect 6.02 in Chapt 6: three examples -/
+/-  -/
 /- SEVERAL EXERCISES WITH INDUCTION -/
 
 import Mathlib.Tactic.GCongr
@@ -48,3 +48,23 @@ example (n : ℕ) : x n = 2 ^ (n + 2) + 1 := by
     calc x (k + 1) = 2 * (x k) - 1 := by rw [x]
       _ = 2 * (2 ^ (k + 2) + 1) - 1 := by rw [IH]
       _ = 2 ^ ((k + 1) + 2) + 1 := by ring
+
+/- From Example 6.2.6 in 06_Induction in Macbeth's -/
+def factorial : ℕ → ℕ
+  | 0 => 1
+  | n + 1 => (n + 1) * factorial n
+
+notation:10000 n "!" => factorial n
+/- next proof is from Macbeth's solutions in 2023-04.math2001-/
+example (n : ℕ) : (n + 1)! ≥ 2 ^ n := by
+  simple_induction n with k IH
+  · -- base case
+    calc (0 + 1)! = (0 + 1) * 0! := by rw [factorial, factorial, factorial]
+      _ = (0 + 1) * 1 := by rw [factorial]
+      _ ≥ 2 ^ 0 := by numbers
+  · -- inductive step
+    calc (k + 1 + 1)! = (k + 1 + 1) * (k + 1)! := by rw [factorial]
+      _ ≥ (k + 1 + 1) * 2 ^ k := by rel [IH]
+      _ = k * 2 ^ k + 2 * 2 ^ k := by ring
+      _ ≥ 2 * 2 ^ k := by extra
+      _ = 2 ^ (k + 1) := by ring
