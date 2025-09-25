@@ -115,7 +115,15 @@ example {p q : Prop} (h1 : p) (h2 : ¬ p) : q := by
   have h3 : False := h2 h1
   exfalso -- replaces current goal `q` by `False`
   apply h3
-/- An alternative way of using a contradiction in the context, with `absurd` -/
+/- An alternative use of a contradiction in the context, with `absurd` -/
+example {P Q : Prop} (h1 : P) (h2 : ¬ P) : Q := by
+  absurd h1
+  exact h2
+  /- Another alternative use of a contradiction in the context, with `absurd` -/
+example {P Q : Prop} (h1 : P) (h2 : ¬ P) : Q := by
+  absurd h2
+  exact h1
+  /- Another alternative use of a contradiction in the context, with `absurd` -/
 example {P Q : Prop} (h1 : P) (h2 : ¬ P) : Q := by
   absurd  h2 h1
   intro h3
