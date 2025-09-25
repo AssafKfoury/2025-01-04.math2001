@@ -4,6 +4,8 @@ import Mathlib.Tactic.GCongr
 import Library.Basic
 import Library.Tactic.ModEq
 
+open Classical
+
 /- FORWARD reasoning vs BACKWARD Reasoning
 
 FORWARD reasoning is PREMISE-ORIENTED, e.g. using the command `have`
@@ -13,7 +15,7 @@ is called `term mode` can be viewed as `forward reasoning`.
 
 BACKWARD reasoning is GOAL-ORIENTED, starting from the conclusion and
 applying tactics like `intro` and `by_contra` to reduce the goal to
-simpler subgoals.
+simpler subgoals. Tactic mode is typically entered with the keyword `by`.
 
 FORWARD and BACKWARD reasoning are not exclusive of each other: The
 friendliest approach to writing a proof is often one that mixes the
@@ -108,8 +110,13 @@ example {P Q : Prop} : ((P → Q) → P) → P := by
    can be used to immediately complete the proof and close the goal -/
 example {p q : Prop} (h1 : p) (h2 : ¬ p) : q := by
   contradiction
-/- Roundabout, less efficient way of proving the same target -/
+/- Roundabout, less efficient way of proving the preceding with `exfalso` -/
 example {p q : Prop} (h1 : p) (h2 : ¬ p) : q := by
-  exfalso -- replaces current goal `q` by `False`
   have h3 : False := h2 h1
+  exfalso -- replaces current goal `q` by `False`
   apply h3
+/- An alternative way of using a contradiction in the context, with `absurd` -/
+example {P Q : Prop} (h1 : P) (h2 : ¬ P) : Q := by
+  absurd  h2 h1
+  intro h3
+  exact h3
