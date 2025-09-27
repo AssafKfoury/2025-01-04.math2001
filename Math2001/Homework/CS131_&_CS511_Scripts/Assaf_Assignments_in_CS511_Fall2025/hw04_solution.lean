@@ -29,6 +29,6 @@ example {p q : Prop} : (p → q) → (¬p ∨ q)  := by
 example {p q : Prop} : (¬q → ¬p) → (p → q) := by
   intro h_nqnp
   apply prove_negation_implication
-
+  sorry
 
 example {p q : Prop} : (((p → q) → p) → p) := sorry
