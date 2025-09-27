@@ -33,3 +33,20 @@ example {p q : Prop} : (¬q → ¬p) → (p → q) := by
   sorry
 
 example {p q : Prop} : (((p → q) → p) → p) := sorry
+
+/-
+example (P Q : Prop) : ¬ (P ∧ Q) ↔ (¬ P ∨ ¬ Q) := by
+  constructor
+  · intro h
+    by_cases hP : P
+    · right
+      intro hQ
+      have hPQ : P ∧ Q
+      · constructor
+        · apply hP
+        · apply hQ
+      contradiction
+    · left
+      apply hP
+  · sorry
+-/
