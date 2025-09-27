@@ -1,9 +1,11 @@
 /- ## CS 511, 26 Sept 2025 -/
-/- ## three proofs for Exercise 4 in Homework Assignment 04 -/
-
 import Mathlib.Logic.Basic
 import Mathlib.Tactic.ByContra
 import Mathlib.Tactic.Contrapose
+
+/- ## three proofs for Exercise 3 in Homework Assignment 04 -/
+
+/- ## three proofs for Exercise 4 in Homework Assignment 04 -/
 
 lemma imply_to_negate (p q : Prop) : (p → q) → ¬ (p ∧ ¬ q) := by
   intro h_pq
@@ -63,3 +65,5 @@ example {p q : Prop} : (((p → q) → p) → p) := by
      contradiction
   have H_p : p := H_pqp H_pq
   contradiction
+
+/- ## two proofs for Problem 2 in Homework Assignment 04 -/
