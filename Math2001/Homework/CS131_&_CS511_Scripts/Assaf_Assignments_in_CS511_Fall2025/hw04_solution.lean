@@ -1,38 +1,24 @@
-/- CS 511, 26 Sept 2025 -/
-/- solution for Exercise 4 in Homework Assignment 04 -/
+/- ## CS 511, 26 Sept 2025 -/
+/- ## three proofs for Exercise 4 in Homework Assignment 04 -/
 
 import Mathlib.Logic.Basic
 import Mathlib.Tactic.ByContra
+import Mathlib.Tactic.Contrapose
 
-lemma prove_implication_negation (p q : Prop) : (p → q) → ¬ (p ∧ ¬ q) := by
+lemma imply_to_negate (p q : Prop) : (p → q) → ¬ (p ∧ ¬ q) := by
   intro h_pq
   by_contra h_pnq
   obtain ⟨ h_p , h_nq ⟩ := h_pnq
   have h_q : q := h_pq h_p
   contradiction
 
-lemma prove_negation_implication (p q : Prop) :  ¬ (p ∧ ¬ q) → (p → q) := by
+lemma negate_to_imply (p q : Prop) :  ¬ (p ∧ ¬ q) → (p → q) := by
   intro h_neg_pnq
   intro h_p
   by_cases h_q : q
-  exact h_q
-  have h_pnq : (p ∧ ¬ q) := And.intro h_p h_q
-  contradiction
-
-example {p q : Prop} : (p → q) → (¬p ∨ q)  := by
-  intro h_pq
-  have h_neg_pnq : ¬ (p ∧ ¬ q) := by
-     apply prove_implication_negation
-     exact h_pq
-  -- push_neg at h_pq
-  sorry
-
-example {p q : Prop} : (¬q → ¬p) → (p → q) := by
-  intro h_nqnp
-  apply prove_negation_implication
-  sorry
-
-example {p q : Prop} : (((p → q) → p) → p) := sorry
+  · exact h_q
+  · have h_pnq : (p ∧ ¬ q) := And.intro h_p h_q
+    contradiction
 
 lemma de_morgan_4 (P Q : Prop) : ¬ (P ∧ Q) → (¬ P ∨ ¬ Q) := by
   intro h1
@@ -46,34 +32,34 @@ lemma de_morgan_4 (P Q : Prop) : ¬ (P ∧ Q) → (¬ P ∨ ¬ Q) := by
   · left
     exact hP
 
-/- constructor
-  · intro h
-    by_cases hP : P
-    · right
-      intro hQ
-      have hPQ : P ∧ Q
-      · constructor
-        · apply hP
-        · apply hQ
-      contradiction
-    · left
-      apply hP
-  · sorry
--/
+/- ## first proof for Exercise 4 -/
+example {p q : Prop} : (p → q) → (¬p ∨ q)  := by
+  intro h_pq
+  have h_neg_pnq : ¬ (p ∧ ¬ q) := by
+     apply imply_to_negate
+     exact h_pq
+  by_cases h_p : p
+  · right
+    have h_q : q := h_pq h_p
+    exact h_q
+  · left
+    exact h_p
 
-/-
-example (P Q : Prop) : ¬ (P ∧ Q) ↔ (¬ P ∨ ¬ Q) := by
-  constructor
-  · intro h
-    by_cases hP : P
-    · right
-      intro hQ
-      have hPQ : P ∧ Q
-      · constructor
-        · apply hP
-        · apply hQ
-      contradiction
-    · left
-      apply hP
-  · sorry
--/
+/- ## second proof for Exercise 4 -/
+example {p q : Prop} : (¬q → ¬p) → (p → q) := by
+  intro h_nqnp
+  contrapose
+  exact h_nqnp
+
+/- ## third proof for Exercise 4 ,
+   which proves so-called Peirce's Law which was already proved in
+   different ways in the script `forward_backward_reasoning.lean`,
+   the following is a proof from that script (the last one) -/
+example {p q : Prop} : (((p → q) → p) → p) := by
+  intro H_pqp
+  by_contra H_np
+  have H_pq : p → q := by
+     intro H_p
+     contradiction
+  have H_p : p := H_pqp H_pq
+  contradiction
