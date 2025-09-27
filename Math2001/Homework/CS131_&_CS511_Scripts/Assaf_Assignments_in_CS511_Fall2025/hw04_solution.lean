@@ -24,6 +24,7 @@ example {p q : Prop} : (p → q) → (¬p ∨ q)  := by
   have h_neg_pnq : ¬ (p ∧ ¬ q) := by
      apply prove_implication_negation
      exact h_pq
+  -- push_neg at h_pq
   sorry
 
 example {p q : Prop} : (¬q → ¬p) → (p → q) := by
