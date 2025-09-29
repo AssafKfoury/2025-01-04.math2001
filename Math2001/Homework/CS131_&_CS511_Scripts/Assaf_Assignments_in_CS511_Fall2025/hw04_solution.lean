@@ -15,18 +15,17 @@ notation3 (prettyPrint := false) "forall_sufficiently_large "(...)", "r:(scoped 
 
 
 /-
-
--- import Mathlib.Logic.Basic
+import Mathlib.Logic.Basic
 import Mathlib.Data.Real.Basic
--- import Mathlib.Tactic.ByContra
--- import Mathlib.Tactic.Contrapose
+mport Mathlib.Tactic.ByContra
+import Mathlib.Tactic.Contrapose
 import Library.Theory.Comparison
 import Library.Tactic.Addarith
 import Library.Tactic.Cancel
 import Library.Tactic.Numbers
 import Library.Tactic.Extra
 import Library.Tactic.Use
--- import Library.Tactic.Induction
+import Library.Tactic.Induction
 
 /- From Macbeth's solution:
 import Mathlib.Data.Real.Basic
@@ -54,9 +53,8 @@ set_option linter.unusedVariables false
 namespace Nat
 
 notation3 (prettyPrint := false) "forall_sufficiently_large "(...)", "r:(scoped P => ∃ C, ∀ x ≥ C, P x) => r
-
-
 -/
+
 attribute [-instance] Int.instDivInt_1 Int.instDivInt EuclideanDomain.instDiv Nat.instDivNat
 set_option linter.unusedVariables false
 
@@ -156,9 +154,10 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
   intro n hn
   induction_from_starting_point n, hn with k hk IH
   · -- base case
-    calc 2 ^ 4 = 16      := by exact rfl
-             _ = 4 ^ 2   := by exact rfl -- apply? ring
+    calc 2 ^ 4 = 16      := by ring -- `exact rfl` will also work
+             _ = 4 ^ 2   := by ring -- `exact rfl` will also work
              _ ≥ 4 ^ 2   := by exact Nat.le_refl (4 ^ 2)
+                            -- obtained by first applying `by exact?`
   · -- inductive step
     calc 2 ^ (k + 1) = 2 * 2 ^ k := by ring
       _ ≥ 2 * k ^ 2              := by rel [IH]
@@ -167,8 +166,5 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
       _ = k ^ 2 + 2 * k + 2 * k  := by ring
       _ ≥ k ^ 2 + 2 * k + 2 * 4  := by rel [hk]
       _ = (k + 1) ^ 2 + 7        := by ring
-      _ ≥ (k + 1) ^ 2            := by exact n -- extra
-      _ = (k + 1) ^ 2            := by exact rfl
-
-
--/
+      _ ≥ (k + 1) ^ 2            := by exact Nat.le_add_right ((k + 1) ^ 2) 7
+                                    -- obtained by first applying `by exact?`
