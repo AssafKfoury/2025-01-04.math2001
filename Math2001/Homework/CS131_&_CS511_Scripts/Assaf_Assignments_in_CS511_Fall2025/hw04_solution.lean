@@ -168,3 +168,7 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
       _ = (k + 1) ^ 2 + 7        := by ring
       _ ≥ (k + 1) ^ 2            := by exact Nat.le_add_right ((k + 1) ^ 2) 7
                                     -- obtained by first applying `by exact?`
+
+example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 3 := by
+  dsimp
+  sorry
