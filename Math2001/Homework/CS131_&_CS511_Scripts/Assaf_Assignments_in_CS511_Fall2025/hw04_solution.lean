@@ -1,14 +1,12 @@
 /- ## CS 511, 26 Sept 2025 -/
 import Mathlib.Data.Real.Basic
 import Library.Basic
-  -- module `Library.Basic` must be imported for tactics
-  -- `extra`, `numbers`, `cancel`, `addarith [h]` and
-  -- environment `math2001_init`
+       -- module `Library.Basic` must be imported for Macbeth's tactics
+       -- `extra`, `numbers`, `cancel`, `addarith [h]` and Macbeth's
+       -- environment `math2001_init`
 import Library.Tactic.Induction
 
 math2001_init
-
--- namespace Nat
 
 /- ## three proofs for Exercise 3 in Homework Assignment 04 -/
 
@@ -43,20 +41,24 @@ lemma negate_to_imply (p q : Prop) :  ¬ (p ∧ ¬ q) → (p → q) := by
   intro h_neg_pnq
   intro h_p
   by_cases h_q : q
-  · exact h_q
-  · have h_pnq : (p ∧ ¬ q) := And.intro h_p h_q
+  · -- case 1, with new hypothesis h_q : q
+    exact h_q
+  · -- case 2, with new hypothesis h_q : ¬ q
+    have h_pnq : (p ∧ ¬ q) := And.intro h_p h_q
     contradiction
 
 lemma de_morgan_4 (P Q : Prop) : ¬ (P ∧ Q) → (¬ P ∨ ¬ Q) := by
   intro h1
   by_cases hP : P
-  · right
+  · -- case 1, with new hypothesis hP : P
+    right
     intro hQ
     apply h1
     constructor
     exact hP
     exact hQ
-  · left
+  · -- case 2, with new hypothesis hP : ¬ P
+    left
     exact hP
 
 /- ## first proof for Exercise 4 -/
@@ -66,10 +68,12 @@ example {p q : Prop} : (p → q) → (¬p ∨ q)  := by
      apply imply_to_negate
      exact h_pq
   by_cases h_p : p
-  · right
+  · -- case 1
+    right
     have h_q : q := h_pq h_p
     exact h_q
-  · left
+  · -- case 2
+    left
     exact h_p
 
 /- ## second proof for Exercise 4 -/
@@ -101,8 +105,7 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
   · -- base case
     calc 2 ^ 4 = 16      := by ring -- `exact rfl` will also work
              _ = 4 ^ 2   := by ring -- `exact rfl` will also work
-             _ ≥ 4 ^ 2   := by exact le_refl (4 ^ 2)
-                            -- obtained by first applying `by exact?`
+             _ ≥ 4 ^ 2   := by numbers
   · -- inductive step
     calc 2 ^ (k + 1) = 2 * 2 ^ k := by ring
       _ ≥ 2 * k ^ 2              := by rel [IH]
@@ -111,8 +114,7 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
       _ = k ^ 2 + 2 * k + 2 * k  := by ring
       _ ≥ k ^ 2 + 2 * k + 2 * 4  := by rel [hk]
       _ = (k + 1) ^ 2 + 7        := by ring
-      _ ≥ (k + 1) ^ 2            := by exact le_add_right ((k + 1) ^ 2) 7
-                                    -- obtained by first applying `by exact?`
+      _ ≥ (k + 1) ^ 2            := by extra
 
 example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 3 := by
   dsimp
@@ -120,8 +122,7 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 3 := by
   intro n ; intro hn
   induction_from_starting_point n, hn with k hk IH
   · -- base case
-    ring_nf                         -- obtained by first trying `ring`
-    exact Nat.le_of_sub_eq_zero rfl -- obtained by first trying `exact?`
+    numbers
   · -- inductive step
     calc 2 ^ (k + 1) = 2 * 2 ^ k := by ring
          _ ≥ 2 * k ^ 3           := by rel [IH]
@@ -132,4 +133,4 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 3 := by
          _ = k ^ 3 + 3 * k ^ 2 + 3 * k + 67 * k   := by ring
          _ ≥ k ^ 3 + 3 * k ^ 2 + 3 * k + 67 * 10  := by rel [hk]
          _ = (k + 1) ^ 3 + 669    := by ring
-         _ ≥ (k + 1) ^ 3          := by extra -- exact le_add_right ((k + 1) ^ 3) 669
+         _ ≥ (k + 1) ^ 3          := by extra
