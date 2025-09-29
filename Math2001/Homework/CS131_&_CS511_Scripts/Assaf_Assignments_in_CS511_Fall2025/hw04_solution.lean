@@ -5,6 +5,24 @@ import Mathlib.Tactic.Contrapose
 
 /- ## three proofs for Exercise 3 in Homework Assignment 04 -/
 
+example : ∃ m n : ℤ, m ^ 2 - n ^ 2 = 11 := by
+  use 6, 5
+  numbers
+
+example (a : ℤ) : ∃ m n : ℤ, m ^ 2 - n ^ 2 = 2 * a + 1 := by
+  use a + 1, a
+  ring
+
+example {p q : ℝ} (h : p < q) : ∃ x, p < x ∧ x < q := by
+  use (p + q)/2
+  constructor
+  · calc
+      p = (p + p)/2 := by ring
+      _ < (p + q)/2 := by rel [h]
+  · calc
+      (p + q)/2 < (q + q)/2 := by rel [h]
+      _ = q := by ring
+
 /- ## three proofs for Exercise 4 in Homework Assignment 04 -/
 
 lemma imply_to_negate (p q : Prop) : (p → q) → ¬ (p ∧ ¬ q) := by
