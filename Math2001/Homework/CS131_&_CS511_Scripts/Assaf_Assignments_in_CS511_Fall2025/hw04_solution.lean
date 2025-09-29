@@ -1,5 +1,7 @@
 /- ## CS 511, 26 Sept 2025 -/
 import Mathlib.Data.Real.Basic
+       -- there is no need to import `Mathlib` or `Mathlib.Tactic`
+       -- in full, which are enormous modules taking time to be imported
 import Library.Basic
        -- module `Library.Basic` must be imported for Macbeth's tactics
        -- `extra`, `numbers`, `cancel`, `addarith [h]` and Macbeth's
@@ -68,11 +70,11 @@ example {p q : Prop} : (p → q) → (¬p ∨ q)  := by
      apply imply_to_negate
      exact h_pq
   by_cases h_p : p
-  · -- case 1
+  · -- case 1, with new hypothesis h_p : p
     right
     have h_q : q := h_pq h_p
     exact h_q
-  · -- case 2
+  · -- case 2, with new hypothesis h_p : ¬ p
     left
     exact h_p
 
