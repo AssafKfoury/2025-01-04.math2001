@@ -1,67 +1,9 @@
 /- ## CS 511, 26 Sept 2025 -/
 import Mathlib.Data.Real.Basic
--- import Library.Theory.Comparison
--- import Library.Tactic.Addarith
--- import Library.Tactic.Cancel
--- import Library.Tactic.Numbers
--- import Library.Tactic.Extra
--- import Library.Tactic.Use
 import Library.Tactic.Induction
-
--- attribute [-instance] Int.instDivInt_1 Int.instDivInt EuclideanDomain.instDiv Nat.instDivNat
-
-notation3 (prettyPrint := false) "forall_sufficiently_large "(...)", "r:(scoped P => ∃ C, ∀ x ≥ C, P x) => r
-
-
-
-/-
-import Mathlib.Logic.Basic
-import Mathlib.Data.Real.Basic
-mport Mathlib.Tactic.ByContra
-import Mathlib.Tactic.Contrapose
-import Library.Theory.Comparison
-import Library.Tactic.Addarith
-import Library.Tactic.Cancel
-import Library.Tactic.Numbers
-import Library.Tactic.Extra
-import Library.Tactic.Use
-import Library.Tactic.Induction
-
-/- From Macbeth's solution:
-import Mathlib.Data.Real.Basic
-import Library.Theory.Comparison
-import Library.Tactic.Addarith
-import Library.Tactic.Cancel
-import Library.Tactic.Numbers
-import Library.Tactic.Extra
-import Library.Tactic.Use
-
--/
-
-/-
-import Mathlib.Data.Real.Basic
-import Library.Theory.Parity
-import Library.Tactic.Addarith
-import Library.Tactic.Induction
-import Library.Tactic.Numbers
-import Library.Tactic.Extra
-import Library.Tactic.Use
-
-attribute [-instance] Int.instDivInt_1 Int.instDivInt EuclideanDomain.instDiv Nat.instDivNat
-set_option linter.unusedVariables false
-
 namespace Nat
 
 notation3 (prettyPrint := false) "forall_sufficiently_large "(...)", "r:(scoped P => ∃ C, ∀ x ≥ C, P x) => r
--/
-
-attribute [-instance] Int.instDivInt_1 Int.instDivInt EuclideanDomain.instDiv Nat.instDivNat
-set_option linter.unusedVariables false
-
-namespace Nat
-
-notation3 (prettyPrint := false) "forall_sufficiently_large "(...)", "r:(scoped P => ∃ C, ∀ x ≥ C, P x) => r
--/
 
 /- ## three proofs for Exercise 3 in Homework Assignment 04 -/
 
@@ -82,8 +24,6 @@ example {p q : ℝ} (h : p < q) : ∃ x, p < x ∧ x < q := by
   · calc
       (p + q)/2 < (q + q)/2 := by rel [h]
       _ = q := by ring
-
-
 
 /- ## three proofs for Exercise 4 in Homework Assignment 04 -/
 
@@ -156,7 +96,7 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
   · -- base case
     calc 2 ^ 4 = 16      := by ring -- `exact rfl` will also work
              _ = 4 ^ 2   := by ring -- `exact rfl` will also work
-             _ ≥ 4 ^ 2   := by exact Nat.le_refl (4 ^ 2)
+             _ ≥ 4 ^ 2   := by exact le_refl (4 ^ 2)
                             -- obtained by first applying `by exact?`
   · -- inductive step
     calc 2 ^ (k + 1) = 2 * 2 ^ k := by ring
@@ -166,9 +106,31 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
       _ = k ^ 2 + 2 * k + 2 * k  := by ring
       _ ≥ k ^ 2 + 2 * k + 2 * 4  := by rel [hk]
       _ = (k + 1) ^ 2 + 7        := by ring
-      _ ≥ (k + 1) ^ 2            := by exact Nat.le_add_right ((k + 1) ^ 2) 7
+      _ ≥ (k + 1) ^ 2            := by exact le_add_right ((k + 1) ^ 2) 7
                                     -- obtained by first applying `by exact?`
 
 example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 3 := by
   dsimp
   sorry
+
+/-
+example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 3 := by
+  dsimp
+  use 10
+  intro n hn
+  induction_from_starting_point n, hn with k hk IH
+  · -- base case
+    numbers
+  · -- inductive step
+    calc 2 ^ (k + 1) = 2 * 2 ^ k := by ring
+      _ ≥ 2 * k ^ 3 := by rel [IH]
+      _ = k ^ 3 + k * k ^ 2 := by ring
+      _ ≥ k ^ 3 + 10 * k ^ 2 := by rel [hk]
+      _ = k ^ 3 + 3 * k ^ 2 + 7 * k * k := by ring
+      _ ≥ k ^ 3 + 3 * k ^ 2 + 7 * 10 * k := by rel [hk]
+      _ = k ^ 3 + 3 * k ^ 2 + 3 * k + 67 * k := by ring
+      _ ≥ k ^ 3 + 3 * k ^ 2 + 3 * k + 67 * 10 := by rel [hk]
+      _ = (k + 1) ^ 3 + 669 := by ring
+      _ ≥ (k + 1) ^ 3 := by extra
+
+-/
