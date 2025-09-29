@@ -1,4 +1,21 @@
 /- ## CS 511, 26 Sept 2025 -/
+import Mathlib.Data.Real.Basic
+-- import Library.Theory.Comparison
+-- import Library.Tactic.Addarith
+-- import Library.Tactic.Cancel
+-- import Library.Tactic.Numbers
+-- import Library.Tactic.Extra
+-- import Library.Tactic.Use
+import Library.Tactic.Induction
+
+-- attribute [-instance] Int.instDivInt_1 Int.instDivInt EuclideanDomain.instDiv Nat.instDivNat
+
+notation3 (prettyPrint := false) "forall_sufficiently_large "(...)", "r:(scoped P => ∃ C, ∀ x ≥ C, P x) => r
+
+
+
+/-
+
 -- import Mathlib.Logic.Basic
 import Mathlib.Data.Real.Basic
 -- import Mathlib.Tactic.ByContra
@@ -46,13 +63,13 @@ set_option linter.unusedVariables false
 namespace Nat
 
 notation3 (prettyPrint := false) "forall_sufficiently_large "(...)", "r:(scoped P => ∃ C, ∀ x ≥ C, P x) => r
-
+-/
 
 /- ## three proofs for Exercise 3 in Homework Assignment 04 -/
 
 example : ∃ m n : ℤ, m ^ 2 - n ^ 2 = 11 := by
   use 6, 5
-  ring -- numbers
+  ring
 
 example (a : ℤ) : ∃ m n : ℤ, m ^ 2 - n ^ 2 = 2 * a + 1 := by
   use a + 1, a
@@ -68,7 +85,7 @@ example {p q : ℝ} (h : p < q) : ∃ x, p < x ∧ x < q := by
       (p + q)/2 < (q + q)/2 := by rel [h]
       _ = q := by ring
 
-/-
+
 
 /- ## three proofs for Exercise 4 in Homework Assignment 04 -/
 
@@ -139,15 +156,15 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
   intro n hn
   induction_from_starting_point n, hn with k hk IH
   · -- base case
-    numbers
+    ring -- numbers
   · -- inductive step
     calc 2 ^ (k + 1) = 2 * 2 ^ k := by ring
-      _ ≥ 2 * k ^ 2 := by rel [IH]
-      _ = k ^ 2 + k * k := by ring
-      _ ≥ k ^ 2 + 4 * k := by rel [hk]
-      _ = k ^ 2 + 2 * k + 2 * k := by ring
-      _ ≥ k ^ 2 + 2 * k + 2 * 4 := by rel [hk]
-      _ = (k + 1) ^ 2 + 7 := by ring
-      _ ≥ (k + 1) ^ 2 := by extra
+      _ ≥ 2 * k ^ 2              := by rel [IH]
+      _ = k ^ 2 + k * k          := by ring
+      _ ≥ k ^ 2 + 4 * k          := by rel [hk]
+      _ = k ^ 2 + 2 * k + 2 * k  := by ring
+      _ ≥ k ^ 2 + 2 * k + 2 * 4  := by rel [hk]
+      _ = (k + 1) ^ 2 + 7        := by ring
+      _ ≥ (k + 1) ^ 2            := by exact n -- extra
 
 -/
