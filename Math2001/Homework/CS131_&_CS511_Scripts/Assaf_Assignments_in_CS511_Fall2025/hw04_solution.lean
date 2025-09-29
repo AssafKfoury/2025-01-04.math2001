@@ -156,7 +156,9 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
   intro n hn
   induction_from_starting_point n, hn with k hk IH
   · -- base case
-    ring -- numbers
+    calc 2 ^ 4 = 16      := by exact rfl
+             _ = 4 ^ 2   := by exact rfl -- apply? ring
+             _ ≥ 4 ^ 2   := by exact Nat.le_refl (4 ^ 2)
   · -- inductive step
     calc 2 ^ (k + 1) = 2 * 2 ^ k := by ring
       _ ≥ 2 * k ^ 2              := by rel [IH]
@@ -166,5 +168,7 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
       _ ≥ k ^ 2 + 2 * k + 2 * 4  := by rel [hk]
       _ = (k + 1) ^ 2 + 7        := by ring
       _ ≥ (k + 1) ^ 2            := by exact n -- extra
+      _ = (k + 1) ^ 2            := by exact rfl
+
 
 -/
