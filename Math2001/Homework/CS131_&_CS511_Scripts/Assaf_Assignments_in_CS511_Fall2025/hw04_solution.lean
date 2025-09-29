@@ -1,12 +1,15 @@
 /- ## CS 511, 26 Sept 2025 -/
-import Mathlib.Logic.Basic
+-- import Mathlib.Logic.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Tactic.ByContra
-import Mathlib.Tactic.Contrapose
--- import Library.Tactic.Numbers
--- import Mathlib.Tactic.Numbers
--- import Library.Tactic.Use
-import Mathlib.Tactic.Use
+-- import Mathlib.Tactic.ByContra
+-- import Mathlib.Tactic.Contrapose
+import Library.Theory.Comparison
+import Library.Tactic.Addarith
+import Library.Tactic.Cancel
+import Library.Tactic.Numbers
+import Library.Tactic.Extra
+import Library.Tactic.Use
+-- import Library.Tactic.Induction
 
 /- From Macbeth's solution:
 import Mathlib.Data.Real.Basic
@@ -18,6 +21,28 @@ import Library.Tactic.Extra
 import Library.Tactic.Use
 
 -/
+
+/-
+import Mathlib.Data.Real.Basic
+import Library.Theory.Parity
+import Library.Tactic.Addarith
+import Library.Tactic.Induction
+import Library.Tactic.Numbers
+import Library.Tactic.Extra
+import Library.Tactic.Use
+
+attribute [-instance] Int.instDivInt_1 Int.instDivInt EuclideanDomain.instDiv Nat.instDivNat
+set_option linter.unusedVariables false
+
+namespace Nat
+
+notation3 (prettyPrint := false) "forall_sufficiently_large "(...)", "r:(scoped P => ∃ C, ∀ x ≥ C, P x) => r
+
+
+-/
+
+notation3 (prettyPrint := false) "forall_sufficiently_large "(...)", "r:(scoped P => ∃ C, ∀ x ≥ C, P x) => r
+
 
 /- ## three proofs for Exercise 3 in Homework Assignment 04 -/
 
@@ -38,6 +63,8 @@ example {p q : ℝ} (h : p < q) : ∃ x, p < x ∧ x < q := by
   · calc
       (p + q)/2 < (q + q)/2 := by rel [h]
       _ = q := by ring
+
+/-
 
 /- ## three proofs for Exercise 4 in Homework Assignment 04 -/
 
@@ -118,3 +145,5 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
       _ ≥ k ^ 2 + 2 * k + 2 * 4 := by rel [hk]
       _ = (k + 1) ^ 2 + 7 := by ring
       _ ≥ (k + 1) ^ 2 := by extra
+
+-/
