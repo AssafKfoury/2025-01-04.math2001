@@ -1,13 +1,29 @@
 /- ## CS 511, 26 Sept 2025 -/
 import Mathlib.Logic.Basic
+import Mathlib.Data.Real.Basic
 import Mathlib.Tactic.ByContra
 import Mathlib.Tactic.Contrapose
+-- import Library.Tactic.Numbers
+-- import Mathlib.Tactic.Numbers
+-- import Library.Tactic.Use
+import Mathlib.Tactic.Use
+
+/- From Macbeth's solution:
+import Mathlib.Data.Real.Basic
+import Library.Theory.Comparison
+import Library.Tactic.Addarith
+import Library.Tactic.Cancel
+import Library.Tactic.Numbers
+import Library.Tactic.Extra
+import Library.Tactic.Use
+
+-/
 
 /- ## three proofs for Exercise 3 in Homework Assignment 04 -/
 
 example : ∃ m n : ℤ, m ^ 2 - n ^ 2 = 11 := by
   use 6, 5
-  numbers
+  ring -- numbers
 
 example (a : ℤ) : ∃ m n : ℤ, m ^ 2 - n ^ 2 = 2 * a + 1 := by
   use a + 1, a
