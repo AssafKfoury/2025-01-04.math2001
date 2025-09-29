@@ -1,9 +1,14 @@
 /- ## CS 511, 26 Sept 2025 -/
 import Mathlib.Data.Real.Basic
+import Library.Basic
+  -- module `Library.Basic` must be imported for tactics
+  -- `extra`, `numbers`, `cancel`, `addarith [h]` and
+  -- environment `math2001_init`
 import Library.Tactic.Induction
-namespace Nat
 
-notation3 (prettyPrint := false) "forall_sufficiently_large "(...)", "r:(scoped P => ∃ C, ∀ x ≥ C, P x) => r
+math2001_init
+
+-- namespace Nat
 
 /- ## three proofs for Exercise 3 in Homework Assignment 04 -/
 
@@ -111,26 +116,20 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
 
 example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 3 := by
   dsimp
-  sorry
-
-/-
-example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 3 := by
-  dsimp
   use 10
-  intro n hn
+  intro n ; intro hn
   induction_from_starting_point n, hn with k hk IH
   · -- base case
-    numbers
+    ring_nf                         -- obtained by first trying `ring`
+    exact Nat.le_of_sub_eq_zero rfl -- obtained by first trying `exact?`
   · -- inductive step
     calc 2 ^ (k + 1) = 2 * 2 ^ k := by ring
-      _ ≥ 2 * k ^ 3 := by rel [IH]
-      _ = k ^ 3 + k * k ^ 2 := by ring
-      _ ≥ k ^ 3 + 10 * k ^ 2 := by rel [hk]
-      _ = k ^ 3 + 3 * k ^ 2 + 7 * k * k := by ring
-      _ ≥ k ^ 3 + 3 * k ^ 2 + 7 * 10 * k := by rel [hk]
-      _ = k ^ 3 + 3 * k ^ 2 + 3 * k + 67 * k := by ring
-      _ ≥ k ^ 3 + 3 * k ^ 2 + 3 * k + 67 * 10 := by rel [hk]
-      _ = (k + 1) ^ 3 + 669 := by ring
-      _ ≥ (k + 1) ^ 3 := by extra
-
--/
+         _ ≥ 2 * k ^ 3           := by rel [IH]
+         _ = k ^ 3 + k * k ^ 2   := by ring
+         _ ≥ k ^ 3 + 10 * k ^ 2  := by rel [hk]
+         _ = k ^ 3 + 3 * k ^ 2 + 7 * k * k        := by ring
+         _ ≥ k ^ 3 + 3 * k ^ 2 + 7 * 10 * k       := by rel [hk]
+         _ = k ^ 3 + 3 * k ^ 2 + 3 * k + 67 * k   := by ring
+         _ ≥ k ^ 3 + 3 * k ^ 2 + 3 * k + 67 * 10  := by rel [hk]
+         _ = (k + 1) ^ 3 + 669    := by ring
+         _ ≥ (k + 1) ^ 3          := by extra -- exact le_add_right ((k + 1) ^ 3) 669
