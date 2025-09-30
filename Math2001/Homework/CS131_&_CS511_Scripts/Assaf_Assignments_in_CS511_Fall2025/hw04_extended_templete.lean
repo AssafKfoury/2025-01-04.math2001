@@ -14,21 +14,19 @@ math2001_init
 
 example : ∃ m n : ℤ, m ^ 2 - n ^ 2 = 11 := by
   use 6, 5
-  ring
+  sorry
 
 example (a : ℤ) : ∃ m n : ℤ, m ^ 2 - n ^ 2 = 2 * a + 1 := by
   use a + 1, a
-  ring
+  sorry
 
 example {p q : ℝ} (h : p < q) : ∃ x, p < x ∧ x < q := by
   use (p + q)/2
   constructor
-  · calc
-      p = (p + p)/2 := by ring
-      _ < (p + q)/2 := by rel [h]
-  · calc
-      (p + q)/2 < (q + q)/2 := by rel [h]
-      _ = q := by ring
+  · sorry
+
+  · sorry
+
 
 /- ## three proofs for Exercise 4 in Homework Assignment 04 -/
 
@@ -71,31 +69,21 @@ example {p q : Prop} : (p → q) → (¬p ∨ q)  := by
      exact h_pq
   by_cases h_p : p
   · -- case 1, with new hypothesis h_p : p
-    right
-    have h_q : q := h_pq h_p
-    exact h_q
+    sorry
   · -- case 2, with new hypothesis h_p : ¬ p
-    left
-    exact h_p
+    sorry
 
 /- ## second proof for Exercise 4 -/
 example {p q : Prop} : (¬q → ¬p) → (p → q) := by
   intro h_nqnp
-  contrapose
-  exact h_nqnp
+  sorry
 
 /- ## third proof for Exercise 4 ,
    which proves so-called Peirce's Law which was already proved in
    different ways in the script `forward_backward_reasoning.lean`,
    the following is a proof from that script (the last one) -/
 example {p q : Prop} : (((p → q) → p) → p) := by
-  intro H_pqp
-  by_contra H_np
-  have H_pq : p → q := by
-     intro H_p
-     contradiction
-  have H_p : p := H_pqp H_pq
-  contradiction
+  sorry
 
 /- ## two proofs for Problem 2 in Homework Assignment 04 -/
 
@@ -109,14 +97,7 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
              _ = 4 ^ 2   := by ring -- `exact rfl` will also work
              _ ≥ 4 ^ 2   := by numbers
   · -- inductive step
-    calc 2 ^ (k + 1) = 2 * 2 ^ k := by ring
-      _ ≥ 2 * k ^ 2              := by rel [IH]
-      _ = k ^ 2 + k * k          := by ring
-      _ ≥ k ^ 2 + 4 * k          := by rel [hk]
-      _ = k ^ 2 + 2 * k + 2 * k  := by ring
-      _ ≥ k ^ 2 + 2 * k + 2 * 4  := by rel [hk]
-      _ = (k + 1) ^ 2 + 7        := by ring
-      _ ≥ (k + 1) ^ 2            := by extra
+    sorry
 
 example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 3 := by
   dsimp
@@ -126,13 +107,4 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 3 := by
   · -- base case
     numbers
   · -- inductive step
-    calc 2 ^ (k + 1) = 2 * 2 ^ k := by ring
-         _ ≥ 2 * k ^ 3           := by rel [IH]
-         _ = k ^ 3 + k * k ^ 2   := by ring
-         _ ≥ k ^ 3 + 10 * k ^ 2  := by rel [hk]
-         _ = k ^ 3 + 3 * k ^ 2 + 7 * k * k        := by ring
-         _ ≥ k ^ 3 + 3 * k ^ 2 + 7 * 10 * k       := by rel [hk]
-         _ = k ^ 3 + 3 * k ^ 2 + 3 * k + 67 * k   := by ring
-         _ ≥ k ^ 3 + 3 * k ^ 2 + 3 * k + 67 * 10  := by rel [hk]
-         _ = (k + 1) ^ 3 + 669    := by ring
-         _ ≥ (k + 1) ^ 3          := by extra
+    sorry
