@@ -1,3 +1,5 @@
+/- # CS 511, 3 Oct 2025, hw05_solution2.lean -/
+
 import Library.Basic
 
 namespace Hidden
