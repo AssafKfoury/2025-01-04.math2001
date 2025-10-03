@@ -1,18 +1,9 @@
-/- # CS 511, 3 Oct 2025 -/
-/- Most of this script is copied from Macbeth's Lean4 script for Section 3.3 -/
+/- # CS 511, 3 Oct 2025, hw05_solution1.lean -/
+/- Most of this script is copied from Macbeth's Lean4 script for
+   Section 3.3, after filling in every occurrence of `sorry` -/
 
 import Library.Basic
 import Library.Theory.ModEq.Defs
-
--- import Mathlib.Data.Real.Basic
--- import Library.Basic
--- import Library.Tactic.ModEq
-
--- import Mathlib.Tactic.IntervalCases
--- import Library.Theory.Division
--- import Library.Tactic.Numbers
--- import Library.Tactic.Use
-
 
 attribute [-instance] Int.instDivInt_1 Int.instDivInt Nat.instDivNat
 
