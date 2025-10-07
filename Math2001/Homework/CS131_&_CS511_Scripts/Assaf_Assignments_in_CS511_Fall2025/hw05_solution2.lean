@@ -27,10 +27,19 @@ def reverse (as : List α) : List α :=
 
 theorem problem1 (as bs : List α) : length (append as bs) = length as + length bs := by
   induction as with
-  | nil => dsimp [length]; dsimp [append]; rw [zero_add]
-  | cons x xs IH => dsimp [length]; rw [IH]; ring
+  | nil => dsimp [length] ;
+           dsimp [append] ;
+           rw [zero_add]
+  | cons x xs IH => dsimp [length] ;
+                    rw [IH] ;
+                    ring
 
 theorem problem2 (as : List α) : length (reverse as) = length as := by
   induction as with
   | nil => rfl
-  | cons x xs IH => dsimp [reverse]; dsimp [length]; rw [problem1 (reverse xs) (cons x nil)]; dsimp [length]; rw [IH]; ring
+  | cons x xs IH => dsimp [reverse] ;
+                    dsimp [length] ;
+                    rw [problem1 (reverse xs) (cons x nil)] ;
+                    dsimp [length];
+                    rw [IH] ;
+                    ring
