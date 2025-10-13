@@ -6,8 +6,6 @@ import Library.Tactic.ModEq
 
 math2001_init
 
--- attribute [-instance] Int.instDivInt_1 Int.instDivInt Nat.instDivNat
-
 /- # Exercise 3.4.5.1 in [MOP] -/
 example {n : ℤ} (hn : n ≡ 1 [ZMOD 3]) : n ^ 3 + 7 * n ≡ 2 [ZMOD 3] :=
   calc
