@@ -1,8 +1,45 @@
-/- # CS 511, 17 Oct 2025, hw07_solution.lean -/
+/- # CS 511, 17 Oct 2025, hw07_template.lean -/
 import Mathlib.Data.Real.Basic
 import Library.Basic
+import Library.Theory.ModEq.Defs
+import Library.Tactic.ModEq
+import Library.Theory.ParityModular
 
 math2001_init
+
+/- # EXERCISE 3 -/
+
+/- # Example 4.5.5 -/
+example (n : ℤ) : Int.Odd n ↔ ¬ Int.Even n := by
+  sorry
+
+/- # Example 4.5.6 -/
+example (n : ℤ) : ¬(n ^ 2 ≡ 2 [ZMOD 3]) := by
+  intro h
+  mod_cases hn : n % 3
+  · have h :=
+    calc (0:ℤ) = 0 ^ 2 := by numbers
+      _ ≡ n ^ 2 [ZMOD 3] := by rel [hn]
+      _ ≡ 2 [ZMOD 3] := by rel [h]
+    numbers at h                        -- contradiction!
+  · sorry
+  · sorry
+
+/- # EXERCISE 4 -/
+
+/- # Exercise 5.1.7.11 -/
+example {P Q : α → Prop} (h : ∀ x, P x ↔ Q x) : (∃ x, P x) ↔ (∃ x, Q x) := by
+  sorry
+
+/- # Exercise 5.1.7.12 -/
+example (P : α → β → Prop) : (∃ x y, P x y) ↔ ∃ y x, P x y := by
+  sorry
+
+/- # Exercise 5.1.7.14 -/
+example (P : α → Prop) (Q : Prop) : ((∃ x, P x) ∧ Q) ↔ ∃ x, (P x ∧ Q) := by
+  sorry
+
+/- # PROBLEM 2 -/
 
 /- # The concept of a `group` is defined by 3 axioms, here included as hypotheses.
    # The following theorem proves that the inverse of an element in a group is unique. -/
