@@ -102,7 +102,7 @@ theorem unique_inv {G : Type*} [Group G]
   (hId : ∀ a : G, e * a = a ∧ a * e = a)                           -- identity AXIOM
   (hInv : ∀ a : G, ∃ b : G, a * b = e ∧ b * a = e)                 -- inverse AXIOM
   (hAssoc : ∀ a : G, ∀ b : G, ∀ c : G, (a * b) * c = a * (b * c))  -- associativity AXIOM
-     : ∀ (x : G) , ∃! (y : G), ( x * y = e ∧ y * x = e ) := by
+       : ∀ (x : G) , ∃! (y : G), ( x * y = e ∧ y * x = e ) := by
   intro x                                -- eliminate `∀` from target, introduce arbitrary elt `x`
   have  m := hInv x                      -- new hyp `m` asserts `x` has an inverse by AXIOM `hInv`
   obtain ⟨ i , m1⟩ := m                  -- new hyp `m1` makes `i` an inverse of `x`
@@ -134,7 +134,7 @@ theorem unique_inv_2 {G : Type*} [Group G]
   (hId : ∀ a : G, e * a = a ∧ a * e = a)                           -- identity AXIOM
   (hInv : ∀ a : G, ∃ b : G, a * b = e ∧ b * a = e)                 -- inverse AXIOM
   (hAssoc : ∀ a : G, ∀ b : G, ∀ c : G, (a * b) * c = a * (b * c))  -- associativity AXIOM
-     : ∀ (x y z: G) , ( x * y = e ∧ x * z = e → y = z ) := by
+       : ∀ (x y z: G) , ( x * y = e ∧ x * z = e → y = z ) := by
     intros x y z
     intro h_yz
     obtain ⟨ h_y , h_z ⟩ := h_yz
