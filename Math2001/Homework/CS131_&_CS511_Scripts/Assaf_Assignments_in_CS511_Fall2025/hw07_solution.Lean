@@ -138,4 +138,13 @@ theorem unique_inv_2 {G : Type*} [Group G]
     intros x y z
     intro h_yz
     obtain ⟨ h_y , h_z ⟩ := h_yz
+    -- obtain h_xLR := hInv x ;
+    obtain h_yLR := hId y ; obtain h_zLR := hId z
+    obtain ⟨ h_yL , h_yR ⟩ := h_yLR ; obtain ⟨ h_zL , h_zR ⟩ := h_zLR
+    obtain h_Assoc_xyz := hAssoc x y z
+    calc y = y * e := by rw [h_yR]
+         _ = y * (x * z) := by rw [h_z]
+         _ = (y * x) * z := by rw [hAssoc]
+         _ = e * z := by rw? -- [hAssoc] -- [hInv]  --  [← h_Assoc_xyz]
+
   sorry
