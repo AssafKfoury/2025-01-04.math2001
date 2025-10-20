@@ -134,17 +134,18 @@ theorem unique_inv_2 {G : Type*} [Group G]
   (hId : ∀ a : G, e * a = a ∧ a * e = a)                           -- identity AXIOM
   (hInv : ∀ a : G, ∃ b : G, a * b = e ∧ b * a = e)                 -- inverse AXIOM
   (hAssoc : ∀ a : G, ∀ b : G, ∀ c : G, (a * b) * c = a * (b * c))  -- associativity AXIOM
-       : ∀ (x y z: G) , ( x * y = e ∧ x * z = e → y = z ) := by
-    intros x y z
-    intro h_yz
-    obtain ⟨ h_y , h_z ⟩ := h_yz
-    -- obtain h_xLR := hInv x ;
-    obtain h_yLR := hId y ; obtain h_zLR := hId z
-    obtain ⟨ h_yL , h_yR ⟩ := h_yLR ; obtain ⟨ h_zL , h_zR ⟩ := h_zLR
-    obtain h_Assoc_xyz := hAssoc x y z
-    calc y = y * e := by rw [h_yR]
-         _ = y * (x * z) := by rw [h_z]
-         _ = (y * x) * z := by rw [hAssoc]
-         _ = e * z := by rw? -- [hAssoc] -- [hInv]  --  [← h_Assoc_xyz]
-
-  sorry
+       : ∀ (x y z : G) , ( x * y = e ∧ x * z = e → y = z ) := by
+    intros x y z          -- create hyp `x`,`y`,`z` by removing `∀` from the target
+    intro h_xyxz          -- create hyp h_xyxz by moving LHS of `→` to the context
+    obtain ⟨h_xy,h_xz⟩ := h_xyxz           -- breakup h_xyxz into h_xy & h_xz
+    obtain h_yLR       := hId y            -- create hyp `h_yLR` by applying hId to y
+    obtain ⟨h_yL,h_yR⟩ := h_yLR            -- breakup `h_yLR` into h_yL & h_yR
+    obtain h_zLR       := hId z            -- create hyp `h_zLR` by applying hId to z
+    obtain ⟨h_zL,h_zR⟩ := h_zLR            -- breakup `h_zLR` into h_zL & h_zR
+    have h_yx : y * x = e := by sorry
+    calc
+      y = y * e       := by rw [h_yR]
+      _ = y * (x * z) := by rw [h_xz]
+      _ = (y * x) * z := by rw [hAssoc]
+      _ = e * z       := by rw [h_yx]
+      _ = z           := by rw [h_zL]
