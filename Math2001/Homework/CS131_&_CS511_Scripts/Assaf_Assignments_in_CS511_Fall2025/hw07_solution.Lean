@@ -130,19 +130,32 @@ theorem unique_inv {G : Type*} [Group G]
 
 /- # Alternative proof of the uniquesess of the inverse of an element in a group. -/
 theorem unique_inv_2 {G : Type*} [Group G]
-  (e : G)                                                          -- group identity is `e`
-  (hId : ∀ a : G, e * a = a ∧ a * e = a)                           -- identity AXIOM
-  (hInv : ∀ a : G, ∃ b : G, a * b = e ∧ b * a = e)                 -- inverse AXIOM
-  (hAssoc : ∀ a : G, ∀ b : G, ∀ c : G, (a * b) * c = a * (b * c))  -- associativity AXIOM
+  (e : G)                                                -- group identity is `e`
+  (hId : ∀ a : G, e * a = a ∧ a * e = a)                 -- identity AXIOM
+  (hInv : ∀ a : G, ∃ b : G, a * b = e ∧ b * a = e)       -- inverse AXIOM
+  (hAssoc : ∀ (a b c : G) , (a * b) * c = a * (b * c))   -- associativity AXIOM
        : ∀ (x y z : G) , ( x * y = e ∧ x * z = e → y = z ) := by
     intros x y z          -- create hyp `x`,`y`,`z` by removing `∀` from the target
     intro h_xyxz          -- create hyp h_xyxz by moving LHS of `→` to the context
     obtain ⟨h_xy,h_xz⟩ := h_xyxz           -- breakup h_xyxz into h_xy & h_xz
+    obtain h_xLR       := hId x            -- create hyp `h_xLR` by applying hId to x
+    obtain ⟨h_xL,h_xR⟩ := h_xLR            -- breakup `h_xLR` into h_xL & h_xR
     obtain h_yLR       := hId y            -- create hyp `h_yLR` by applying hId to y
     obtain ⟨h_yL,h_yR⟩ := h_yLR            -- breakup `h_yLR` into h_yL & h_yR
     obtain h_zLR       := hId z            -- create hyp `h_zLR` by applying hId to z
     obtain ⟨h_zL,h_zR⟩ := h_zLR            -- breakup `h_zLR` into h_zL & h_zR
-    have h_yx : y * x = e := by sorry
+    have h_yx : y * x = e := by
+         obtain h1          := hInv y -- create hyp `h1` by applying hInv to y
+         obtain ⟨w,h2⟩      := h1     -- breakup `h1` into w (the inverse of y) & h2,
+         obtain ⟨h3,h4⟩     := h2     -- breakup `h2`
+         obtain h_wLR       := hId w  -- create `h_wLR` by applying hId to w
+         obtain ⟨h_wL,h_wR⟩ := h_wLR  -- breakup `h_wLR`
+         calc  y * x = y * (x * e) := by rw [h_xR]
+                  _  = y * (x * (y * w)) := by rw [h3]
+                  _  = y * ((x * y) * w) := by rw [hAssoc]
+                  _  = y * (e * w) := by rw [h_xy]
+                  _  = y * w := by rw [h_wL]
+                  _  = e := by rw [h3]
     calc
       y = y * e       := by rw [h_yR]
       _ = y * (x * z) := by rw [h_xz]
