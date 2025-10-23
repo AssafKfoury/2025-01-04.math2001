@@ -1,4 +1,6 @@
-/- 2025-10-08 DEFINITION OF THE SYNTAX OF PROPOSITIONAL LOGIC -/
+/- 2025-10-08 DEFINITION OF THE SYNTAX OF PROPOSITIONAL LOGIC,
+   initial draft written by Diala Lteif, adjusted by Assaf
+-/
 import Library.Basic
 import Std.Data.List.Lemmas
 
