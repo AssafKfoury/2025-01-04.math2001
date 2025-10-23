@@ -1,3 +1,4 @@
+/- 2025-10-08 DEFINITION OF THE SYNTAX OF PROPOSITIONAL LOGIC -/
 import Library.Basic
 import Std.Data.List.Lemmas
 
@@ -25,10 +26,13 @@ abbrev myIff := PL_wff.iff
 #check PL_wff.var
 #check myVar 3
 
-def conj_Comm (i j : ℕ) : PL_wff :=
-   myImp (myAnd (myVar i) (myVar j)) (myOr (myVar j) (myVar i))
+/- conj2disj corresponds to (v_i ∧ v_j → v_i ∨ v_j) -/
+def conj2disj (i j : ℕ) : PL_wff :=
+   myImp (myAnd (myVar i) (myVar j)) (myOr (myVar i) (myVar j))
+/- disj_Comm corresponds to (v_i ∨ v_j → v_j ∨ v_i) -/
 def disj_Comm (i j : ℕ) : PL_wff :=
    myImp (myOr (myVar i) (myVar j)) (myOr (myVar j) (myVar i))
+/- deMorgan_4 corresponds to ¬ (v_i ∧ v_j) → (¬ v_i ∨ ¬ v_j) -/
 def deMorgan_4 (i j : ℕ): PL_wff :=
    myImp (myNot (myAnd (myVar i) (myVar j))) (myOr (myNot (myVar i)) (myNot (myVar j)))
 
