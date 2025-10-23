@@ -1,3 +1,5 @@
+/- # CS 511, 23 Oct 2025, hw08_solution.lean -/
+
 import Mathlib.Data.Real.Basic -- needed in order to use tactic `contrapose`
 
 /- This script illustrates how to prove the `cancellation` property for the natural
