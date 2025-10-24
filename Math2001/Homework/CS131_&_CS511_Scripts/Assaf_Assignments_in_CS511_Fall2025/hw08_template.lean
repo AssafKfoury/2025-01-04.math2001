@@ -2,23 +2,51 @@
 
 import Mathlib.Data.Real.Basic -- needed in order to use tactic `contrapose`
 
-/- This script illustrates how to prove the `cancellation` property for the  myℕural
-   numbers, in two ways: with and without tactic `contrapose`. It also illustrates
-   `structural induction` on an `inductive definition` of the  myℕural numbers.
+import Library.Basic   -- needed for math2001_init
+math2001_init          -- needed to access Macbeth's tactics:
+                       -- `addarith`, `cancel`, `extra`, `numbers`
 
-   # This script does NOT use the pre-defined natural numbers 0, 1, ..., of the
-   # pre-defined type ℕ, and the pre-defined namespace Nat, from the Lean library.
+/- # Exercise 3 in Homework 08 -/
+/- Consult page 25 in Slides 18 for hints -/
+
+example (h : ∃x : Type, ∀y : Type, (x = y)) : (∀x : Type, ∀y : Type, (x = y)) := by
+   sorry
+
+example : (∃x : Type, ∀y : Type, (x = y)) → (∀v : Type, ∀w : Type, (v = w)) := by
+   sorry
+
+/- # Exercise 4 in Homework 08 -/
+
+/- Exercise 5.2.7.2 in Macbeth's book [MOP]  -/
+example (P Q : Prop) : (¬P → ¬Q) ↔ (Q → P) := by
+   sorry
+
+/- Exercise 5.3.6.9 in Macbeth's book [MOP] -/
+
+example : ¬ (∃ t : ℝ, t ≤ 4 ∧ t ≥ 5) := by
+  push_neg
+  sorry
+
+/- # Problem 2 in Homework 08 -/
+
+/- The rest of this script illustrates how to prove the `cancellation` property for
+   the natural numbers, in two ways: with and without tactic `contrapose`. It also
+   illustrates `structural induction` on an `inductive definition` of the natural numbers.
+
+   # This script does NOT use the pre-defined  natural numbers 0, 1, ..., the
+   # pre-defined type ℕ, and the pre-defined namespace Nat, from the Lean_4 library.
+
 -/
 
 /- user-defined inductive type `myℕ` with two constructors, `myZero` and `mySucc` -/
 inductive myℕ : Type
    |  myZero : myℕ
    |  mySucc :  myℕ → myℕ
-
 namespace myℕ
 
-axiom  myZero_not_succ : ∀ (n : myℕ) ,  myZero ≠ mySucc n
-axiom  mySucc_inj : ∀ (n : myℕ) , ∀ (m : myℕ) , (n ≠ m) → (mySucc n ≠  mySucc m)
+axiom  myZero_not_mySucc : ∀ n : myℕ,  myZero ≠ mySucc n
+axiom  mySucc_inj_1 : ∀ (n : myℕ) , ∀ (m : myℕ) , (n ≠ m) → (mySucc n ≠  mySucc m)
+axiom  mySucc_inj_2 : ∀ (n : myℕ) , ∀ (m : myℕ) , (mySucc n = mySucc m) → (n = m)
 axiom  mySucc_not_zero : ∀ (n : myℕ) , (n ≠ myZero) → ∃ (m : myℕ) , mySucc m = n
 
 /- user-defined inductive definition of `myAdd` -/
@@ -37,18 +65,18 @@ instance : Add myℕ where add := myAdd
 theorem cancellation_law (a b c : myℕ) : (a + b) = (a + c) → b = c := by
   intro h
   induction a with
-  |  myZero =>
+  | myZero =>
     have h1 : b =  myZero + b := by rfl
     have h2 : c =  myZero + c := by rfl
     rw [h1, h2]
     exact h
-  |  mySucc a ih =>
+  | mySucc a ih =>
     have h1 :  mySucc a + b =  mySucc (a + b) := by rfl
     have h2 :  mySucc a + c =  mySucc (a + c) := by rfl
     rw [h1,h2] at h
     apply ih
     contrapose h           -- note the effect of `contrapose` in the Infoview
-    apply  mySucc_inj
+    apply mySucc_inj_1
     exact h
 
 /- # WITHOUT TACTIC `contrapose` -/
@@ -56,9 +84,9 @@ theorem cancellation_law' (a b c :  myℕ) : a + b = a + c → b = c := by
   intro h
   induction a with
   | myZero =>
-     sorry
+    sorry
   | mySucc a ih =>
-     sorry
+    sorry
 
 /- # EVEN SHORTER THAN PRECEDING PROOF, still without `contrapose` -/
 theorem cancellation_law'' (a b c :  myℕ) : a + b = a + c → b = c := by

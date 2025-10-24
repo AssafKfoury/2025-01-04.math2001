@@ -67,8 +67,6 @@ example : ¬ (∃ t : ℝ, t ≤ 4 ∧ t ≥ 5) := by
 
 -/
 
--- open Classical
-
 /- user-defined inductive type `myℕ` with two constructors, `myZero` and `mySucc` -/
 inductive myℕ : Type
    |  myZero : myℕ
