@@ -20,7 +20,9 @@ inductive myℕ : Type
 namespace myℕ
 
 axiom  myZero_not_mySucc : ∀ n : myℕ,  myZero ≠ mySucc n
-axiom  mySucc_inj : ∀ (n : myℕ) , ∀ (m : myℕ) , (n ≠ m) → (mySucc n ≠  mySucc m)
+axiom  mySucc_inj_1 : ∀ (n : myℕ) , ∀ (m : myℕ) , (n ≠ m) → (mySucc n ≠  mySucc m)
+axiom  mySucc_inj_2 : ∀ (n : myℕ) , ∀ (m : myℕ) , (mySucc n = mySucc m) → (n = m)
+axiom  mySucc_not_zero : ∀ (n : myℕ) , (n ≠ myZero) → ∃ (m : myℕ) , mySucc m = n
 
 /- user-defined inductive definition of `myAdd` -/
 def myAdd :  myℕ → myℕ → myℕ
@@ -38,44 +40,44 @@ instance : Add myℕ where add := myAdd
 theorem cancellation_law (a b c : myℕ) : (a + b) = (a + c) → b = c := by
   intro h
   induction a with
-  |  myZero =>
+  | myZero =>
     have h1 : b =  myZero + b := by rfl
     have h2 : c =  myZero + c := by rfl
     rw [h1, h2]
     exact h
-  |  mySucc a ih =>
+  | mySucc a ih =>
     have h1 :  mySucc a + b =  mySucc (a + b) := by rfl
     have h2 :  mySucc a + c =  mySucc (a + c) := by rfl
     rw [h1,h2] at h
     apply ih
     contrapose h           -- note the effect of `contrapose` in the Infoview
-    apply  mySucc_inj
+    apply mySucc_inj_1
     exact h
 
 /- # WITHOUT TACTIC `contrapose` -/
 theorem cancellation_law' (a b c :  myℕ) : a + b = a + c → b = c := by
   intro h
   induction a with
-  |  myZero =>
+  | myZero =>
     calc
       b =  myZero + b := rfl
       _ =  myZero + c := h
-      _ = c        := rfl
-  |  mySucc a ih =>
+      _ = c           := rfl
+  | mySucc a ih =>
     apply ih
-    apply  myℕ.mySucc.inj
+    apply mySucc_inj_2           -- you can use instead `myℕ.mySucc.inj`
     calc
-       mySucc (a + b) = ( mySucc a) + b := rfl
-      _            = ( mySucc a) + c := h
-      _            =  mySucc (a + c) := rfl
+      mySucc (a + b) = (mySucc a) + b  := rfl
+      _              = (mySucc a) + c  := h
+      _              =  mySucc (a + c) := rfl
 
 /- # EVEN SHORTER THAN PRECEDING PROOF, still without `contrapose` -/
 theorem cancellation_law'' (a b c :  myℕ) : a + b = a + c → b = c := by
   intro h
   induction a with
-  |  myZero =>
+  | myZero =>
     exact h
-  |  mySucc a ih =>
+  | mySucc a ih =>
     apply ih
-    apply  myℕ.mySucc.inj
+    apply mySucc_inj_2          -- you can use instead `myℕ.mySucc.inj`
     exact h
