@@ -60,8 +60,8 @@ example (n : ℕ) : (n + 1)! ≥ 2 ^ n := by
 /-- If two consecutive Fibonacci numbers are odd, the next one is even. -/
 theorem fib_odd_odd_even (n : Nat) (h1 : Odd (myFib n)) (h2 : Odd (myFib (n + 1))) :
   Even (myFib (n + 2)) := by
-    rw [myFib_add_two]
-    exact odd_add_odd h1 h2
+    rw [myFib_add_two]        -- rewrite conclusion using lemma `myFib_add_two`
+    exact odd_add_odd h1 h2   -- apply lemma `odd_add_odd` to conclude the proof
 
 -- A simple example to check the theorem works for a small number.
 #check fib_odd_odd_even 1 (by decide) (by decide)
