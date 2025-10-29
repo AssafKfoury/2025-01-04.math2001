@@ -10,8 +10,8 @@ import Mathlib.Data.Nat.Parity
 open Nat
 
 -- Assaf testing:
-#eval Odd (4)
-#eval fib (3)
+#check Odd (4)
+#eval Even (4)
 #check fib_add_two
 -- #check Nat.odd_add_odd
 #eval (fib (5) = fib (3) + fib (4))
@@ -31,7 +31,12 @@ notation:10000 n "!" => myFact n -- factorial n
 lemma myFib_add_two {x : ℕ} : myFib (x+2) = myFib (x) + myFib (x+1) :=
   calc myFib (x+2) = myFib (x) + myFib (x+1) := by rw [myFib]
 
--- lemma odd_add_odd_is_even
+lemma odd_add_odd {x y : ℕ} : Odd (x) → Odd (y) →  Even (x + y) := by
+   intro h1
+   intro h2
+   dsimp [Odd] at *
+   dsimp [Even]
+   sorry
 
 #eval myFib 14
 #eval fib 14
@@ -53,14 +58,10 @@ example (n : ℕ) : (n + 1)! ≥ 2 ^ n := by
 /- # =============================================== -/
 
 /-- If two consecutive Fibonacci numbers are odd, the next one is even. -/
-theorem fib_odd_odd_even (n : Nat) (h_odd_n : Odd (fib n)) (h_odd_n_plus_1 : Odd (fib (n + 1))) :
-  Even (fib (n + 2)) := by
-  -- The `fib_add_two` lemma states `fib (n + 2) = fib n + fib (n + 1)`.
-  -- We apply this to rewrite the goal.
-  rw [fib_add_two]
-  -- The `odd_add_odd` lemma proves that the sum of two odd numbers is even.
-  -- We apply this with our hypotheses.
-  exact odd_add_odd h_odd_n h_odd_n_plus_1
+theorem fib_odd_odd_even (n : Nat) (h1 : Odd (myFib n)) (h2 : Odd (myFib (n + 1))) :
+  Even (myFib (n + 2)) := by
+    rw [myFib_add_two]
+    exact odd_add_odd h1 h2
 
 -- A simple example to check the theorem works for a small number.
 #check fib_odd_odd_even 1 (by decide) (by decide)
