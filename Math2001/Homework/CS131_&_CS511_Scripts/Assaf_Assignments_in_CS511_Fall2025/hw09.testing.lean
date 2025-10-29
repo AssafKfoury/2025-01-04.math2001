@@ -31,7 +31,7 @@ notation:10000 n "!" => myFact n -- factorial n
 lemma myFib_add_two {x : ℕ} : myFib (x+2) = myFib (x) + myFib (x+1) :=
   calc myFib (x+2) = myFib (x) + myFib (x+1) := by rw [myFib]
 
-lemma odd_add_odd_is_even
+-- lemma odd_add_odd_is_even
 
 #eval myFib 14
 #eval fib 14
