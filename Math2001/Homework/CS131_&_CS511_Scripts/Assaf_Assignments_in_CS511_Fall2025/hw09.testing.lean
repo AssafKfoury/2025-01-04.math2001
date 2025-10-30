@@ -1,7 +1,7 @@
+-- import Mathlib.Data.Real.Basic
 -- import Mathlib.Data.Nat.Basic
 -- import Mathlib.Data.Nat.Fib.Basic
 -- import Mathlib.Data.Nat.Parity
--- import Mathlib.Data.Real.Basic
 -- import Mathlib.Tactic.GCongr
 import Library.Basic
 -- import Library.Tactic.ModEq
@@ -28,26 +28,34 @@ lemma myFib_add_two {x : ℕ} : myFib (x+2) = myFib (x) + myFib (x+1) :=
   calc myFib (x+2) = myFib (x) + myFib (x+1) := by rw [myFib]
 
 lemma odd_add_odd {x y : ℕ} : Odd (x) → Odd (y) →  Even (x + y) := by
-   intro h1
-   intro h2
+   intros h1 h2
    dsimp [Odd] at * ; dsimp [Even]
    obtain ⟨ a , h1 ⟩ := h1 ; obtain ⟨ b , h2 ⟩ := h2
    use (a + b + 1)
    rw [h1,h2]
    calc (2 * a + 1) + (2 * b + 1) = (a + a + 1) + (2 * b + 1) := by rw [two_mul]
         _ = (a + a + 1) + (b + b + 1) := by rw [two_mul]
-        _ = (a + b + 1) + (a + b + 1) := by ring -- sorry
+        _ = (a + b + 1) + (a + b + 1) := by ring
         _ = 2 * (a + b + 1) := by ring
 
-#check Even
-#eval myFib 14
+lemma fact_overtakes_exp (n : ℕ) :  myFact (n+1) ≥ 2 ^ n := by
+  induction n with
+  | zero =>
+    calc myFact (0+1) = (0+1) * myFact 0 := by rw [myFact,myFact,myFact]
+         _ = (0+1) * 1 := by rw [myFact]
+         _ ≥ 2 ^ 0 := by numbers
+  | succ n ih =>
+    calc myFact (n+1+1) = (n+1+1) * myFact (n+1) := by rw [myFact]
+         _ ≥ (n+1+1) * 2 ^ n := by rw [ih]
+         _ = n * 2 ^ n + 2 ^ (n+1) := by ring
+         sorry
 
-
-/-
-example (n : ℕ) : (n + 1)! ≥ 2 ^ n := by
-  sorry
+/-       _ = (n+1+1) * (n+1) * myFact n := by ring
+         _ ≥ (n+1+1) * 2 ^ n := by rel? --  [ih]
+         _ = n * 2 ^ n + 2 * 2 ^ n := by ring
+         _ ≥ 2 * 2 ^ n := by extra
+         _ = 2 ^ (n+1) := by ring
 -/
-
 /-
   simple_induction n with k IH
   · -- base case
