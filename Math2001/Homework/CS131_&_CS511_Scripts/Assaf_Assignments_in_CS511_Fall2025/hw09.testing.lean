@@ -1,20 +1,16 @@
-import Mathlib.Data.Nat.Fib.Basic
-import Mathlib.Data.Nat.Parity
-
+-- import Mathlib.Data.Nat.Basic
+-- import Mathlib.Data.Nat.Fib.Basic
+-- import Mathlib.Data.Nat.Parity
+-- import Mathlib.Data.Real.Basic
 -- import Mathlib.Tactic.GCongr
--- import Library.Basic
+import Library.Basic
 -- import Library.Tactic.ModEq
+-- import Mathlib.Data.Nat.Parity
 
--- math2001_init
+
+math2001_init
 
 open Nat
-
--- Assaf testing:
-#check Odd (4)
-#eval Even (4)
-#check fib_add_two
--- #check Nat.odd_add_odd
-#eval (fib (5) = fib (3) + fib (4))
 
 def myFib : ℕ → ℕ
    | 0 => 0
@@ -22,9 +18,9 @@ def myFib : ℕ → ℕ
    | n + 2 => myFib (n) + myFib (n+1)
 
 /- From Example 6.2.6 in 06_Induction in Macbeth's -/
-def myFact : ℕ → ℕ -- factorial : ℕ → ℕ
+def myFact : ℕ → ℕ
   | 0 => 1
-  | n + 1 => (n + 1) * myFact n -- factorial n
+  | n + 1 => (n + 1) * myFact n
 
 notation:10000 n "!" => myFact n -- factorial n
 
@@ -34,14 +30,25 @@ lemma myFib_add_two {x : ℕ} : myFib (x+2) = myFib (x) + myFib (x+1) :=
 lemma odd_add_odd {x y : ℕ} : Odd (x) → Odd (y) →  Even (x + y) := by
    intro h1
    intro h2
-   dsimp [Odd] at *
-   dsimp [Even]
-   sorry
+   dsimp [Odd] at * ; dsimp [Even]
+   obtain ⟨ a , h1 ⟩ := h1 ; obtain ⟨ b , h2 ⟩ := h2
+   use (a + b + 1)
+   rw [h1,h2]
+   calc (2 * a + 1) + (2 * b + 1) = (a + a + 1) + (2 * b + 1) := by rw [two_mul]
+        _ = (a + a + 1) + (b + b + 1) := by rw [two_mul]
+        _ = (a + b + 1) + (a + b + 1) := by ring -- sorry
+        _ = 2 * (a + b + 1) := by ring
 
+#check Even
 #eval myFib 14
-#eval fib 14
+
+
 /-
 example (n : ℕ) : (n + 1)! ≥ 2 ^ n := by
+  sorry
+-/
+
+/-
   simple_induction n with k IH
   · -- base case
     calc (0 + 1)! = (0 + 1) * 0! := by rw [factorial, factorial, factorial]
@@ -58,11 +65,13 @@ example (n : ℕ) : (n + 1)! ≥ 2 ^ n := by
 /- # =============================================== -/
 
 /-- If two consecutive Fibonacci numbers are odd, the next one is even. -/
-theorem fib_odd_odd_even (n : Nat) (h1 : Odd (myFib n)) (h2 : Odd (myFib (n + 1))) :
-  Even (myFib (n + 2)) := by
-    rw [myFib_add_two]        -- rewrite conclusion using lemma `myFib_add_two`
-    exact odd_add_odd h1 h2   -- apply lemma `odd_add_odd` to conclude the proof
+theorem fib_odd_odd_even (n : Nat) :
+   Odd (myFib n) → Odd (myFib (n + 1)) →  Even (myFib (n + 2)) := by
+     intros h1 h2
+     rw [myFib_add_two]        -- rewrite conclusion using lemma `myFib_add_two`
+     exact odd_add_odd h1 h2   -- apply lemma `odd_add_odd` to conclude the proof
 
 -- A simple example to check the theorem works for a small number.
+#check fib_odd_odd_even 3
 #check fib_odd_odd_even 1 (by decide) (by decide)
 -- Lean confirms that `Even (fib 3)`, which is true (1, 1, 2, ...).
