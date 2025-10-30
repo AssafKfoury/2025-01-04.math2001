@@ -3,10 +3,16 @@
 -- import Mathlib.Data.Nat.Fib.Basic
 -- import Mathlib.Data.Nat.Parity
 -- import Mathlib.Tactic.GCongr
-import Library.Basic
+-- import Library.Basic
 -- import Library.Tactic.ModEq
 -- import Mathlib.Data.Nat.Parity
 
+-- import Mathlib.Tactic.GCongr
+-- import Mathlib.Data.Nat.Parity
+import Library.Basic
+import Library.Tactic.ModEq
+-- import Mathlib.Data.Real.Basic
+import Library.Basic
 
 math2001_init
 
@@ -22,7 +28,7 @@ def myFact : ℕ → ℕ
   | 0 => 1
   | n + 1 => (n + 1) * myFact n
 
-notation:10000 n "!" => myFact n -- factorial n
+-- notation:10000 n "!" => myFact n -- factorial n
 
 lemma myFib_add_two {x : ℕ} : myFib (x+2) = myFib (x) + myFib (x+1) :=
   calc myFib (x+2) = myFib (x) + myFib (x+1) := by rw [myFib]
@@ -45,10 +51,14 @@ lemma fact_overtakes_exp (n : ℕ) :  myFact (n+1) ≥ 2 ^ n := by
          _ = (0+1) * 1 := by rw [myFact]
          _ ≥ 2 ^ 0 := by numbers
   | succ n ih =>
-    calc myFact (n+1+1) = (n+1+1) * myFact (n+1) := by rw [myFact]
-         _ ≥ (n+1+1) * 2 ^ n := by rw [ih]
-         _ = n * 2 ^ n + 2 ^ (n+1) := by ring
-         sorry
+    calc myFact (n+1+1) = (n+1+1) * (myFact (n+1)) := by rw [myFact]
+         _ ≥ (n+1+1) * (2 ^ n) := by exact mul_le_mul_left (n + 1 + 1) ih
+         _ = n * 2 ^ n + 2 * 2 ^ n := by ring
+         _ ≥ 2 * 2 ^ n := by extra
+         _ = 2 * (n + 1) := by rw [two_mul] -- ring
+
+   --      _ = 2 ^ (n+1) := by numbers
+
 
 /-       _ = (n+1+1) * (n+1) * myFact n := by ring
          _ ≥ (n+1+1) * 2 ^ n := by rel? --  [ih]
