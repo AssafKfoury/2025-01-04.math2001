@@ -18,17 +18,16 @@ math2001_init
 
 open Nat
 
+/- # Fibonacci function -/
 def myFib : ℕ → ℕ
    | 0 => 0
    | 1 => 1
    | n + 2 => myFib (n) + myFib (n+1)
 
-/- From Example 6.2.6 in 06_Induction in Macbeth's -/
+/- # Factorial function -/
 def myFact : ℕ → ℕ
-  | 0 => 1
-  | n + 1 => (n + 1) * myFact n
-
--- notation:10000 n "!" => myFact n -- factorial n
+   | 0 => 1
+   | n + 1 => (n + 1) * myFact n
 
 lemma myFib_add_two {x : ℕ} : myFib (x+2) = myFib (x) + myFib (x+1) :=
   calc myFib (x+2) = myFib (x) + myFib (x+1) := by rw [myFib]
@@ -44,6 +43,7 @@ lemma odd_add_odd {x y : ℕ} : Odd (x) → Odd (y) →  Even (x + y) := by
         _ = (a + b + 1) + (a + b + 1) := by ring
         _ = 2 * (a + b + 1) := by ring
 
+/- # `fact_overtakes_exp` is the same as Example 6.2.6 in Macbeth's -/
 lemma fact_overtakes_exp (n : ℕ) :  myFact (n+1) ≥ 2 ^ n := by
   induction n with
   | zero =>
@@ -55,34 +55,9 @@ lemma fact_overtakes_exp (n : ℕ) :  myFact (n+1) ≥ 2 ^ n := by
          _ ≥ (n+1+1) * (2 ^ n) := by exact mul_le_mul_left (n + 1 + 1) ih
          _ = n * 2 ^ n + 2 * 2 ^ n := by ring
          _ ≥ 2 * 2 ^ n := by extra
-         _ = 2 * (n + 1) := by rw [two_mul] -- ring
+         _ = 2 ^ (n + 1) := by exact IsSymmOp.symm_op 2 (2 ^ n)
 
-   --      _ = 2 ^ (n+1) := by numbers
-
-
-/-       _ = (n+1+1) * (n+1) * myFact n := by ring
-         _ ≥ (n+1+1) * 2 ^ n := by rel? --  [ih]
-         _ = n * 2 ^ n + 2 * 2 ^ n := by ring
-         _ ≥ 2 * 2 ^ n := by extra
-         _ = 2 ^ (n+1) := by ring
--/
-/-
-  simple_induction n with k IH
-  · -- base case
-    calc (0 + 1)! = (0 + 1) * 0! := by rw [factorial, factorial, factorial]
-      _ = (0 + 1) * 1 := by rw [factorial]
-      _ ≥ 2 ^ 0 := by numbers
-  · -- inductive step
-    calc (k + 1 + 1)! = (k + 1 + 1) * (k + 1)! := by rw [factorial]
-      _ ≥ (k + 1 + 1) * 2 ^ k := by rel [IH]
-      _ = k * 2 ^ k + 2 * 2 ^ k := by ring
-      _ ≥ 2 * 2 ^ k := by extra
-      _ = 2 ^ (k + 1) := by ring
--/
-
-/- # =============================================== -/
-
-/-- If two consecutive Fibonacci numbers are odd, the next one is even. -/
+/-- # If two consecutive Fibonacci numbers are odd, the next one is even. -/
 theorem fib_odd_odd_even (n : Nat) :
    Odd (myFib n) → Odd (myFib (n + 1)) →  Even (myFib (n + 2)) := by
      intros h1 h2
