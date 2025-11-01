@@ -32,7 +32,7 @@ def myFact : ℕ → ℕ
 /- # Factorial again, as in [MOP, Examples 6.2.5 and 6.2.6]-/
 def fact : ℕ → ℕ
   | 0 => 1
-  | n + 1 => (n + 1) * fact
+  | n + 1 => (n + 1) * fact n
 
 /- # Fibonacci as defiend in [MOP, Example 6.3]-/
 def F : ℕ → ℤ
@@ -40,7 +40,7 @@ def F : ℕ → ℤ
   | 1 => 1
   | n + 2 => F (n + 1) + F n
 
-/- # exp_overtakes_Fib
+/- # exp_overtakes_Fib -/
 example (n : ℕ) : F n ≤ 2 ^ n := by
   two_step_induction n with k IH1 IH2
   · calc F 0 = 1 := by rw [F]
@@ -48,10 +48,10 @@ example (n : ℕ) : F n ≤ 2 ^ n := by
   · calc F 1 = 1 := by rw [F]
       _ ≤ 2 ^ 1 := by numbers
   · calc F (k + 2) = F (k + 1) + F k := by rw [F]
-      _ ≤ 2 ^ (k + 1) + 2 ^ k := by rel [IH1, IH2]
+      _ ≤ 2 ^ (k + 1) + 2 ^ k := by exact add_le_add IH2 IH1
+         -- in the previous step, `rel [IH1,IH2]` does not work for some reason ...
       _ ≤ 2 ^ (k + 1) + 2 ^ k + 2 ^ k := by extra
       _ = 2 ^ (k + 2) := by ring
--/
 
 lemma myFib_add_two {x : ℕ} : myFib (x+2) = myFib (x) + myFib (x+1) :=
   calc myFib (x+2) = myFib (x) + myFib (x+1) := by rw [myFib]
@@ -79,7 +79,7 @@ lemma fact_overtakes_exp (n : ℕ) :  myFact (n+1) ≥ 2 ^ n := by
          _ ≥ (n+1+1) * (2 ^ n) := by exact mul_le_mul_left (n + 1 + 1) ih
          _ = n * 2 ^ n + 2 * 2 ^ n := by ring
          _ ≥ 2 * 2 ^ n := by extra
-         _ = 2 ^ (n + 1) := by ring --  exact IsSymmOp.symm_op 2 (2 ^ n)
+         _ = 2 ^ (n + 1) := by ring
 
 example (n : ℕ) : fact (n + 1) ≥ 2 ^ n := by
   simple_induction n with k IH
