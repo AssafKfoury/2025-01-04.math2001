@@ -3,9 +3,8 @@ import Mathlib.Data.Real.Basic
 import Library.Basic           -- needed for math2001_init
 import Library.Tactic.Rel
 
-math2001_init          -- needed to access Macbeth's tactics:
+math2001_init          --  needed to access Macbeth's tactics:
                        -- `addarith`, `cancel`, `extra`, `numbers`
-
 
 /- # Execise 3 in Homework Assignment 09 -/
 
@@ -96,7 +95,7 @@ termination_by _ a b => a + b
 
 #check pascal
 
-/- # Exercise 6.5.4.1 in Macbeth's [MOP] -/
+/- Exercise 6.5.4.1 in Macbeth's [MOP] -/
 theorem pascal_symm (m n : ℕ) : pascal m n = pascal n m := by
   match m, n with
   | 0, 0 => ring
@@ -111,7 +110,7 @@ theorem pascal_symm (m n : ℕ) : pascal m n = pascal n m := by
       _ = pascal (b + 1) (a + 1) := by rw [pascal]
 termination_by _ a b => a + b
 
-/- # Exercise 6.5.4.2 in Macbeth's [MOP] -/
+/- Exercise 6.5.4.2 in Macbeth's [MOP] -/
 example (a : ℕ) : pascal a 1 = a + 1 := by
   simple_induction a with k IH
   · rw [pascal]
