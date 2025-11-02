@@ -32,8 +32,8 @@ def Fact2 : ℕ → ℕ
    | n + 1 => (n + 1) * Fact2 n
 
 /- # Fibonacci as defiend in [MOP, Example 6.3]
-def F : ℕ → ℤ               -- note that the codomain is ℤ, not ℕ
-  | 0 => 1
+def F : ℕ → ℤ
+  | 0 => 1                     -- note the difference: this is 1, not 0
   | 1 => 1
   | n + 2 => F (n + 1) + F n
 -/
@@ -46,7 +46,7 @@ example (n : ℕ) : Fib n ≤ 2 ^ n := by
   · calc Fib 1 = 1     := by rw [Fib]
              _ ≤ 2 ^ 1 := by numbers
   · calc Fib (k + 2) = Fib (k) + Fib (k+1) := by rw [Fib]
-                   _ ≤ 2 ^ k + 2 ^ (k+1)   := by exact Nat.add_le_add IH1 IH2
+                   _ ≤ 2 ^ k + 2 ^ (k+1)   := by exact add_le_add IH1 IH2
          -- in the previous step, `rel [IH1,IH2]` does not work for some reason ...
                    _ ≤ 2 ^ k + 2 ^ k + 2 ^ (k+1)   := by extra
                    _ = 2 ^ (k + 2)                 := by ring
@@ -93,8 +93,9 @@ example (n : ℕ) : Fact2 (n + 1) ≥ 2 ^ n := by
       _ ≥ 2 * 2 ^ k := by extra
       _ = 2 ^ (k + 1) := by ring
 
-/- # If two consecutive Fibonacci numbers are odd, the next one is even. -/
-theorem fib_odd_odd_even (n : Nat) :
+/- # If two consecutive Fibonacci numbers are odd, the next one is even, i.e.
+   # every third Fibonacci number is even. -/
+theorem fib_odd_odd_even1 (n : Nat) :
    Int.Odd (Fib n) → Int.Odd (Fib (n + 1)) →  Int.Even (Fib (n + 2)) := by
      intros h1 h2
      rw [Fib_add_two]          -- rewrite conclusion using lemma `myFib_add_two`
@@ -109,17 +110,23 @@ theorem fib_odd_odd_even2 :
 
 -- A simple example to check the theorem works for a small number.
 #check fib_odd_odd_even2 -- 3
-#check fib_odd_odd_even 1 -- (by decide) (by decide)
+#check fib_odd_odd_even1 1 -- (by decide) (by decide)
 -- Lean confirms that `Even (fib 3)`, which is true (1, 1, 2, ...).
 
-/- Cassini's identity Fib (n-1) * Fib (n+1) - (F (n)) ^ 2 = (-1) ^ n -/
+/- # Cassini's identity Fib (n-1) * Fib (n+1) - (Fib (n)) ^ 2 = (-1) ^ n -/
 
 def FibSum : ℕ → ℤ
   | 0     => Fib 0
   | 1     => Fib 1
   | n + 2 => Fib (n + 2) + FibSum n
 
-#eval FibSum 5      -- Fib 1 + Fib 3 + Fib 5
+#eval Fib 1  #eval Fib 2  #eval Fib 3  #eval Fib 4  #eval Fib 5  #eval Fib 6  #eval Fib 7
+/-     1.           1.           2.           3.           5.           8.           13   -/
+
+#eval FibSum 2      -- 1
+#eval FibSum 3      -- 3
+#eval FibSum 4      -- 4
+#eval FibSum 5      -- Fib 1 + Fib 3 + Fib 5 = 8
 #eval FibSum 6      -- Fib 0 + Fib 2 + Fib 4 + Fib 6 = 0 + 1 + 3 + 8 = 12
 #eval FibSum 7      -- Fib 1 + Fib 3 + Fib 5 + Fib 7 = 1 + 2 + 5 + 13 = 21
 #eval FibSum 8      -- FibSum 6 + Fib 8 = 12 + 21 = 33
@@ -129,3 +136,20 @@ def FibSum : ℕ → ℤ
 #eval FibSum (2 * 3 + 1) = Fib (2 * 3 + 2)
 #eval FibSum (2 * 3) = Fib (2 * 3 + 1) - 1
 #eval FibSum (2 * 4) = Fib (2 * 4 + 1) - 1
+
+/- SUM OF FIBONACCI NUMBERS -/
+/- # FibSum (2 * n + 1) = Fib (2 * n + 2) for all n ≥ 0   -/
+/- # FibSum (2 * n) = Fib (2 * n + 1) - 1 for all n ≥ 0   -/
+
+/- DIVISIBILITY PROPERTY-/
+/- # Fib (m) divides F (m * n)  for all m ≥ 1 and n ≥ 1 by induction on n  -/
+
+/- GROWTH RATE -/
+/- # Fib (n) ≥ (3 / 2) ^ (n - 2) for all n ≥ 2 or
+   # (2 ^ (n-2)) * Fib (n) ≥ 3 ^ (n-2)  for all n ≥ 2 or
+   # (2 ^ n) * Fib (n + 2) ≥ 3 ^ n for all n ≥ 0   -/
+#eval 3.0 / 2   #eval (3 : ℚ) / 2   #eval ((3:ℚ) / 2) ^ 2
+
+/- Other nice facts about the Fibonacci can be found here:
+   https://matheducators.stackexchange.com/questions/2021/what-interesting-properties-of-the-fibonacci-sequence-can-i-share-when-introduci
+-/
