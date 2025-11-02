@@ -18,47 +18,45 @@ math2001_init
 
 open Nat
 
+#check Int.Odd
+
 /- # Fibonacci function -/
-def myFib : ℕ → ℕ
+def Fib : ℕ → ℤ --
    | 0 => 0
    | 1 => 1
-   | n + 2 => myFib (n) + myFib (n+1)
+   | n + 2 => Fib (n) + Fib (n+1)
 
 /- # Factorial function -/
-def myFact : ℕ → ℕ
+def Fact2 : ℕ → ℕ
    | 0 => 1
-   | n + 1 => (n + 1) * myFact n
+   | n + 1 => (n + 1) * Fact2 n
 
-/- # Factorial again, as in [MOP, Examples 6.2.5 and 6.2.6]-/
-def fact : ℕ → ℕ
-  | 0 => 1
-  | n + 1 => (n + 1) * fact n
-
-/- # Fibonacci as defiend in [MOP, Example 6.3]-/
-def F : ℕ → ℤ
+/- # Fibonacci as defiend in [MOP, Example 6.3]
+def F : ℕ → ℤ               -- note that the codomain is ℤ, not ℕ
   | 0 => 1
   | 1 => 1
   | n + 2 => F (n + 1) + F n
+-/
 
 /- # exp_overtakes_Fib -/
-example (n : ℕ) : F n ≤ 2 ^ n := by
+example (n : ℕ) : Fib n ≤ 2 ^ n := by
   two_step_induction n with k IH1 IH2
-  · calc F 0 = 1 := by rw [F]
-      _ ≤ 2 ^ 0 := by numbers
-  · calc F 1 = 1 := by rw [F]
-      _ ≤ 2 ^ 1 := by numbers
-  · calc F (k + 2) = F (k + 1) + F k := by rw [F]
-      _ ≤ 2 ^ (k + 1) + 2 ^ k := by exact add_le_add IH2 IH1
+  · calc Fib 0 = 0     := by rw [Fib]
+             _ ≤ 2 ^ 0 := by numbers
+  · calc Fib 1 = 1     := by rw [Fib]
+             _ ≤ 2 ^ 1 := by numbers
+  · calc Fib (k + 2) = Fib (k) + Fib (k+1) := by rw [Fib]
+                   _ ≤ 2 ^ k + 2 ^ (k+1)   := by exact Nat.add_le_add IH1 IH2
          -- in the previous step, `rel [IH1,IH2]` does not work for some reason ...
-      _ ≤ 2 ^ (k + 1) + 2 ^ k + 2 ^ k := by extra
-      _ = 2 ^ (k + 2) := by ring
+                   _ ≤ 2 ^ k + 2 ^ k + 2 ^ (k+1)   := by extra
+                   _ = 2 ^ (k + 2)                 := by ring
 
-lemma myFib_add_two {x : ℕ} : myFib (x+2) = myFib (x) + myFib (x+1) :=
-  calc myFib (x+2) = myFib (x) + myFib (x+1) := by rw [myFib]
+lemma Fib_add_two {x : ℕ} : Fib (x+2) = Fib (x) + Fib (x+1) :=
+  calc Fib (x+2) = Fib (x) + Fib (x+1) := by rw [Fib]
 
-lemma odd_add_odd {x y : ℕ} : Odd (x) → Odd (y) →  Even (x + y) := by
+lemma odd_add_odd {x y : ℤ} : Int.Odd (x) → Int.Odd (y) →  Int.Even (x + y) := by
    intros h1 h2
-   dsimp [Odd] at * ; dsimp [Even]
+   dsimp [Int.Odd] at * ; dsimp [Int.Even]
    obtain ⟨ a , h1 ⟩ := h1 ; obtain ⟨ b , h2 ⟩ := h2
    use (a + b + 1)
    rw [h1,h2]
@@ -67,42 +65,67 @@ lemma odd_add_odd {x y : ℕ} : Odd (x) → Odd (y) →  Even (x + y) := by
         _ = (a + b + 1) + (a + b + 1) := by ring
         _ = 2 * (a + b + 1) := by ring
 
-/- # `fact_overtakes_exp` is the same as Example 6.2.6 in Macbeth's -/
-lemma fact_overtakes_exp (n : ℕ) :  myFact (n+1) ≥ 2 ^ n := by
+/- # `Fact_overtakes_exp` is the same as Example 6.2.6 in Macbeth's -/
+lemma Fact_overtakes_exp (n : ℕ) :  Fact2 (n+1) ≥ 2 ^ n := by
   induction n with
   | zero =>
-    calc myFact (0+1) = (0+1) * myFact 0 := by rw [myFact,myFact,myFact]
-         _ = (0+1) * 1 := by rw [myFact]
+    calc Fact2 (0+1) = (0+1) * Fact2 0 := by rw [Fact2,Fact2,Fact2]
+         _ = (0+1) * 1 := by rw [Fact2]
          _ ≥ 2 ^ 0 := by numbers
   | succ n ih =>
-    calc myFact (n+1+1) = (n+1+1) * (myFact (n+1)) := by rw [myFact]
+    calc Fact2 (n+1+1) = (n+1+1) * (Fact2 (n+1)) := by rw [Fact2]
          _ ≥ (n+1+1) * (2 ^ n) := by exact mul_le_mul_left (n + 1 + 1) ih
          _ = n * 2 ^ n + 2 * 2 ^ n := by ring
          _ ≥ 2 * 2 ^ n := by extra
          _ = 2 ^ (n + 1) := by ring
 
-example (n : ℕ) : fact (n + 1) ≥ 2 ^ n := by
+example (n : ℕ) : Fact2 (n + 1) ≥ 2 ^ n := by
   simple_induction n with k IH
   · -- base case
-    calc fact (0 + 1) = (0 + 1) * fact 0 := by rw [fact, fact, fact]
-      _ = (0 + 1) * 1 := by rw [fact]
+    calc Fact2 (0 + 1) = (0 + 1) * Fact2 0 := by rw [Fact2, Fact2, Fact2]
+      _ = (0 + 1) * 1 := by rw [Fact2]
       _ ≥ 2 ^ 0 := by numbers
   · -- inductive step
-    calc fact (k + 1 + 1) = (k + 1 + 1) * fact (k + 1) := by rw [fact]
+    calc Fact2 (k + 1 + 1) = (k + 1 + 1) * Fact2 (k + 1) := by rw [Fact2]
       _ ≥ (k + 1 + 1) * 2 ^ k := by exact mul_le_mul_left (k + 1 + 1) IH
               -- in the previous step, `rel [IH]` does not work for some reasonn ...
       _ = k * 2 ^ k + 2 * 2 ^ k := by ring
       _ ≥ 2 * 2 ^ k := by extra
       _ = 2 ^ (k + 1) := by ring
 
-/-- # If two consecutive Fibonacci numbers are odd, the next one is even. -/
+/- # If two consecutive Fibonacci numbers are odd, the next one is even. -/
 theorem fib_odd_odd_even (n : Nat) :
-   Odd (myFib n) → Odd (myFib (n + 1)) →  Even (myFib (n + 2)) := by
+   Int.Odd (Fib n) → Int.Odd (Fib (n + 1)) →  Int.Even (Fib (n + 2)) := by
      intros h1 h2
-     rw [myFib_add_two]        -- rewrite conclusion using lemma `myFib_add_two`
+     rw [Fib_add_two]          -- rewrite conclusion using lemma `myFib_add_two`
      exact odd_add_odd h1 h2   -- apply lemma `odd_add_odd` to conclude the proof
 
+theorem fib_odd_odd_even2 :
+   (∀ (n : ℕ) , Int.Odd (Fib n) → Int.Odd (Fib (n + 1)) →  Int.Even (Fib (n + 2))) := by
+     intro h0
+     intros h1 h2
+     rw [Fib_add_two]
+     exact odd_add_odd h1 h2
+
 -- A simple example to check the theorem works for a small number.
-#check fib_odd_odd_even 3
-#check fib_odd_odd_even 1 (by decide) (by decide)
+#check fib_odd_odd_even2 -- 3
+#check fib_odd_odd_even 1 -- (by decide) (by decide)
 -- Lean confirms that `Even (fib 3)`, which is true (1, 1, 2, ...).
+
+/- Cassini's identity Fib (n-1) * Fib (n+1) - (F (n)) ^ 2 = (-1) ^ n -/
+
+def FibSum : ℕ → ℤ
+  | 0     => Fib 0
+  | 1     => Fib 1
+  | n + 2 => Fib (n + 2) + FibSum n
+
+#eval FibSum 5      -- Fib 1 + Fib 3 + Fib 5
+#eval FibSum 6      -- Fib 0 + Fib 2 + Fib 4 + Fib 6 = 0 + 1 + 3 + 8 = 12
+#eval FibSum 7      -- Fib 1 + Fib 3 + Fib 5 + Fib 7 = 1 + 2 + 5 + 13 = 21
+#eval FibSum 8      -- FibSum 6 + Fib 8 = 12 + 21 = 33
+#eval (Fib (5)) ^ 2
+#eval 2 = 2
+#eval FibSum (2 * 2 + 1) = Fib (2 * 2 + 2)
+#eval FibSum (2 * 3 + 1) = Fib (2 * 3 + 2)
+#eval FibSum (2 * 3) = Fib (2 * 3 + 1) - 1
+#eval FibSum (2 * 4) = Fib (2 * 4 + 1) - 1
