@@ -1,4 +1,4 @@
--- import Mathlib.Data.Real.Basic
+import Mathlib.Data.Real.Basic
 -- import Mathlib.Data.Nat.Basic
 -- import Mathlib.Data.Nat.Fib.Basic
 -- import Mathlib.Data.Nat.Parity
@@ -10,9 +10,12 @@
 -- import Mathlib.Tactic.GCongr
 -- import Mathlib.Data.Nat.Parity
 import Library.Basic
-import Library.Tactic.ModEq
+-- import Library.Tactic.ModEq
 -- import Library.Tactic.Rel
 
+
+-- import Mathlib.Data.Nat.Fib.Basic
+-- import Mathlib.Data.Int.Units -- for the (-1)^n part
 
 math2001_init
 
@@ -38,8 +41,8 @@ def F : ℕ → ℤ
   | n + 2 => F (n + 1) + F n
 -/
 
-/- # exp_overtakes_Fib -/
-example (n : ℕ) : Fib n ≤ 2 ^ n := by
+/- # Exp_overtakes_Fib -/
+lemma Exp_overtakes_Fib (n : ℕ) : Fib n ≤ 2 ^ n := by
   two_step_induction n with k IH1 IH2
   · calc Fib 0 = 0     := by rw [Fib]
              _ ≤ 2 ^ 0 := by numbers
@@ -65,8 +68,8 @@ lemma odd_add_odd {x y : ℤ} : Int.Odd (x) → Int.Odd (y) →  Int.Even (x + y
         _ = (a + b + 1) + (a + b + 1) := by ring
         _ = 2 * (a + b + 1) := by ring
 
-/- # `Fact_overtakes_exp` is the same as Example 6.2.6 in Macbeth's -/
-lemma Fact_overtakes_exp (n : ℕ) :  Fact2 (n+1) ≥ 2 ^ n := by
+/- # `Fact_overtakes_Exp` is the same as Example 6.2.6 in Macbeth's -/
+lemma Fact_overtakes_Exp1 (n : ℕ) :  Fact2 (n+1) ≥ 2 ^ n := by
   induction n with
   | zero =>
     calc Fact2 (0+1) = (0+1) * Fact2 0 := by rw [Fact2,Fact2,Fact2]
@@ -79,7 +82,7 @@ lemma Fact_overtakes_exp (n : ℕ) :  Fact2 (n+1) ≥ 2 ^ n := by
          _ ≥ 2 * 2 ^ n := by extra
          _ = 2 ^ (n + 1) := by ring
 
-example (n : ℕ) : Fact2 (n + 1) ≥ 2 ^ n := by
+lemma Fact_overtakes_Exp2 (n : ℕ) : Fact2 (n + 1) ≥ 2 ^ n := by
   simple_induction n with k IH
   · -- base case
     calc Fact2 (0 + 1) = (0 + 1) * Fact2 0 := by rw [Fact2, Fact2, Fact2]
@@ -95,13 +98,13 @@ example (n : ℕ) : Fact2 (n + 1) ≥ 2 ^ n := by
 
 /- # If two consecutive Fibonacci numbers are odd, the next one is even, i.e.
    # every third Fibonacci number is even. -/
-theorem fib_odd_odd_even1 (n : Nat) :
+theorem Fib_odd_odd_even1 (n : Nat) :
    Int.Odd (Fib n) → Int.Odd (Fib (n + 1)) →  Int.Even (Fib (n + 2)) := by
      intros h1 h2
      rw [Fib_add_two]          -- rewrite conclusion using lemma `myFib_add_two`
      exact odd_add_odd h1 h2   -- apply lemma `odd_add_odd` to conclude the proof
 
-theorem fib_odd_odd_even2 :
+theorem Fib_odd_odd_even2 :
    (∀ (n : ℕ) , Int.Odd (Fib n) → Int.Odd (Fib (n + 1)) →  Int.Even (Fib (n + 2))) := by
      intro h0
      intros h1 h2
@@ -109,11 +112,68 @@ theorem fib_odd_odd_even2 :
      exact odd_add_odd h1 h2
 
 -- A simple example to check the theorem works for a small number.
-#check fib_odd_odd_even2 -- 3
-#check fib_odd_odd_even1 1 -- (by decide) (by decide)
+#check Fib_odd_odd_even2 -- 3
+#check Fib_odd_odd_even1 1 -- (by decide) (by decide)
 -- Lean confirms that `Even (fib 3)`, which is true (1, 1, 2, ...).
 
 /- # Cassini's identity Fib (n-1) * Fib (n+1) - (Fib (n)) ^ 2 = (-1) ^ n -/
+
+example {n : ℕ} (hn : 2 ≤ n) : (3:ℤ) ^ n ≥ 2 ^ n + 5 := by
+  induction_from_starting_point n, hn with k hk IH
+  · -- base case
+    numbers
+  · -- inductive step
+    calc (3:ℤ) ^ (k + 1) = 2 * 3 ^ k + 3 ^ k := by ring
+      _ ≥ 2 * (2 ^ k + 5) + 3 ^ k := by rel [IH]
+      _ = 2 ^ (k + 1) + 5 + (5 + 3 ^ k) := by ring
+      _ ≥ 2 ^ (k + 1) + 5 := by extra
+
+-- The identity to prove: fib (n + 1) * fib (n - 1) - fib n ^ 2 = (-1) ^ n
+-- This requires the index n to be at least 1 for fib (n-1) to be well-defined
+-- in the context of Nat (natural numbers). The identity holds for n=0 if we
+-- interpret fib (-1) as 1, but in Nat we start from n=1.
+theorem Fib_cassini_identity (n : ℕ) (hn : n ≥ 1) :
+   Fib (n + 1) * Fib (n - 1) - Fib n ^ 2 = (-1) ^ n := by
+    induction_from_starting_point n, hn with k hk IH
+    · -- base case
+      calc
+      Fib (1 + 1) * Fib (1 - 1) - Fib 1 ^ 2 = Fib 2 * Fib 0 - Fib 1 ^ 2 := by exact rfl
+              _ = 1 * 0 - 1 ^ 2 := by exact rfl
+              _ = 0 - 1         := by numbers
+              _ = (- 1) ^ 1     := by numbers
+    · -- inductive step
+      calc
+      Fib (k+1+1) * Fib (k+1-1) - Fib (k+1) ^ 2 = Fib (k+2) * Fib k - Fib (k+1) ^ 2 := by numbers
+      _ = (Fib k + Fib (k+1)) * (Fib (k-2) + Fib (k-1)) - Fib (k+1) ^ 2 := by numbers
+      _ = Fib k * Fib (k-2) + Fib k * Fib (k+1) + Fib (k+1) * Fib (k-2) + Fib (k+1) * Fib (k-1)
+           - Fib (k+1) ^ 2 := by ring
+      _ = Fib k * Fib (k-2) + Fib k * Fib (k+1) + Fib (k+1) * Fib (k-2) + Fib (k+1) * Fib (k-1)
+           - Fib (k+1) ^ 2 - Fib k ^ 2 + Fib k ^ 2 := by numbers
+      _ = Fib k * Fib (k-2) + Fib k * Fib (k+1) + Fib (k+1) * Fib (k-2) + (Fib (k+1) * Fib (k-1)
+           - Fib k ^ 2) - Fib (k+1) ^ 2 + Fib k ^ 2  := by ring
+      _ = Fib k * Fib (k-2) + Fib k * Fib (k+1) + Fib (k+1) * Fib (k-2) + (-1) ^ k
+           - Fib (k+1) ^ 2 + Fib k ^ 2  := by rw [IH]
+    sorry
+/-
+    induction n with
+    | zero =>
+      sorry
+    | succ n ih =>
+      sorry
+-/
+  -- The proof in Mathlib uses matrix theory, which is generally more
+  -- straightforward in a formal setting.
+  -- A direct induction proof would look something like this:
+  -- induction n with k hk
+  -- ... (base case n=1)
+  -- ... (inductive step)
+  -- The core manipulations use the recurrence relation: fib (k + 2) = fib (k + 1) + fib k
+
+  -- The Mathlib theorem is called `Nat.fib_cassini` and covers n ≥ 1
+  -- It can be used directly or its proof can be inspected.
+  -- exact Nat.fib_cassini n h.not_zero
+
+
 
 def FibSum : ℕ → ℤ
   | 0     => Fib 0
