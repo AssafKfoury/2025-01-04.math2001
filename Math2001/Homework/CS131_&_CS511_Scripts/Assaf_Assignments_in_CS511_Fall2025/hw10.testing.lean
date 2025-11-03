@@ -24,7 +24,7 @@ open Nat
 #check Int.Odd
 
 /- # Fibonacci function -/
-def Fib : ℕ → ℤ
+def Fib : ℕ → ℤ -- ℕ
    | 0 => 0
    | 1 => 1
    | n + 2 => Fib (n) + Fib (n+1)
@@ -49,7 +49,7 @@ lemma Exp_overtakes_Fib (n : ℕ) : Fib n ≤ 2 ^ n := by
   · calc Fib 1 = 1     := by rw [Fib]
              _ ≤ 2 ^ 1 := by numbers
   · calc Fib (k + 2) = Fib (k) + Fib (k+1) := by rw [Fib]
-                   _ ≤ 2 ^ k + 2 ^ (k+1)   := by exact add_le_add IH1 IH2
+                   _ ≤ 2 ^ k + 2 ^ (k+1)   := by exact Int.add_le_add IH1 IH2
          -- in the previous step, `rel [IH1,IH2]` does not work for some reason ...
                    _ ≤ 2 ^ k + 2 ^ k + 2 ^ (k+1)   := by extra
                    _ = 2 ^ (k + 2)                 := by ring
@@ -129,27 +129,28 @@ example {n : ℕ} (hn : 2 ≤ n) : (3:ℤ) ^ n ≥ 2 ^ n + 5 := by
       _ ≥ 2 ^ (k + 1) + 5 := by extra
 
 theorem Fib_cassini_identity (n : ℕ) (hn : n ≥ 1) :
-   Fib (n + 1) * Fib (n - 1) - Fib n ^ 2 = (-1) ^ n := by
+   Fib (n + 1) * Fib (n - 1) - Fib n ^ 2 = (0 - 1) ^ n := by
     induction_from_starting_point n, hn with k hk IH
     · -- base case
       calc
       Fib (1 + 1) * Fib (1 - 1) - Fib 1 ^ 2 = Fib 2 * Fib 0 - Fib 1 ^ 2 := by exact rfl
-              _ = 1 * 0 - 1 ^ 2 := by exact rfl
-              _ = 0 - 1         := by numbers
-              _ = (- 1) ^ 1     := by numbers
+              _ = 1 * 0 - 1 ^ 2   := by exact rfl
+              _ = 0 - 1           := by numbers
+              _ = (0 - 1) ^ 1     := by numbers
     · -- inductive step
       calc
-      Fib (k+1+1) * Fib (k+1-1) - Fib (k+1) ^ 2 = Fib (k+2) * Fib k - Fib (k+1) ^ 2 := by exact rfl
-        _ = Fib (k+2) * Fib k - Fib (k+1) * Fib (k+1) := by ring
-        _ = Fib (k+2) * Fib k - (Fib (k-1) + Fib k) * Fib (k+1) := by sorry
+      Fib (k+1+1) * Fib (k+1-1) - Fib (k+1) ^ 2
+          = Fib (k+2) * Fib k - Fib (k+1) ^ 2                             := by exact rfl
+        _ = Fib (k+2) * Fib k - Fib (k+1) * Fib (k+1)                     := by ring
+        _ = Fib (k+2) * Fib k - (Fib (k-1) + Fib k) * Fib (k+1)           := by sorry
         _ = Fib (k+2) * Fib k - Fib (k-1) * Fib (k+1) - Fib k * Fib (k+1) := by ring
-        _ = Fib k * (Fib (k+2) - Fib (k+1)) - Fib (k-1) * Fib (k+1) := by ring
+        _ = Fib k * (Fib (k+2) - Fib (k+1)) - Fib (k-1) * Fib (k+1)       := by ring
         _ = Fib k * Fib k - Fib (k-1) * Fib (k+1) := by sorry
         _ = (Fib k) ^ 2 - Fib (k-1) * Fib (k+1)   := by ring
-        _ = - (Fib (k+1) * Fib (k-1) - (Fib k)^2) := by ring
-        _ = - (-1) ^ k                            := by rw [IH]
-        _ = (- 1) * (-1) ^ k                      := by ring
-        _ = (- 1) ^ (k+1)                         := by ring
+        _ = 0 - (Fib (k+1) * Fib (k-1) - (Fib k)^2) := by sorry
+        _ = 0 - (0 - 1) ^ k                            := by rw [IH]
+        _ = (0 - 1) * (0 - 1) ^ k                      := by ring
+        _ = (0 - 1) ^ (k+1)                            := by ring
 
 
 
