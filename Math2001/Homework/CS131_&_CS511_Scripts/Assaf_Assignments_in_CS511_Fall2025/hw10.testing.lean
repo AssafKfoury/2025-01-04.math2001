@@ -54,8 +54,8 @@ lemma Exp_overtakes_Fib (n : ℕ) : Fib n ≤ 2 ^ n := by
                    _ ≤ 2 ^ k + 2 ^ k + 2 ^ (k+1)   := by extra
                    _ = 2 ^ (k + 2)                 := by ring
 
-lemma Fib_add_two {x : ℕ} : Fib (x+2) = Fib (x) + Fib (x+1) :=
-  calc Fib (x+2) = Fib (x) + Fib (x+1) := by rw [Fib]
+--- lemma Fib_add_two {x : ℕ} : Fib (x+2) = Fib (x) + Fib (x+1) :=
+---   calc Fib (x+2) = Fib (x) + Fib (x+1) := by rw [Fib]
 
 lemma odd_add_odd {x y : ℤ} : Int.Odd (x) → Int.Odd (y) →  Int.Even (x + y) := by
    intros h1 h2
@@ -98,17 +98,17 @@ lemma Fact_overtakes_Exp2 (n : ℕ) : Fact2 (n + 1) ≥ 2 ^ n := by
 
 /- # If two consecutive Fibonacci numbers are odd, the next one is even, i.e.
    # every third Fibonacci number is even. -/
-theorem Fib_odd_odd_even1 (n : Nat) :
+theorem Fib_odd_odd_even1 (n : ℕ) :
    Int.Odd (Fib n) → Int.Odd (Fib (n + 1)) →  Int.Even (Fib (n + 2)) := by
      intros h1 h2
-     rw [Fib_add_two]          -- rewrite conclusion using lemma `myFib_add_two`
+     rw [Fib]
      exact odd_add_odd h1 h2   -- apply lemma `odd_add_odd` to conclude the proof
 
 theorem Fib_odd_odd_even2 :
    (∀ (n : ℕ) , Int.Odd (Fib n) → Int.Odd (Fib (n + 1)) →  Int.Even (Fib (n + 2))) := by
      intro h0
      intros h1 h2
-     rw [Fib_add_two]
+     rw [Fib]
      exact odd_add_odd h1 h2
 
 -- A simple example to check the theorem works for a small number.
@@ -135,15 +135,15 @@ theorem Fib_cassini_identity (n : ℕ) (hn : n ≥ 1) :
       calc
       Fib (1 + 1) * Fib (1 - 1) - Fib 1 ^ 2 = Fib 2 * Fib 0 - Fib 1 ^ 2 := by exact rfl
               _ = 1 * 0 - 1 ^ 2   := by exact rfl
-              _ = 0 - 1           := by numbers
-              _ = (0 - 1) ^ 1     := by numbers
+              _ = 0 - 1           := by ring
+              _ = (0 - 1) ^ 1     := by ring
     · -- inductive step
       calc
       Fib (k+1+1) * Fib (k+1-1) - Fib (k+1) ^ 2
-          = Fib (k+2) * Fib k - Fib (k+1) ^ 2                             := by exact rfl
+                = Fib (k+2) * Fib k - Fib (k+1) ^ 2          := by rw [Nat.add_sub_cancel]
         _ = Fib (k+2) * Fib k - Fib (k+1) * Fib (k+1)                     := by ring
         _ = Fib (k+2) * Fib k - (Fib (k-1) + Fib k) * Fib (k+1)           := by sorry
-        _ = Fib (k+2) * Fib k - Fib (k-1) * Fib (k+1) - Fib k * Fib (k+1) := by ring
+        _ = Fib (k+2) * Fib k - Fib (k-1) * Fib (k+1) - Fib k * Fib (k+1) := by sorry
         _ = Fib k * (Fib (k+2) - Fib (k+1)) - Fib (k-1) * Fib (k+1)       := by ring
         _ = Fib k * Fib k - Fib (k-1) * Fib (k+1) := by sorry
         _ = (Fib k) ^ 2 - Fib (k-1) * Fib (k+1)   := by ring
