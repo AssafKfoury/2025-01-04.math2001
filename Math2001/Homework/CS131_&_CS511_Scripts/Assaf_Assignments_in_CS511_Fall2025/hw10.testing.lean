@@ -107,7 +107,7 @@ theorem Fib_odd_odd_even2 :
 /- # Cassini's identity Fib (n-1) * Fib (n+1) - (Fib (n)) ^ 2 = (-1) ^ n -/
 
 /- # next example is almost like `Example 6.3.4` in [MOP] but not quite, because
-   # our definition of Fib 0 = 0, not Fib 0 = 1 -/
+   # our definition of Fib 0 = 0, not Fib 0 = 1 as in [MOP] -/
 example (n : ℕ) : Fib (n + 1) ^ 2 - Fib (n + 1) * Fib n - Fib n ^ 2 = (-1) ^ n := by
   simple_induction n with k IH
   · -- base case
