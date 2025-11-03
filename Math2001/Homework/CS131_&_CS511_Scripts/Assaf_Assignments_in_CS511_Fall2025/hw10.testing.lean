@@ -24,7 +24,7 @@ open Nat
 #check Int.Odd
 
 /- # Fibonacci function -/
-def Fib : ℕ → ℤ --
+def Fib : ℕ → ℤ
    | 0 => 0
    | 1 => 1
    | n + 2 => Fib (n) + Fib (n+1)
@@ -128,10 +128,6 @@ example {n : ℕ} (hn : 2 ≤ n) : (3:ℤ) ^ n ≥ 2 ^ n + 5 := by
       _ = 2 ^ (k + 1) + 5 + (5 + 3 ^ k) := by ring
       _ ≥ 2 ^ (k + 1) + 5 := by extra
 
--- The identity to prove: fib (n + 1) * fib (n - 1) - fib n ^ 2 = (-1) ^ n
--- This requires the index n to be at least 1 for fib (n-1) to be well-defined
--- in the context of Nat (natural numbers). The identity holds for n=0 if we
--- interpret fib (-1) as 1, but in Nat we start from n=1.
 theorem Fib_cassini_identity (n : ℕ) (hn : n ≥ 1) :
    Fib (n + 1) * Fib (n - 1) - Fib n ^ 2 = (-1) ^ n := by
     induction_from_starting_point n, hn with k hk IH
@@ -143,35 +139,19 @@ theorem Fib_cassini_identity (n : ℕ) (hn : n ≥ 1) :
               _ = (- 1) ^ 1     := by numbers
     · -- inductive step
       calc
-      Fib (k+1+1) * Fib (k+1-1) - Fib (k+1) ^ 2 = Fib (k+2) * Fib k - Fib (k+1) ^ 2 := by numbers
-      _ = (Fib k + Fib (k+1)) * (Fib (k-2) + Fib (k-1)) - Fib (k+1) ^ 2 := by numbers
-      _ = Fib k * Fib (k-2) + Fib k * Fib (k+1) + Fib (k+1) * Fib (k-2) + Fib (k+1) * Fib (k-1)
-           - Fib (k+1) ^ 2 := by ring
-      _ = Fib k * Fib (k-2) + Fib k * Fib (k+1) + Fib (k+1) * Fib (k-2) + Fib (k+1) * Fib (k-1)
-           - Fib (k+1) ^ 2 - Fib k ^ 2 + Fib k ^ 2 := by numbers
-      _ = Fib k * Fib (k-2) + Fib k * Fib (k+1) + Fib (k+1) * Fib (k-2) + (Fib (k+1) * Fib (k-1)
-           - Fib k ^ 2) - Fib (k+1) ^ 2 + Fib k ^ 2  := by ring
-      _ = Fib k * Fib (k-2) + Fib k * Fib (k+1) + Fib (k+1) * Fib (k-2) + (-1) ^ k
-           - Fib (k+1) ^ 2 + Fib k ^ 2  := by rw [IH]
-    sorry
-/-
-    induction n with
-    | zero =>
-      sorry
-    | succ n ih =>
-      sorry
--/
-  -- The proof in Mathlib uses matrix theory, which is generally more
-  -- straightforward in a formal setting.
-  -- A direct induction proof would look something like this:
-  -- induction n with k hk
-  -- ... (base case n=1)
-  -- ... (inductive step)
-  -- The core manipulations use the recurrence relation: fib (k + 2) = fib (k + 1) + fib k
+      Fib (k+1+1) * Fib (k+1-1) - Fib (k+1) ^ 2 = Fib (k+2) * Fib k - Fib (k+1) ^ 2 := by exact rfl
+        _ = Fib (k+2) * Fib k - Fib (k+1) * Fib (k+1) := by ring
+        _ = Fib (k+2) * Fib k - (Fib (k-1) + Fib k) * Fib (k+1) := by sorry
+        _ = Fib (k+2) * Fib k - Fib (k-1) * Fib (k+1) - Fib k * Fib (k+1) := by ring
+        _ = Fib k * (Fib (k+2) - Fib (k+1)) - Fib (k-1) * Fib (k+1) := by ring
+        _ = Fib k * Fib k - Fib (k-1) * Fib (k+1) := by sorry
+        _ = (Fib k) ^ 2 - Fib (k-1) * Fib (k+1)   := by ring
+        _ = - (Fib (k+1) * Fib (k-1) - (Fib k)^2) := by ring
+        _ = - (-1) ^ k                            := by rw [IH]
+        _ = (- 1) * (-1) ^ k                      := by ring
+        _ = (- 1) ^ (k+1)                         := by ring
 
-  -- The Mathlib theorem is called `Nat.fib_cassini` and covers n ≥ 1
-  -- It can be used directly or its proof can be inspected.
-  -- exact Nat.fib_cassini n h.not_zero
+
 
 
 
