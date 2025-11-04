@@ -25,7 +25,7 @@ open Nat
 
 /- # Fibonacci function -/
 def Fib : ℕ → ℤ -- ℕ
-   | 0 => 0
+   | 0 => 0 -- sometimes `Fib 0` is defined as returning value `1`
    | 1 => 1
    | n + 2 => Fib (n) + Fib (n+1)
 
@@ -34,14 +34,7 @@ def Fact2 : ℕ → ℕ
    | 0 => 1
    | n + 1 => (n + 1) * Fact2 n
 
-/- # Fibonacci as defiend in [MOP, Example 6.3]
-def F : ℕ → ℤ
-  | 0 => 1                     -- note the difference: this is 1, not 0
-  | 1 => 1
-  | n + 2 => F (n + 1) + F n
--/
-
-/- # Exp_overtakes_Fib -/
+/- # `Exp_overtakes_Fib` , same as Example 6.3.3 in [MOP] -/
 lemma Exp_overtakes_Fib (n : ℕ) : Fib n ≤ 2 ^ n := by
   two_step_induction n with k IH1 IH2
   · calc Fib 0 = 0     := by rw [Fib]
@@ -49,13 +42,10 @@ lemma Exp_overtakes_Fib (n : ℕ) : Fib n ≤ 2 ^ n := by
   · calc Fib 1 = 1     := by rw [Fib]
              _ ≤ 2 ^ 1 := by numbers
   · calc Fib (k + 2) = Fib (k) + Fib (k+1) := by rw [Fib]
-                   _ ≤ 2 ^ k + 2 ^ (k+1)   := by exact Int.add_le_add IH1 IH2
-         -- in the previous step, `rel [IH1,IH2]` does not work for some reason ...
+                   _ ≤ 2 ^ k + 2 ^ (k+1)   := by rel [IH1,IH2]
+    -- in previous step, `exact Int.add_le_add IH1 IH2`instead of `rel[IH1,IH2]` works
                    _ ≤ 2 ^ k + 2 ^ k + 2 ^ (k+1)   := by extra
                    _ = 2 ^ (k + 2)                 := by ring
-
---- lemma Fib_add_two {x : ℕ} : Fib (x+2) = Fib (x) + Fib (x+1) :=
----   calc Fib (x+2) = Fib (x) + Fib (x+1) := by rw [Fib]
 
 lemma odd_add_odd {x y : ℤ} : Int.Odd (x) → Int.Odd (y) →  Int.Even (x + y) := by
    intros h1 h2
@@ -68,7 +58,7 @@ lemma odd_add_odd {x y : ℤ} : Int.Odd (x) → Int.Odd (y) →  Int.Even (x + y
         _ = (a + b + 1) + (a + b + 1) := by ring
         _ = 2 * (a + b + 1) := by ring
 
-/- # `Fact_overtakes_Exp` is the same as Example 6.2.6 in Macbeth's -/
+/- # `Fact_overtakes_Exp1` is the same as Example 6.2.6 in Macbeth's -/
 lemma Fact_overtakes_Exp1 (n : ℕ) :  Fact2 (n+1) ≥ 2 ^ n := by
   induction n with
   | zero =>
@@ -82,6 +72,8 @@ lemma Fact_overtakes_Exp1 (n : ℕ) :  Fact2 (n+1) ≥ 2 ^ n := by
          _ ≥ 2 * 2 ^ n := by extra
          _ = 2 ^ (n + 1) := by ring
 
+/- # `Fact_overtakes_Exp2` is the same as `Fact_overtakes_Exp1` but its
+   #  proof by induction is set up differently -/
 lemma Fact_overtakes_Exp2 (n : ℕ) : Fact2 (n + 1) ≥ 2 ^ n := by
   simple_induction n with k IH
   · -- base case
@@ -91,7 +83,7 @@ lemma Fact_overtakes_Exp2 (n : ℕ) : Fact2 (n + 1) ≥ 2 ^ n := by
   · -- inductive step
     calc Fact2 (k + 1 + 1) = (k + 1 + 1) * Fact2 (k + 1) := by rw [Fact2]
       _ ≥ (k + 1 + 1) * 2 ^ k := by exact mul_le_mul_left (k + 1 + 1) IH
-              -- in the previous step, `rel [IH]` does not work for some reasonn ...
+      -- in the previous step, `rel [IH]` does not work for some reason ...
       _ = k * 2 ^ k + 2 * 2 ^ k := by ring
       _ ≥ 2 * 2 ^ k := by extra
       _ = 2 ^ (k + 1) := by ring
@@ -102,8 +94,9 @@ theorem Fib_odd_odd_even1 (n : ℕ) :
    Int.Odd (Fib n) → Int.Odd (Fib (n + 1)) →  Int.Even (Fib (n + 2)) := by
      intros h1 h2
      rw [Fib]
-     exact odd_add_odd h1 h2   -- apply lemma `odd_add_odd` to conclude the proof
+     exact odd_add_odd h1 h2   -- apply lemma `odd_add_odd` concludes the proof
 
+/- # `Fib_odd_odd_even2` is a slight adjustment of `Fib_odd_odd_even1` -/
 theorem Fib_odd_odd_even2 :
    (∀ (n : ℕ) , Int.Odd (Fib n) → Int.Odd (Fib (n + 1)) →  Int.Even (Fib (n + 2))) := by
      intro h0
@@ -111,23 +104,28 @@ theorem Fib_odd_odd_even2 :
      rw [Fib]
      exact odd_add_odd h1 h2
 
--- A simple example to check the theorem works for a small number.
-#check Fib_odd_odd_even2 -- 3
-#check Fib_odd_odd_even1 1 -- (by decide) (by decide)
--- Lean confirms that `Even (fib 3)`, which is true (1, 1, 2, ...).
-
 /- # Cassini's identity Fib (n-1) * Fib (n+1) - (Fib (n)) ^ 2 = (-1) ^ n -/
 
-example {n : ℕ} (hn : 2 ≤ n) : (3:ℤ) ^ n ≥ 2 ^ n + 5 := by
-  induction_from_starting_point n, hn with k hk IH
+/- # next example is almost like `Example 6.3.4` in [MOP] but not quite, because
+   # our definition of Fib 0 = 0, not Fib 0 = 1 as in [MOP] -/
+example (n : ℕ) : Fib (n + 1) ^ 2 - Fib (n + 1) * Fib n - Fib n ^ 2 = (-1) ^ n := by
+  simple_induction n with k IH
   · -- base case
-    numbers
+    calc
+      Fib 1 ^ 2 - Fib 1 * Fib 0 - Fib 0 ^ 2
+        = 1 ^ 2 - 1 * 0 - 0 ^ 2 := by rw [Fib, Fib]
+      _ = 1 - 0                 := by numbers
+      _ = (-1) ^ 0              := by numbers
   · -- inductive step
-    calc (3:ℤ) ^ (k + 1) = 2 * 3 ^ k + 3 ^ k := by ring
-      _ ≥ 2 * (2 ^ k + 5) + 3 ^ k := by rel [IH]
-      _ = 2 ^ (k + 1) + 5 + (5 + 3 ^ k) := by ring
-      _ ≥ 2 ^ (k + 1) + 5 := by extra
+    calc  Fib (k + 2) ^ 2 - Fib (k + 2) * Fib (k + 1) - Fib (k + 1) ^ 2
+           = (Fib k + Fib (k + 1)) ^ 2 - (Fib k + Fib (k + 1)) * Fib (k + 1)
+                - Fib (k + 1) ^ 2 := by rw [Fib]
+         _ = - (Fib (k + 1) ^ 2 - Fib (k + 1) * Fib k - Fib k ^ 2) := by ring
+         _ = -(-1) ^ k := by rw [IH]
+         _ = (-1) ^ (k + 1) := by ring
 
+
+/-
 theorem Fib_cassini_identity (n : ℕ) (hn : n ≥ 1) :
    Fib (n + 1) * Fib (n - 1) - Fib n ^ 2 = (0 - 1) ^ n := by
     induction_from_starting_point n, hn with k hk IH
@@ -152,7 +150,7 @@ theorem Fib_cassini_identity (n : ℕ) (hn : n ≥ 1) :
         _ = (0 - 1) * (0 - 1) ^ k                      := by ring
         _ = (0 - 1) ^ (k+1)                            := by ring
 
-
+-/
 
 
 
