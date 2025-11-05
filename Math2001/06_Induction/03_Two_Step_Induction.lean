@@ -16,7 +16,6 @@ def a : ℕ → ℤ
 
 #eval a 5 -- infoview displays `31`
 
-
 example (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
   two_step_induction n with k IH1 IH2
   . calc a 0 = 2 := by rw [a]

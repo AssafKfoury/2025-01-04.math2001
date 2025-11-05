@@ -1,3 +1,7 @@
+/- # Fibonacci numbers and many of their properties,
+   # here proved in Lean_4 with several proofs involving
+   # induction, set up in different ways -/
+
 import Mathlib.Data.Real.Basic
 -- import Mathlib.Data.Nat.Basic
 -- import Mathlib.Data.Nat.Fib.Basic
@@ -104,7 +108,7 @@ theorem Fib_odd_odd_even2 :
      rw [Fib]
      exact odd_add_odd h1 h2
 
-/- # Cassini's identity Fib (n-1) * Fib (n+1) - (Fib (n)) ^ 2 = (-1) ^ n -/
+/- CASSINI's IDENTITY Fib (n-1) * Fib (n+1) - (Fib (n)) ^ 2 = (-1) ^ n -/
 
 /- # Next example is almost like `Example 6.3.4` in [MOP] but not quite, because
    # our definition of Fib 0 = 0, not Fib 0 = 1 as in [MOP] . I include it here
@@ -142,6 +146,7 @@ theorem Fib_Cassini_id (n : ℕ) :
        _ = (-1) * (-1) ^ (n+1)                             := by ring
        _ = (-1) ^ (n+2)                                    := by ring
 
+/- # `FibSum n` sums all the Fibonacci numbers Fib 0 + Fib 1 + ⋯ + Fib n -/
 def FibSum : ℕ → ℤ
   | 0     => Fib 0
   | 1     => Fib 1
@@ -165,16 +170,28 @@ def FibSum : ℕ → ℤ
 #eval FibSum (2 * 4) = Fib (2 * 4 + 1) - 1
 
 /- SUM OF FIBONACCI NUMBERS -/
+
 /- # FibSum (2 * n + 1) = Fib (2 * n + 2) for all n ≥ 0   -/
+theorem FibSumOdd (n : ℕ) : FibSum (2 * n + 1) = Fib (2 * n + 2) := by sorry
+
 /- # FibSum (2 * n) = Fib (2 * n + 1) - 1 for all n ≥ 0   -/
+theorem FibSumEven (n : ℕ) : FibSum (2 * n) = Fib (2 * n + 1) - 1 := by sorry
 
 /- DIVISIBILITY PROPERTY-/
+
 /- # Fib (m) divides F (m * n)  for all m ≥ 1 and n ≥ 1 by induction on n  -/
+theorem FibDiv (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1) : (Fib m) ∣ (Fib m * n) :=
+   by sorry
 
 /- GROWTH RATE -/
+
 /- # Fib (n) ≥ (3 / 2) ^ (n - 2) for all n ≥ 2 or
    # (2 ^ (n-2)) * Fib (n) ≥ 3 ^ (n-2)  for all n ≥ 2 or
    # (2 ^ n) * Fib (n + 2) ≥ 3 ^ n for all n ≥ 0   -/
+
+/- # Fib_overtakes_SlowExp -/
+theorem Fib_overtakes_SlowExp (n : ℕ) : (2 ^ n) * Fib (n + 2) ≥ 3 ^ n := by sorry
+
 #eval 3.0 / 2   #eval (3 : ℚ) / 2   #eval ((3:ℚ) / 2) ^ 2
 
 /- Other nice facts about the Fibonacci can be found here:
