@@ -20,7 +20,7 @@ def Fib : ℕ → ℤ -- ℕ
    | 1 => 1
    | n + 2 => Fib (n) + Fib (n+1)
 
--- Example function (Fibonacci)
+-- Example function (similat to Fibonacci)
 def a : ℕ → ℤ
   | 0 => 2
   | 1 => 1
