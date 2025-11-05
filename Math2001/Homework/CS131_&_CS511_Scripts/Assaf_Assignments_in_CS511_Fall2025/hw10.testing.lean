@@ -89,7 +89,7 @@ lemma Fact_overtakes_Exp2 (n : ℕ) : Fact2 (n + 1) ≥ 2 ^ n := by
       _ = 2 ^ (k + 1) := by ring
 
 /- # If two consecutive Fibonacci numbers are odd, the next one is even, i.e.
-   # every third Fibonacci number is even. -/
+   # every third Fibonacci number is even -/
 theorem Fib_odd_odd_even1 (n : ℕ) :
    Int.Odd (Fib n) → Int.Odd (Fib (n + 1)) →  Int.Even (Fib (n + 2)) := by
      intros h1 h2
@@ -106,8 +106,9 @@ theorem Fib_odd_odd_even2 :
 
 /- # Cassini's identity Fib (n-1) * Fib (n+1) - (Fib (n)) ^ 2 = (-1) ^ n -/
 
-/- # next example is almost like `Example 6.3.4` in [MOP] but not quite, because
-   # our definition of Fib 0 = 0, not Fib 0 = 1 as in [MOP] -/
+/- # Next example is almost like `Example 6.3.4` in [MOP] but not quite, because
+   # our definition of Fib 0 = 0, not Fib 0 = 1 as in [MOP] . I include it here
+   # because it is closely related to Cassini's identity -/
 example (n : ℕ) : Fib (n + 1) ^ 2 - Fib (n + 1) * Fib n - Fib n ^ 2 = (-1) ^ n := by
   simple_induction n with k IH
   · -- base case
@@ -124,7 +125,22 @@ example (n : ℕ) : Fib (n + 1) ^ 2 - Fib (n + 1) * Fib n - Fib n ^ 2 = (-1) ^ n
          _ = -(-1) ^ k := by rw [IH]
          _ = (-1) ^ (k + 1) := by ring
 
-
+/- # I shift the statement of Cassini's identity by 1 so that we can start the
+   # induction at n = 0 instead of n = 1: -/
+theorem Fib_Cassini_id (n : ℕ) :
+    Fib (n + 2) * Fib (n) - Fib (n+1) * Fib (n+1) = (-1) ^ (n+1) := by
+    induction n with
+    | zero =>
+      calc Fib (0+2) * Fib 0 - Fib (0+1) * Fib (0+1)
+                = (-1) ^ (0+1) := by exact rfl
+    | succ n ih =>
+      calc Fib (n+1+2) * Fib (n+1) - Fib (n+1+1) * Fib (n+1+1)
+         = (Fib (n+1) + Fib (n+1+1)) * Fib (n+1) - (Fib n + Fib (n+1)) * Fib (n+1+1) := by rw [Fib,Fib]
+       _ = Fib (n+1) * Fib (n+1) - Fib (n) * Fib (n+2)     := by ring
+       _ = - (Fib (n+2) * Fib (n) - Fib (n+1) * Fib (n+1)) := by ring
+       _ = - (-1) ^ (n+1)                                  := by rw [ih]
+       _ = (-1) * (-1) ^ (n+1)                             := by ring
+       _ = (-1) ^ (n+2)                                    := by ring
 
 def FibSum : ℕ → ℤ
   | 0     => Fib 0
