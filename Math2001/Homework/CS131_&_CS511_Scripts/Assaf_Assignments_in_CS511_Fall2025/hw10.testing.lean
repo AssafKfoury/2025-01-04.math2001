@@ -62,9 +62,9 @@ lemma odd_add_odd {x y : ℤ} : Int.Odd (x) → Int.Odd (y) →  Int.Even (x + y
 lemma Fact_overtakes_Exp1 (n : ℕ) :  Fact2 (n+1) ≥ 2 ^ n := by
   induction n with
   | zero =>
-    calc Fact2 (0+1) = (0+1) * Fact2 0 := by rw [Fact2,Fact2,Fact2]
-         _ = (0+1) * 1 := by rw [Fact2]
-         _ ≥ 2 ^ 0 := by numbers
+    calc Fact2 (0+1) = (0+1) * Fact2 0 := by exact rfl -- `rw [Fact2,Fact2,Fact2]` also works
+         _ = (0+1) * 1                 := by exact rfl -- `rw [Fact2]` also works
+         _ ≥ 2 ^ 0                     := by numbers
   | succ n ih =>
     calc Fact2 (n+1+1) = (n+1+1) * (Fact2 (n+1)) := by rw [Fact2]
          _ ≥ (n+1+1) * (2 ^ n) := by exact mul_le_mul_left (n + 1 + 1) ih
@@ -113,7 +113,7 @@ example (n : ℕ) : Fib (n + 1) ^ 2 - Fib (n + 1) * Fib n - Fib n ^ 2 = (-1) ^ n
   · -- base case
     calc
       Fib 1 ^ 2 - Fib 1 * Fib 0 - Fib 0 ^ 2
-        = 1 ^ 2 - 1 * 0 - 0 ^ 2 := by rw [Fib, Fib]
+        = 1 ^ 2 - 1 * 0 - 0 ^ 2 := by rw [Fib,Fib]
       _ = 1 - 0                 := by numbers
       _ = (-1) ^ 0              := by numbers
   · -- inductive step
@@ -123,34 +123,6 @@ example (n : ℕ) : Fib (n + 1) ^ 2 - Fib (n + 1) * Fib n - Fib n ^ 2 = (-1) ^ n
          _ = - (Fib (k + 1) ^ 2 - Fib (k + 1) * Fib k - Fib k ^ 2) := by ring
          _ = -(-1) ^ k := by rw [IH]
          _ = (-1) ^ (k + 1) := by ring
-
-
-/-
-theorem Fib_cassini_identity (n : ℕ) (hn : n ≥ 1) :
-   Fib (n + 1) * Fib (n - 1) - Fib n ^ 2 = (0 - 1) ^ n := by
-    induction_from_starting_point n, hn with k hk IH
-    · -- base case
-      calc
-      Fib (1 + 1) * Fib (1 - 1) - Fib 1 ^ 2 = Fib 2 * Fib 0 - Fib 1 ^ 2 := by exact rfl
-              _ = 1 * 0 - 1 ^ 2   := by exact rfl
-              _ = 0 - 1           := by ring
-              _ = (0 - 1) ^ 1     := by ring
-    · -- inductive step
-      calc
-      Fib (k+1+1) * Fib (k+1-1) - Fib (k+1) ^ 2
-                = Fib (k+2) * Fib k - Fib (k+1) ^ 2          := by rw [Nat.add_sub_cancel]
-        _ = Fib (k+2) * Fib k - Fib (k+1) * Fib (k+1)                     := by ring
-        _ = Fib (k+2) * Fib k - (Fib (k-1) + Fib k) * Fib (k+1)           := by sorry
-        _ = Fib (k+2) * Fib k - Fib (k-1) * Fib (k+1) - Fib k * Fib (k+1) := by sorry
-        _ = Fib k * (Fib (k+2) - Fib (k+1)) - Fib (k-1) * Fib (k+1)       := by ring
-        _ = Fib k * Fib k - Fib (k-1) * Fib (k+1) := by sorry
-        _ = (Fib k) ^ 2 - Fib (k-1) * Fib (k+1)   := by ring
-        _ = 0 - (Fib (k+1) * Fib (k-1) - (Fib k)^2) := by sorry
-        _ = 0 - (0 - 1) ^ k                            := by rw [IH]
-        _ = (0 - 1) * (0 - 1) ^ k                      := by ring
-        _ = (0 - 1) ^ (k+1)                            := by ring
-
--/
 
 
 
