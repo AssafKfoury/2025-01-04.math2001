@@ -68,92 +68,28 @@ example (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
         a (k + 2) = a (k + 1) + 2 * (a k) := rfl
         _ = 2 ^ (k + 1) + (-1) ^ (k + 1) + 2 * (2 ^ k + (-1) ^ k) := by rw [ik.1, ik.2]
         _ = 2 ^ (k + 2) + (-1) ^ (k + 2) := by ring
-
   -- we just need the `n` case in the end
   exact aux_lemma.1
 
-
-
 /- # Fib_overtakes_SlowExp -/
 theorem Fib_overtakes_SlowExp (n : ℕ) : (2 ^ n) * Fib (n + 2) ≥ 3 ^ n := by
-  induction n with -- using Nat.twoStepInduction with
-  | zero =>
-      calc
-      2^0 + Fib (0+2) = 1 + Fib (2) := by exact rfl
-                    _ = 1 + 1       := by exact rfl
-                    _ = 2           := by numbers
-                    _ ≥ 3^0         := by numbers
-  | succ k ik =>
-      calc   sorry
-
-
-/-
--- Import the Fibonacci sequence definition and standard tactics
-import Mathlib.Data.Nat.Fib
-import Mathlib.Tactic
-
--- Use the definitions from the Nat namespace
-open Nat
-
-theorem fib_inequality (n : ℕ) : 2^n * fib (n + 2) ≥ 3^n := by
-  -- We use two-step induction because the Fibonacci recurrence
-  -- depends on two previous values.
-  induction n using Nat.twoStepInduction with
-  | zero =>
-    -- Base case n = 0
-    -- Goal: 2^0 * fib (0 + 2) ≥ 3^0
-    --       1 * fib 2       ≥ 1
-    --       1 * 1           ≥ 1
-    norm_num
-
-  | one =>
-    -- Base case n = 1
-    -- Goal: 2^1 * fib (1 + 2) ≥ 3^1
-    --       2 * fib 3       ≥ 3
-    --       2 * 2           ≥ 3
-    --       4               ≥ 3
-    norm_num
-
-  | step k ih_1 ih_2 =>
-    -- Inductive step for n = k + 2
-    -- ih_1: 2^k * fib (k + 2) ≥ 3^k
-    -- ih_2: 2^(k + 1) * fib (k + 3) ≥ 3^(k + 1)
-    -- Goal: 2^(k + 2) * fib (k + 4) ≥ 3^(k + 2)
-
-    -- First, we prove the simple arithmetic inequality that
-    -- 2 * 3^(k+1) + 4 * 3^k ≥ 3^(k+2)
-    -- This is the 10/3 part of the paper proof, multiplied by 3
-    -- (10 * 3^k ≥ 9 * 3^k)
-    have h_arith : 2 * 3^(k + 1) + 4 * 3^k ≥ 3^(k + 2) := by
-      rw [pow_succ, mul_assoc, ← add_mul] -- 2*3*3^k + 4*3^k = (6+4)*3^k
-      norm_num -- 10 * 3^k
-      rw [pow_add, pow_two, mul_comm] -- 3^2 * 3^k = 9 * 3^k
-      norm_num -- Goal: 10 * 3^k ≥ 9 * 3^k
-      apply Nat.mul_le_mul_right -- Prove 10 ≥ 9 (since 3^k is non-neg)
-      norm_num -- 10 ≥ 9
-
-    -- Now, we start from the LHS of our main goal and use `calc`
-    calc
-      2^(k + 2) * fib (k + 4)
-      _ = 2^(k + 2) * (fib (k + 3) + fib (k + 2)) := by rw [fib_add_two]
-      _ = 2^(k + 2) * fib (k + 3) + 2^(k + 2) * fib (k + 2) := by rw [mul_add]
-      _ = 2 * (2^(k + 1) * fib (k + 3)) + 4 * (2^k * fib (k + 2)) := by
-          -- Rearrange powers to match ih_1 and ih_2
-          rw [pow_succ (k + 1), mul_assoc] -- 2^(k+2) = 2 * 2^(k+1)
-          rw [pow_add k 2, mul_assoc]      -- 2^(k+2) = 2^2 * 2^k
-          rw [show (2^2 : ℕ) = 4 by rfl, rfl]
-      _ ≥ 2 * 3^(k + 1) + 4 * 3^k := by
-          -- Apply the two induction hypotheses
-          apply add_le_add
-          · -- 2 * (2^(k+1) * fib(k+3)) ≥ 2 * 3^(k+1)
-            apply mul_le_mul_of_nonneg_left ih_2
-            norm_num
-          · -- 4 * (2^k * fib(k+2)) ≥ 4 * 3^k
-            apply mul_le_mul_of_nonneg_left ih_1
-            norm_num
-      _ ≥ 3^(k + 2) := by
-          -- Apply the arithmetic lemma we proved
-          exact h_arith
-
-
--/
+  induction' n using Nat.twoStepInduction with k IH1 IH2
+  · calc 2^0 * Fib (0+2)
+             = 1 * Fib (2) := by exact rfl  -- or `by rfl`
+          _  = 1 * 1       := by exact rfl  -- or `by rfl`
+          _  ≥ 3^0         := by numbers    -- or `by exact Int.le_refl (3 ^ 0)`
+  · calc 2^1 * Fib (1+2)
+             = 2 * Fib (3) := by rfl
+          _  = 2 * 2       := by rfl
+          _  = 4           := by numbers
+          _  ≥ 3^1         := by numbers
+  · calc 2^(k+2) * Fib (k+2+2)
+                 = 2^(k+2) * (Fib (k+2) + Fib (k+2+1))           := by rw [Fib]
+              _  = 2^(k+2) * Fib (k+2) + 2^(k+2) * Fib (k+3)     := by ring
+              _  = 2^2 * (2^k * Fib (k+2)) + 2 * (2^(k+1) * Fib (k+3)) := by ring
+              _  ≥ 2^2 * 3^k + 2 * 3^(k+1)                       := by rel [IH1,IH2]
+              _  = 4 * 3^k + 2 * 3^(k+2) - 12 * 3^k              := by ring
+              _  = 2 * 3^(k+2) - 8 * 3^k                         := by ring
+              _  = 3^(k+2) + 9 * 3^k - 8 * 3^k                   := by ring
+              _  = 3^(k+2) + 3^k                                 := by ring
+              _  ≥ 3^(k+2)                                       := by extra
