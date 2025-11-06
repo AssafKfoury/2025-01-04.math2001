@@ -25,8 +25,6 @@ math2001_init
 
 open Nat
 
-#check Int.Odd
-
 /- # Fibonacci function -/
 def Fib : ℕ → ℤ -- ℕ
    | 0 => 0 -- sometimes `Fib 0` is defined as returning value `1`

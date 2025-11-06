@@ -1,17 +1,8 @@
--- import Mathlib
+
 import Mathlib.Data.Real.Basic
 import Library.Basic
 
--- import Mathlib.Data.Nat.Lemmas -- Required to access Nat.twoStepInduction
-
-
-
-
--- import Mathlib.Data.Nat.Fib.Basic
-
 math2001_init
-open Nat
-
 open Nat
 
 /- # Fibonacci function -/
@@ -20,7 +11,7 @@ def Fib : ℕ → ℤ -- ℕ
    | 1 => 1
    | n + 2 => Fib (n) + Fib (n+1)
 
--- Example function (similat to Fibonacci)
+-- inductively defined function (similar to Fibonacci)
 def a : ℕ → ℤ
   | 0 => 2
   | 1 => 1
