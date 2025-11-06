@@ -37,7 +37,7 @@ def Fact2 : ℕ → ℕ
    | n + 1 => (n + 1) * Fact2 n
 
 /- # `Exp_overtakes_Fib` , same as Example 6.3.3 in [MOP] -/
-lemma Exp_overtakes_Fib (n : ℕ) : Fib n ≤ 2 ^ n := by
+theorem Exp_overtakes_Fib (n : ℕ) : Fib n ≤ 2 ^ n := by
   two_step_induction n with k IH1 IH2
   · calc Fib 0 = 0     := by rw [Fib]
              _ ≤ 2 ^ 0 := by numbers
@@ -58,10 +58,10 @@ lemma odd_add_odd {x y : ℤ} : Int.Odd (x) → Int.Odd (y) →  Int.Even (x + y
    calc (2 * a + 1) + (2 * b + 1) = (a + a + 1) + (2 * b + 1) := by rw [two_mul]
         _ = (a + a + 1) + (b + b + 1) := by rw [two_mul]
         _ = (a + b + 1) + (a + b + 1) := by ring
-        _ = 2 * (a + b + 1) := by ring
+        _ = 2 * (a + b + 1)           := by ring
 
 /- # `Fact_overtakes_Exp1` is the same as Example 6.2.6 in Macbeth's -/
-lemma Fact_overtakes_Exp1 (n : ℕ) :  Fact2 (n+1) ≥ 2 ^ n := by
+theorem Fact_overtakes_Exp1 (n : ℕ) :  Fact2 (n+1) ≥ 2 ^ n := by
   induction n with
   | zero =>
     calc Fact2 (0+1) = (0+1) * Fact2 0 := by exact rfl -- `rw [Fact2,Fact2,Fact2]` also works
@@ -122,10 +122,10 @@ example (n : ℕ) : Fib (n + 1) ^ 2 - Fib (n + 1) * Fib n - Fib n ^ 2 = (-1) ^ n
   · -- inductive step
     calc  Fib (k + 2) ^ 2 - Fib (k + 2) * Fib (k + 1) - Fib (k + 1) ^ 2
            = (Fib k + Fib (k + 1)) ^ 2 - (Fib k + Fib (k + 1)) * Fib (k + 1)
-                - Fib (k + 1) ^ 2 := by rw [Fib]
-         _ = - (Fib (k + 1) ^ 2 - Fib (k + 1) * Fib k - Fib k ^ 2) := by ring
-         _ = -(-1) ^ k := by rw [IH]
-         _ = (-1) ^ (k + 1) := by ring
+                - Fib (k + 1) ^ 2      := by rw [Fib]
+         _ = - (Fib (k + 1) ^ 2 - Fib (k+1) * Fib k - Fib k^2) := by ring
+         _ = -(-1) ^ k                 := by rw [IH]
+         _ = (-1) ^ (k + 1)            := by ring
 
 /- # I shift the statement of Cassini's identity by 1 so that we can start the
    # induction at n = 0 instead of n = 1: -/
