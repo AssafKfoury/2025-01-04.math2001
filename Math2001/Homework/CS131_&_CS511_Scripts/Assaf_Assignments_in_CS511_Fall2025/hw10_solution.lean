@@ -1,4 +1,4 @@
-/- # CS 511, 08 Nov 2025, hw10_solution.lean -/
+/- # CS 511, 08 November 2025, hw10_solution.lean -/
 
 import Mathlib.Data.Real.Basic
 import Library.Basic
