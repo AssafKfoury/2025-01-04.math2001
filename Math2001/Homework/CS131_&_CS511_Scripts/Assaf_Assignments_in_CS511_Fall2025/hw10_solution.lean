@@ -6,7 +6,7 @@ import Library.Tactic.ModEq
 math2001_init           --  needed to access Macbeth's tactics:
                         -- `addarith`, `cancel`, `extra`, `numbers`
 
-/- # Example 6.1.3 in [MOP] -/
+/- # Example 6.1.3 in [MOP], Exercise 3, part 1, in HW10 -/
 theorem exercise_3_1 {a b d : ℤ} (h : a ≡ b [ZMOD d]) (n : ℕ) : a ^ n ≡ b ^ n [ZMOD d] := by
   simple_induction n with k IH
   · dsimp [Int.ModEq,(.∣.)] at *
@@ -22,7 +22,7 @@ theorem exercise_3_1 {a b d : ℤ} (h : a ≡ b [ZMOD d]) (n : ℕ) : a ^ n ≡ 
         _ = a * (d * x) + b ^ k * (d * y)         := by rw [hx,hy]
         _ = d * (a * x + b ^ k * y)               := by ring
 
-/- # Example 6.1.6 in [MOP] -/
+/- # Example 6.1.6 in [MOP], Exercise 3, part 2, in HW10 -/
 theorem exercise_3_2 : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
   dsimp
   use 4
@@ -41,7 +41,7 @@ theorem exercise_3_2 : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
       _ = (k + 1) ^ 2 + 7       := by ring
       _ ≥ (k + 1) ^ 2           := by extra
 
-/- # Exercise 6.1.7.2 in [MOP] -/
+/- # Exercise 6.1.7.2 in [MOP], Exercise 4, part 1, in HW10 -/
 theorem exercise_4_1 {a : ℝ} (ha : -1 ≤ a) (n : ℕ) : (1 + a) ^ n ≥ 1 + n * a := by
   have ha' : 0 ≤ 1 + a :=
   calc
@@ -58,7 +58,7 @@ theorem exercise_4_1 {a : ℝ} (ha : -1 ≤ a) (n : ℕ) : (1 + a) ^ n ≥ 1 + n
       _ = 1 + (n + 1) * a + n * a ^ 2           := by ring
       _ ≥ 1 + (n + 1) * a                       := by extra
 
-/- # Exercise 6.1.7.6 in [MOP] -/
+/- # Exercise 6.1.7.6 in [MOP], Exercise 4, part 2, in HW10 -/
 theorem exercise_4_2 : forall_sufficiently_large n : ℕ, (3:ℤ) ^ n ≥ 2 ^ n + 100 := by
   dsimp
   use 5
@@ -80,6 +80,7 @@ def foo : ℕ → ℕ
   | 0     => 1
   | n + 1 => foo (n) + 2 * n + 3
 
+/- # PROBLEM 2 in HW10 -/
 theorem problem_2 {n : ℕ} : ∃ (k : ℕ), foo (n) = k ^ 2 := by
   use n + 1
   have lemZ : foo (n) = (n + 1) ^ 2 := by
