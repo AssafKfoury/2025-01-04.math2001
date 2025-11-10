@@ -49,6 +49,7 @@ theorem Exp_overtakes_Fib (n : ℕ) : Fib n ≤ 2 ^ n := by
                    _ ≤ 2 ^ k + 2 ^ k + 2 ^ (k+1)   := by extra
                    _ = 2 ^ (k + 2)                 := by ring
 
+/- # Adding two odd integers returns an even integer -/
 lemma odd_add_odd {x y : ℤ} : Int.Odd (x) → Int.Odd (y) →  Int.Even (x + y) := by
    intros h1 h2
    dsimp [Int.Odd] at * ; dsimp [Int.Even]
@@ -116,9 +117,9 @@ example (n : ℕ) : Fib (n + 1) ^ 2 - Fib (n + 1) * Fib n - Fib n ^ 2 = (-1) ^ n
   · -- base case
     calc
       Fib 1 ^ 2 - Fib 1 * Fib 0 - Fib 0 ^ 2
-        = 1 ^ 2 - 1 * 0 - 0 ^ 2 := by rw [Fib,Fib]
-      _ = 1 - 0                 := by numbers
-      _ = (-1) ^ 0              := by numbers
+        = 1 ^ 2 - 1 * 0 - 0 ^ 2   := by rw [Fib,Fib]
+      _ = 1 - 0                   := by numbers
+      _ = (-1) ^ 0                := by numbers
   · -- inductive step
     calc  Fib (k + 2) ^ 2 - Fib (k + 2) * Fib (k + 1) - Fib (k + 1) ^ 2
            = (Fib k + Fib (k + 1)) ^ 2 - (Fib k + Fib (k + 1)) * Fib (k + 1)

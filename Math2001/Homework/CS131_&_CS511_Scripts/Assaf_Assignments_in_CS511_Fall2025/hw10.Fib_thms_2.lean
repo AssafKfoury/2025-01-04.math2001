@@ -30,8 +30,8 @@ example (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
       _ = (2^(k+1) + (-1)^(k+1)) + 2*(2^k + (-1)^k) := by rw [IH1, IH2]
       _ = (2 : ℤ) ^ (k+2) + (-1) ^ (k+2)            := by ring
 
-/- Same as the preceding two-step-induction but now using induction
-   instead of induction' and a little less transparently -/
+/- Same as the preceding two-step-induction but now using "induction"
+   instead of "induction'" and a little less transparently -/
 example (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
   induction n using Nat.twoStepInduction
   . rfl
