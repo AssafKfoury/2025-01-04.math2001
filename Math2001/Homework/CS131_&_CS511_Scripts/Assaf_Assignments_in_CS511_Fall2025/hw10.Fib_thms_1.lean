@@ -195,4 +195,9 @@ theorem Fib_overtakes_SlowExp (n : ℕ) : (2 ^ n) * Fib (n + 2) ≥ 3 ^ n := by 
 
 /- Other nice facts about the Fibonacci can be found here:
    https://matheducators.stackexchange.com/questions/2021/what-interesting-properties-of-the-fibonacci-sequence-can-i-share-when-introduci
+
+   Also, from the end of Section 5.4 in "Mathematics in Lean":
+   example (n : ℕ): (fib n) ^ 2 + (fib (n + 1)) ^ 2 =
+                                       fib (2 * n + 1) := by sorry
+   https://leanprover-community.github.io/mathematics_in_lean/C05_Elementary_Number_Theory.html
 -/
