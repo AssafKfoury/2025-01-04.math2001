@@ -59,13 +59,8 @@ def foo : ℕ → ℕ
 /- # PROBLEM 2 in HW10 -/
 theorem problem_2 {n : ℕ} : ∃ (k : ℕ), foo (n) = k ^ 2 := by
   use n + 1
-  -- have lemZ : foo (n) = (n + 1) ^ 2 := by
   simple_induction n with k IH
   · -- base case
-      rw [foo]
-      numbers
+      sorry
   · -- inductive step
-      calc foo (k + 1) = foo (k) + 2 * k + 3   := by rw [foo]
-             _         = (k + 1)^2 + 2 * k + 3 := by rw [IH]
-             _         = (k + 2)^2 := by ring
-  -- apply lemZ
+      sorry
