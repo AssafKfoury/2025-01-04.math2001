@@ -36,31 +36,6 @@ def Fact2 : ℕ → ℕ
    | 0 => 1
    | n + 1 => (n + 1) * Fact2 n
 
-/- # `Exp_overtakes_Fib` , same as Example 6.3.3 in [MOP] -/
-theorem Exp_overtakes_Fib (n : ℕ) : Fib n ≤ 2 ^ n := by
-  two_step_induction n with k IH1 IH2
-  · calc Fib 0 = 0     := by rw [Fib]
-             _ ≤ 2 ^ 0 := by numbers
-  · calc Fib 1 = 1     := by rw [Fib]
-             _ ≤ 2 ^ 1 := by numbers
-  · calc Fib (k + 2) = Fib (k) + Fib (k+1) := by rw [Fib]
-                   _ ≤ 2 ^ k + 2 ^ (k+1)   := by rel [IH1,IH2]
-    -- in previous step, `exact Int.add_le_add IH1 IH2`instead of `rel[IH1,IH2]` works
-                   _ ≤ 2 ^ k + 2 ^ k + 2 ^ (k+1)   := by extra
-                   _ = 2 ^ (k + 2)                 := by ring
-
-/- # Adding two odd integers returns an even integer -/
-lemma odd_add_odd {x y : ℤ} : Int.Odd (x) → Int.Odd (y) →  Int.Even (x + y) := by
-   intros h1 h2
-   dsimp [Int.Odd] at * ; dsimp [Int.Even]
-   obtain ⟨ a , h1 ⟩ := h1 ; obtain ⟨ b , h2 ⟩ := h2
-   use (a + b + 1)
-   rw [h1,h2]
-   calc (2 * a + 1) + (2 * b + 1) = (a + a + 1) + (2 * b + 1) := by rw [two_mul]
-        _ = (a + a + 1) + (b + b + 1) := by rw [two_mul]
-        _ = (a + b + 1) + (a + b + 1) := by ring
-        _ = 2 * (a + b + 1)           := by ring
-
 /- # `Fact_overtakes_Exp1` is the same as Example 6.2.6 in Macbeth's -/
 theorem Fact_overtakes_Exp1 (n : ℕ) :  Fact2 (n+1) ≥ 2 ^ n := by
   induction n with
@@ -90,6 +65,55 @@ lemma Fact_overtakes_Exp2 (n : ℕ) : Fact2 (n + 1) ≥ 2 ^ n := by
       _ = k * 2 ^ k + 2 * 2 ^ k := by ring
       _ ≥ 2 * 2 ^ k := by extra
       _ = 2 ^ (k + 1) := by ring
+
+/- # `Exp_overtakes_Fib` , same as Example 6.3.3 in [MOP] -/
+theorem Exp_overtakes_Fib (n : ℕ) : Fib n ≤ 2 ^ n := by
+  two_step_induction n with k IH1 IH2
+  · calc Fib 0 = 0     := by rw [Fib]
+             _ ≤ 2 ^ 0 := by numbers
+  · calc Fib 1 = 1     := by rw [Fib]
+             _ ≤ 2 ^ 1 := by numbers
+  · calc Fib (k + 2) = Fib (k) + Fib (k+1) := by rw [Fib]
+                   _ ≤ 2 ^ k + 2 ^ (k+1)   := by rel [IH1,IH2]
+    -- in previous step, `exact Int.add_le_add IH1 IH2`instead of `rel[IH1,IH2]` works
+                   _ ≤ 2 ^ k + 2 ^ k + 2 ^ (k+1)   := by extra
+                   _ = 2 ^ (k + 2)                 := by ring
+
+/- # Fib_overtakes_SlowExp -/
+theorem Fib_overtakes_SlowExp (n : ℕ) : (2 ^ n) * Fib (n + 2) ≥ 3 ^ n := by
+  induction' n using Nat.twoStepInduction with k IH1 IH2
+  · calc 2^0 * Fib (0+2)
+             = 1 * Fib (2) := by exact rfl  -- or `by rfl`
+          _  = 1 * 1       := by exact rfl  -- or `by rfl`
+          _  ≥ 3^0         := by numbers    -- or `by exact Int.le_refl (3 ^ 0)`
+  · calc 2^1 * Fib (1+2)
+             = 2 * Fib (3) := by rfl
+          _  = 2 * 2       := by rfl
+          _  = 4           := by numbers
+          _  ≥ 3^1         := by numbers
+  · calc 2^(k+2) * Fib (k+2+2)
+                 = 2^(k+2) * (Fib (k+2) + Fib (k+2+1))           := by rw [Fib]
+              _  = 2^(k+2) * Fib (k+2) + 2^(k+2) * Fib (k+3)     := by ring
+              _  = 2^2 * (2^k * Fib (k+2)) + 2 * (2^(k+1) * Fib (k+3)) := by ring
+              _  ≥ 2^2 * 3^k + 2 * 3^(k+1)                       := by rel [IH1,IH2]
+              _  = 4 * 3^k + 2 * 3^(k+2) - 12 * 3^k              := by ring
+              _  = 2 * 3^(k+2) - 8 * 3^k                         := by ring
+              _  = 3^(k+2) + 9 * 3^k - 8 * 3^k                   := by ring
+              _  = 3^(k+2) + 3^k                                 := by ring
+              _  ≥ 3^(k+2)                                       := by extra
+
+
+/- # Adding two odd integers returns an even integer -/
+lemma odd_add_odd {x y : ℤ} : Int.Odd (x) → Int.Odd (y) →  Int.Even (x + y) := by
+   intros h1 h2
+   dsimp [Int.Odd] at * ; dsimp [Int.Even]
+   obtain ⟨ a , h1 ⟩ := h1 ; obtain ⟨ b , h2 ⟩ := h2
+   use (a + b + 1)
+   rw [h1,h2]
+   calc (2 * a + 1) + (2 * b + 1) = (a + a + 1) + (2 * b + 1) := by rw [two_mul]
+        _ = (a + a + 1) + (b + b + 1) := by rw [two_mul]
+        _ = (a + b + 1) + (a + b + 1) := by ring
+        _ = 2 * (a + b + 1)           := by ring
 
 /- # If two consecutive Fibonacci numbers are odd, the next one is even, i.e.
    # every third Fibonacci number is even -/
