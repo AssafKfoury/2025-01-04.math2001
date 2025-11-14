@@ -102,7 +102,6 @@ theorem Fib_overtakes_SlowExp (n : ℕ) : (2 ^ n) * Fib (n + 2) ≥ 3 ^ n := by
               _  = 3^(k+2) + 3^k                                 := by ring
               _  ≥ 3^(k+2)                                       := by extra
 
-
 /- # Adding two odd integers returns an even integer -/
 lemma odd_add_odd {x y : ℤ} : Int.Odd (x) → Int.Odd (y) →  Int.Even (x + y) := by
    intros h1 h2
@@ -212,8 +211,7 @@ theorem FibDiv (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1) : (Fib m) ∣ (Fib m * 
    # (2 ^ (n-2)) * Fib (n) ≥ 3 ^ (n-2)  for all n ≥ 2 or
    # (2 ^ n) * Fib (n + 2) ≥ 3 ^ n for all n ≥ 0   -/
 
-/- # Fib_overtakes_SlowExp -/
-theorem Fib_overtakes_SlowExp (n : ℕ) : (2 ^ n) * Fib (n + 2) ≥ 3 ^ n := by sorry
+
 
 #eval 3.0 / 2   #eval (3 : ℚ) / 2   #eval ((3:ℚ) / 2) ^ 2
 
