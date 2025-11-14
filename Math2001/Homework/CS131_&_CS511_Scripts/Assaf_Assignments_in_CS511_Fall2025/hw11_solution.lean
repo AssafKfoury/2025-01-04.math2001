@@ -9,7 +9,7 @@ set_option pp.funBinderTypes true
 open Function
 namespace Int
 
-/- # Exercise 3 -/
+/- # Exercise 3 in Homework 11-/
 
 --Exercise 8.1.13.2
 --# Prove one-------------------------------------------------------
@@ -51,7 +51,7 @@ example : ¬ Surjective (fun (x : ℝ) ↦ 2 * x) := by
 
 --# -----------------------------------------------------------------
 
-/- # Exercise 4 -/
+/- # Exercise 4 in Homework 11-/
 
 inductive Musketeer
   | athos
@@ -121,7 +121,7 @@ example : ¬ Surjective l := by
 
 --# ----------------------------------------------------------------
 
-/- # Problem 2 -/
+/- # Problem 2 in Homework 11 -/
 
 --Exercise 8.1.13.13
 --# Prove one-------------------------------------------------------
