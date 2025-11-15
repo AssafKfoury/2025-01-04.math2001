@@ -1,9 +1,14 @@
-/- # CS 511, 14 November 2025, hw11_solution.lean -/
+/- # CS 511, 14 November 2025, hw11_template.lean -/
 import Mathlib.Data.Real.Basic
 import Library.Basic
-import Library.Tactic.ModEq
-math2001_init           --  needed to access Macbeth's tactics:
-                        -- `addarith`, `cancel`, `extra`, `numbers`
+import Library.Tactic.Exhaust --
+    -- The `exhaust` tactic is typically used to solve goals that involve
+    -- finite-case analysis, primarily in the context of sets or other
+    -- inductive types with a small number of elements. It is generally
+    -- used after the tactics `dsimp` or `intro` in a by block.
+math2001_init
+    --  needed to access Macbeth's tactics `addarith`, `cancel`, `extra`, `numbers`
+
 open Function
 namespace Int
 

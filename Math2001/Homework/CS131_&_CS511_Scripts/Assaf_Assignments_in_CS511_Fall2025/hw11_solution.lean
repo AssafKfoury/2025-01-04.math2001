@@ -9,7 +9,7 @@ import Library.Tactic.Exhaust --
     -- used after the tactics `dsimp` or `intro` in a by block.
 math2001_init
     -- needed to access Macbeth's tactics: `addarith`, `cancel`, `extra`, `numbers`
-set_option pp.funBinderTypes true
+-- set_option pp.funBinderTypes true
 
 open Function
 namespace Int
