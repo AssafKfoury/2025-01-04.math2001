@@ -122,7 +122,10 @@ example : ¬ Surjective l := by
   push_neg
   use athos
   intros a
-  cases a <;> exhaust
+  cases a
+  · exhaust
+  · exhaust
+  -- the preceding 3 lines can be replaced by the single line `cases a <;> exhaust`
 
 --# ----------------------------------------------------------------
 
