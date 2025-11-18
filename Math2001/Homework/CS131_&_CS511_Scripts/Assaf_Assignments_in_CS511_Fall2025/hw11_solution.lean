@@ -7,14 +7,19 @@ import Library.Tactic.Exhaust --
     -- finite-case analysis, primarily in the context of sets or other
     -- inductive types with a small number of elements. It is generally
     -- used after the tactics `dsimp` or `intro` in a by block.
+<<<<<<< HEAD
 math2001_init           --  needed to access Macbeth's tactics:
                         -- `addarith`, `cancel`, `extra`, `numbers`
+=======
+math2001_init
+    -- needed to access Macbeth's tactics: `addarith`, `cancel`, `extra`, `numbers`
+>>>>>>> fcb4309637c6d09ffc30e2627df107c4c226315f
 -- set_option pp.funBinderTypes true
 
 open Function
 namespace Int
 
-/- # Exercise 3 -/
+/- # Exercise 3 in Homework 11-/
 
 --Exercise 8.1.13.2
 --# Prove one-------------------------------------------------------
@@ -56,7 +61,7 @@ example : ¬ Surjective (fun (x : ℝ) ↦ 2 * x) := by
 
 --# -----------------------------------------------------------------
 
-/- # Exercise 4 -/
+/- # Exercise 4 in Homework 11-/
 
 inductive Musketeer
   | athos
@@ -122,11 +127,14 @@ example : ¬ Surjective l := by
   push_neg
   use athos
   intros a
-  cases a <;> exhaust
+  cases a
+  · exhaust
+  · exhaust
+  -- the preceding 3 lines can be replaced by the single line `cases a <;> exhaust`
 
 --# ----------------------------------------------------------------
 
-/- # Problem 2 -/
+/- # Problem 2 in Homework 11 -/
 
 --Exercise 8.1.13.13
 --# Prove one-------------------------------------------------------
