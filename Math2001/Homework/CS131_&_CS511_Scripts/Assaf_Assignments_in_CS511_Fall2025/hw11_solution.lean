@@ -1,20 +1,13 @@
 /- # CS 511, 14 November 2025, hw11_solution.lean -/
 import Mathlib.Data.Real.Basic
 import Library.Basic
--- import Library.Tactic.ModEq
 import Library.Tactic.Exhaust --
     -- The `exhaust` tactic is typically used to solve goals that involve
     -- finite-case analysis, primarily in the context of sets or other
     -- inductive types with a small number of elements. It is generally
     -- used after the tactics `dsimp` or `intro` in a by block.
-<<<<<<< HEAD
 math2001_init           --  needed to access Macbeth's tactics:
                         -- `addarith`, `cancel`, `extra`, `numbers`
-=======
-math2001_init
-    -- needed to access Macbeth's tactics: `addarith`, `cancel`, `extra`, `numbers`
->>>>>>> fcb4309637c6d09ffc30e2627df107c4c226315f
--- set_option pp.funBinderTypes true
 
 open Function
 namespace Int
