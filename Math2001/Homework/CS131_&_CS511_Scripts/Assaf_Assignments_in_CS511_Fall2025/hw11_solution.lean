@@ -1,7 +1,7 @@
 /- # CS 511, 14 November 2025, hw11_solution.lean -/
 import Mathlib.Data.Real.Basic
 import Library.Basic
---import Library.Tactic.Exhaust --
+import Library.Tactic.Exhaust --
     -- The `exhaust` tactic is typically used to solve goals that involve
     -- finite-case analysis, primarily in the context of sets or other
     -- inductive types with a small number of elements. It is generally
