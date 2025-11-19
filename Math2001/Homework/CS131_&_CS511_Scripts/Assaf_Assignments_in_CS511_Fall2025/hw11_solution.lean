@@ -1,7 +1,7 @@
 /- # CS 511, 14 November 2025, hw11_solution.lean -/
 import Mathlib.Data.Real.Basic
 import Library.Basic
-import Library.Tactic.Exhaust --
+--import Library.Tactic.Exhaust --
     -- The `exhaust` tactic is typically used to solve goals that involve
     -- finite-case analysis, primarily in the context of sets or other
     -- inductive types with a small number of elements. It is generally
@@ -87,8 +87,8 @@ example : ¬ Injective h := by
   push_neg
   use athos, aramis
   constructor
-  · exhaust
-  · exhaust
+  · exact rfl                              -- exhaust
+  · exact (bne_iff_ne athos aramis).mp rfl -- exhaust
 
 --Exercise 8.1.13.9
 --# Prove one-------------------------------------------------------
@@ -97,8 +97,8 @@ example : Surjective h := by
   dsimp [Surjective]
   intros b
   cases b
-  · use porthos; exhaust
-  · use athos; exhaust
+  · use porthos; exact rfl -- exhaust
+  · use athos; exact rfl   -- exhaust
 
 example : ¬ Surjective h := by
   sorry
