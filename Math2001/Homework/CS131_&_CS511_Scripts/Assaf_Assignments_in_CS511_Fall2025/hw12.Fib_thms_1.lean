@@ -4,11 +4,13 @@
    # by comparing it with the factorial function (called Fact2 here) and the
    # exponential functions 2ⁿ and (3/2)ⁿ. Basically, we show:
    #      (3/2)ⁿ < Fib (n) < 2ⁿ < Fact2 (n)
-   # More precisely, regarding the first inequality, we show that:
-   #      (3/2)^(n-2) ≤ Fib (n) for all n ≥ 2 or equivalently
-   #      3^(n-2) ≤ 2^(n-2) * Fib (n) for all n ≥ 2 or equivalently
-   #      3^n ≤ 2^n * Fib (n + 2) for all n ≥ 0
-   # All the proofs are by induction, purposely set up in different ways.
+   # Thus, Fib grows exponentially but at a much slower rate than Fact2.
+   # More precisely, regarding the first inequality above, we show that:
+   #      (3/2)^(n-2) ≤ Fib (n)       for all n ≥ 2, or equivalently,
+   #      3^(n-2) ≤ 2^(n-2) * Fib (n) for all n ≥ 2, or equivalently,
+   #      3^n ≤ 2^n * Fib (n + 2)     for all n ≥ 0,
+   # with this last equality being easier to prove, as it does not involve any
+   # division. All the proofs are by induction, purposely set up in different ways.
 -/
 
 import Mathlib.Data.Real.Basic
