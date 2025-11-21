@@ -1,6 +1,15 @@
-/- # Fibonacci numbers and many of their properties,
-   # here proved in Lean_4 with several proofs involving
-   # induction, set up in different ways -/
+/- # 20 November 2025 -/
+
+/- # We examine the rate of growth of the Fibonnaci function (called Fib here)
+   # by comparing it with the factorial function (called Fact2 here) and the
+   # exponential functions 2ⁿ and (3/2)ⁿ. Basically, we show:
+   #      (3/2)ⁿ < Fib (n) < 2ⁿ < Fact2 (n)
+   # More precisely, regarding the first inequality, we show that:
+   #      (3/2)^(n-2) ≤ Fib (n) for all n ≥ 2 or equivalently
+   #      3^(n-2) ≤ 2^(n-2) * Fib (n) for all n ≥ 2 or equivalently
+   #      3^n ≤ 2^n * Fib (n + 2) for all n ≥ 0
+   # All the proofs are by induction, purposely set up in different ways
+-/
 
 import Mathlib.Data.Real.Basic
 -- import Mathlib.Data.Nat.Basic
@@ -52,7 +61,7 @@ theorem Fact_overtakes_Exp1 (n : ℕ) :  Fact2 (n+1) ≥ 2 ^ n := by
 
 /- # `Fact_overtakes_Exp2` is the same as `Fact_overtakes_Exp1` but its
    #  proof by induction is set up differently -/
-lemma Fact_overtakes_Exp2 (n : ℕ) : Fact2 (n + 1) ≥ 2 ^ n := by
+theorem Fact_overtakes_Exp2 (n : ℕ) : Fact2 (n + 1) ≥ 2 ^ n := by
   simple_induction n with k IH
   · -- base case
     calc Fact2 (0 + 1) = (0 + 1) * Fact2 0 := by rw [Fact2, Fact2, Fact2]
@@ -61,7 +70,7 @@ lemma Fact_overtakes_Exp2 (n : ℕ) : Fact2 (n + 1) ≥ 2 ^ n := by
   · -- inductive step
     calc Fact2 (k + 1 + 1) = (k + 1 + 1) * Fact2 (k + 1) := by rw [Fact2]
       _ ≥ (k + 1 + 1) * 2 ^ k := by exact mul_le_mul_left (k + 1 + 1) IH
-      -- in the previous step, `rel [IH]` does not work for some reason ...
+                     -- in the previous step, `rel [IH]` does not work ???
       _ = k * 2 ^ k + 2 * 2 ^ k := by ring
       _ ≥ 2 * 2 ^ k := by extra
       _ = 2 ^ (k + 1) := by ring
@@ -207,9 +216,7 @@ theorem FibDiv (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1) : (Fib m) ∣ (Fib m * 
 
 /- GROWTH RATE -/
 
-/- # Fib (n) ≥ (3 / 2) ^ (n - 2) for all n ≥ 2 or
-   # (2 ^ (n-2)) * Fib (n) ≥ 3 ^ (n-2)  for all n ≥ 2 or
-   # (2 ^ n) * Fib (n + 2) ≥ 3 ^ n for all n ≥ 0   -/
+
 
 
 
