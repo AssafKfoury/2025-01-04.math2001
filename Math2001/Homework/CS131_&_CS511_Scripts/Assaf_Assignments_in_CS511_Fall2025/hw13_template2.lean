@@ -1,4 +1,4 @@
-/- # 30 November 2025 hw13_solution2.lean -/
+/- # 30 November 2025 hw13_template2.lean -/
 
 /- # This script involves proofs by induction, all
    # related to the Fibonacci numbers.  -/
@@ -7,6 +7,8 @@ import Mathlib.Data.Real.Basic
 import Library.Basic
 
 math2001_init
+
+/- # PROBLEM 2 in HW13 -/
 
 /- # Fibonacci function -/
 def Fib : ℕ → ℤ -- ℕ
@@ -25,15 +27,7 @@ def a : ℕ → ℤ
 /- Following is essentially the same proof of Example 6.3.1 as in [MOP] -/
 example (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
   induction' n using Nat.twoStepInduction with k IH1 IH2
-  . calc a 0 = 2                := by rw [a]
-           _ = 2 ^ 0 + (-1) ^ 0 := by rfl -- or `by numbers` or `by norm_num`
-  . calc a 1 = 1                := by rw [a]
-           _ = 2 ^ 1 + (-1) ^ 1 := by rfl
-  . calc
-      a (k + 2)
-        = a (k + 1) + 2 * a k                       := by rw [a]
-      _ = (2^(k+1) + (-1)^(k+1)) + 2*(2^k + (-1)^k) := by rw [IH1, IH2]
-      _ = (2 : ℤ) ^ (k+2) + (-1) ^ (k+2)            := by ring
+  sorry
 
 /- Different way of setting up the two-step-induction
    instead of " induction'" and a little less transparently -/
@@ -68,7 +62,7 @@ example (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
   -- we just need the `n` case in the end
   exact aux_lemma.1
 
-/- # MORE PROPERTIES OF Fibonacci numbers -/
+  /- # MORE PROPERTIES OF Fibonacci numbers -/
 
 /- # Adding two odd integers returns an even integer -/
 lemma odd_add_odd {x y : ℤ} : Int.Odd (x) → Int.Odd (y) →  Int.Even (x + y) := by
