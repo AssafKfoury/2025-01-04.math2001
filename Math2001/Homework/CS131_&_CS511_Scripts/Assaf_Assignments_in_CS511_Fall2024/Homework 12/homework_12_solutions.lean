@@ -118,7 +118,7 @@ example : {r : ℤ | r ≡ 7 [ZMOD 10] }
     rw [hk']
     ring
   · use 2 * k + 1
-    rw [hk']
+    rw [hk'
     ring
 
 /-# Problem 2-/
