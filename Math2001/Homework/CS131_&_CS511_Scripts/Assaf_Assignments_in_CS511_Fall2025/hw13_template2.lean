@@ -18,20 +18,28 @@ def Fib : ℕ → ℤ -- ℕ
 
 /- # THREE DIFFERENT WAYS of proving Example 6.3.1 in [MOP]-/
 
-/- # Inductively defined function (similar to Fibonacci) -/
+/- # Inductively defined function (similar to Fibonacci, but different) -/
 def a : ℕ → ℤ
   | 0 => 2
   | 1 => 1
   | n + 2 => a (n + 1) + 2 * a n
 
 /- Following is essentially the same proof of Example 6.3.1 as in [MOP] -/
-example (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
+lemma Exa_6_3_1_in_MOP_1 (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
   induction' n using Nat.twoStepInduction with k IH1 IH2
-  sorry
+  . calc a 0 = 2                := by rw [a]
+           _ = 2 ^ 0 + (-1) ^ 0 := by rfl -- or `by numbers` or `by norm_num`
+  . calc a 1 = 1                := by rw [a]
+           _ = 2 ^ 1 + (-1) ^ 1 := by rfl
+  . calc
+      a (k + 2)
+        = a (k + 1) + 2 * a k                       := by rw [a]
+      _ = (2^(k+1) + (-1)^(k+1)) + 2*(2^k + (-1)^k) := by rw [IH1, IH2]
+      _ = (2 : ℤ) ^ (k+2) + (-1) ^ (k+2)            := by ring
 
 /- Different way of setting up the two-step-induction
    instead of " induction'" and a little less transparently -/
-example (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
+lemma Exa_6_3_1_in_MOP_2 (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
   induction n using Nat.twoStepInduction
   . rfl
   . rfl
@@ -42,23 +50,16 @@ example (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
 
 /- Different way still of setting up the induction,
    but without using Nat.twoStepInduction -/
-example (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
+lemma Exa_6_3_1_in_MOP_3 (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
   -- prove the `n` and `n+1` cases simultaneously by induction
   have aux_lemma :
       a n = 2 ^ n + (-1) ^ n ∧
       a (n + 1) = 2 ^ (n + 1) + (-1) ^ (n + 1) := by
     induction n with
     | zero =>
-      constructor
-      . rfl
-      . rfl
+      sorry
     | succ k ik =>
-      constructor
-      . exact ik.2
-      . calc
-        a (k + 2) = a (k + 1) + 2 * (a k) := rfl
-        _ = 2 ^ (k + 1) + (-1) ^ (k + 1) + 2 * (2 ^ k + (-1) ^ k) := by rw [ik.1, ik.2]
-        _ = 2 ^ (k + 2) + (-1) ^ (k + 2) := by ring
+      sorry
   -- we just need the `n` case in the end
   exact aux_lemma.1
 
@@ -87,10 +88,7 @@ theorem Fib_odd_odd_even1 (n : ℕ) :
 /- # `Fib_odd_odd_even2` is a slight adjustment of `Fib_odd_odd_even1` -/
 theorem Fib_odd_odd_even2 :
    (∀ (n : ℕ) , Int.Odd (Fib n) → Int.Odd (Fib (n + 1)) →  Int.Even (Fib (n + 2))) := by
-     intro h0
-     intros h1 h2
-     rw [Fib]
-     exact odd_add_odd h1 h2
+      sorry
 
 /- # Next example is almost like `Example 6.3.4` in [MOP] but not quite, because
    # our definition of Fib 0 = 0, not Fib 0 = 1 as in [MOP] . I include it here
@@ -117,13 +115,6 @@ theorem Cassini_id (n : ℕ) :
     Fib (n + 2) * Fib (n) - Fib (n+1) * Fib (n+1) = (-1) ^ (n+1) := by
     induction n with
     | zero =>
-      calc Fib (0+2) * Fib 0 - Fib (0+1) * Fib (0+1)
-                = (-1) ^ (0+1) := by exact rfl
+      sorry
     | succ n ih =>
-      calc Fib (n+1+2) * Fib (n+1) - Fib (n+1+1) * Fib (n+1+1)
-         = (Fib (n+1) + Fib (n+1+1)) * Fib (n+1) - (Fib n + Fib (n+1)) * Fib (n+1+1) := by rw [Fib,Fib]
-       _ = Fib (n+1) * Fib (n+1) - Fib (n) * Fib (n+2)     := by ring
-       _ = - (Fib (n+2) * Fib (n) - Fib (n+1) * Fib (n+1)) := by ring
-       _ = - (-1) ^ (n+1)                                  := by rw [ih]
-       _ = (-1) * (-1) ^ (n+1)                             := by ring
-       _ = (-1) ^ (n+2)                                    := by ring
+      sorry

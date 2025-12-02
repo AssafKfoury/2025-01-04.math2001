@@ -16,14 +16,14 @@ def Fib : ℕ → ℤ -- ℕ
 
 /- # THREE DIFFERENT WAYS of proving Example 6.3.1 in [MOP]-/
 
-/- # Inductively defined function (similar to Fibonacci) -/
+/- # Inductively defined function (similar to Fibonacci, but different) -/
 def a : ℕ → ℤ
   | 0 => 2
   | 1 => 1
   | n + 2 => a (n + 1) + 2 * a n
 
 /- Following is essentially the same proof of Example 6.3.1 as in [MOP] -/
-example (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
+lemma Exa_6_3_1_in_MOP_1 (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
   induction' n using Nat.twoStepInduction with k IH1 IH2
   . calc a 0 = 2                := by rw [a]
            _ = 2 ^ 0 + (-1) ^ 0 := by rfl -- or `by numbers` or `by norm_num`
@@ -37,7 +37,7 @@ example (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
 
 /- Different way of setting up the two-step-induction
    instead of " induction'" and a little less transparently -/
-example (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
+lemma Exa_6_3_1_in_MOP_2 (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
   induction n using Nat.twoStepInduction
   . rfl
   . rfl
@@ -48,7 +48,7 @@ example (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
 
 /- Different way still of setting up the induction,
    but without using Nat.twoStepInduction -/
-example (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
+lemma Exa_6_3_1_in_MOP_3 (n : ℕ) : a n = 2 ^ n + (-1) ^ n := by
   -- prove the `n` and `n+1` cases simultaneously by induction
   have aux_lemma :
       a n = 2 ^ n + (-1) ^ n ∧
