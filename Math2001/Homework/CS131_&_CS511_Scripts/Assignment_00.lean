@@ -6,7 +6,7 @@
    # the two autograder instructions on lines 12 and 44. -/
 
 import Library.Basic
--- import AutograderLib
+import AutograderLib
 
 /- EXERCISE 1 -/
 @[autogradedProof 2]
