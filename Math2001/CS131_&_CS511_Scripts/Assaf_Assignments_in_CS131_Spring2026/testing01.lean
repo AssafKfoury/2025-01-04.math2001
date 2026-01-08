@@ -21,7 +21,7 @@ example : ¬ (P ∨ Q) ↔ ¬ P ∧ ¬ Q := by
   -- we can also replace `apply?` with its output
 
 /- # EVERYTHING BELOW THIS LINE is Assaf's script -/
-/- # several different ways of proving "¬ (P ∧ Q) → ¬ P ∨ ¬ Q" -/
+/- # different ways of proving the 4th deMorgan's "¬ (P ∧ Q) → ¬ P ∨ ¬ Q" -/
 
 example : ¬ (P ∧ Q) → ¬ P ∨ ¬ Q := by
    intro h
