@@ -40,7 +40,7 @@ example : ¬ P ∧ ¬ Q → ¬ (P ∨ Q) := by
     -- hQ : Q
     exact h_nq hQ -- contradiction
 
-/- -/
+/- using `obtain` instead of `cases` -/
 example : ¬ P ∧ ¬ Q → ¬ (P ∨ Q) := by
   intro h
   intro h_pos
