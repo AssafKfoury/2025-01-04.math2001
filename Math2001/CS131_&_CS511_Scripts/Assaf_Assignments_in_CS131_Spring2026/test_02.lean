@@ -5,11 +5,11 @@ import Mathlib.Logic.Basic -- basic facts in logic
 
 -- import Mathlib.Tactic -- Standard library for additional tactics
 import Mathlib.Tactic.ByContra  -- lighter than 'import' on preceding line
-                                -- needed for tactic 'by_contra'
-import Library.Basic -- needed for tactic 'apply?'
+                                -- needed for tactic `by_contra`
+import Library.Basic -- needed for tactic `apply?`
 
 /- # NEXT EXAMPLE +
-   # comments are taken from canned example "logic" in the playground -/
+   # comments are taken from canned example "Logic" in the playground -/
 -- Let P and Q be true-false statements
 variable (P Q : Prop)
 
@@ -18,7 +18,7 @@ example : ¬ (P ∨ Q) ↔ ¬ P ∧ ¬ Q := by
   apply? -- we can search for the proof in the library
   -- we can also replace `apply?` with its output
 
-  /- # EVERYTHING BELOW THIS LINE is Assaf's script -/
+/- # EVERYTHING BELOW THIS LINE is Assaf's script -/
 /- # different ways of proving deMorgan's law 1 "¬ (P ∨ Q) → ¬ P ∧ ¬ Q" -/
 
 example : ¬ (P ∨ Q) → ¬ P ∧ ¬ Q := by
@@ -36,24 +36,24 @@ example : ¬ (P ∨ Q) → ¬ P ∧ ¬ Q := by
     have hhh : P ∨ Q := Or.inr h_nq
     exact h hhh
 
-/- without tactic 'constructor' -/
+/- without tactic `constructor` -/
 example : ¬ (P ∨ Q) → ¬ P ∧ ¬ Q := by
   intro h
   -- to prove a conjunction, prove each part separately
   have h1 : ¬ P := by
-    by_contra h_np -- 'intro' can be used here as well
+    by_contra h_np -- `intro` can be used here as well
     -- from h_np we get (P ∨ Q)
     have hhh : P ∨ Q := Or.inl h_np
     exact h hhh
   have h2 : ¬ Q := by
-    by_contra h_nq -- 'intro' can be used here as well
+    by_contra h_nq -- `intro` can be used here as well
     -- from h_nq we get (P ∨ Q)
     have hhh : P ∨ Q := Or.inr h_nq
     exact h hhh
   -- Now combine the two parts into a conjunction
   exact And.intro h1 h2
 
-/- without tactic 'And.intro' -/
+/- without tactic `And.intro` -/
 example : ¬ (P ∨ Q) → ¬ P ∧ ¬ Q := by
   intro h
   -- to prove a conjunction, prove each part separately
