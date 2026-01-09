@@ -1,9 +1,11 @@
+/- 7 January 2026 -/
 import Mathlib.Logic.Basic -- basic facts in logic
 -- theorems in Lean's mathematics library
 -- preceding two lines taken from canned example "Logic" in the palyground
 
 -- import Mathlib.Tactic -- Standard library for additional tactics
-import Mathlib.Tactic.ByContra  -- much lighter than 'import' on preceding line
+import Mathlib.Tactic.ByContra  -- lighter than 'import' on preceding line
+                                -- needed for tactic 'by_contra'
 import Library.Basic -- needed for tactic 'apply?'
 /- # TWO NEXT EXAMPLES +
    # comments are taken from canned example "logic" in the playground -/
