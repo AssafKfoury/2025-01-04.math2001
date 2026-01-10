@@ -5,7 +5,7 @@ import Mathlib.Logic.Basic
 variable (P Q : Prop)
 
 @[autogradedProof 10]
-example : ¬ P ∧ ¬ Q → ¬ (P ∨ Q) := by
+theorem example_1 : ¬ P ∧ ¬ Q → ¬ (P ∨ Q) := by
   intro h
   intro h_pos
   obtain ⟨ h_np , h_nq ⟩ := h
