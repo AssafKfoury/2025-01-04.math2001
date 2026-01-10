@@ -10,6 +10,8 @@ import Mathlib.Logic.Basic -- basic facts in logic
 import Library.Basic -- needed for tactic `apply?`
 import AutograderLib -- **COMMENT OUT IN THE Lean_4 PLAYGROUND**
 
+variable (P Q : Prop)
+
 @[autogradedProof 10]
 example : ¬ P ∧ ¬ Q → ¬ (P ∨ Q) := by
   intro h
